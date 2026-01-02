@@ -1,0 +1,53 @@
+[
+  {
+    "title": "Death Note",
+    "genre": ["Psychological", "Thriller", "Supernatural"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "progress": {
+      "currentSeason": 1,
+      "totalSeasons": 1
+    },
+    "userStats": {
+      "score": 9.0,
+      "status": "Completed",
+      "isCompleted": true
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2024-01-10T08:00:00Z"
+  },
+  {
+    "title": "Spy x Family",
+    "genre": ["Action", "Comedy", "Slice of Life"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "progress": {
+      "currentSeason": 2,
+      "totalSeasons": 2
+    },
+    "userStats": {
+      "score": 8.5,
+      "status": "Watching",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2024-03-15T10:30:00Z"
+  },
+  {
+    "title": "Fullmetal Alchemist: Brotherhood",
+    "genre": ["Adventure", "Fantasy", "Drama"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "progress": {
+      "currentSeason": 1,
+      "totalSeasons": 1
+    },
+    "userStats": {
+      "score": 9.1,
+      "status": "Plan to Watch",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2024-05-20T14:15:00Z"
+  }
+]
