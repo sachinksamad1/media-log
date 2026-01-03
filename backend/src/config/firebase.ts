@@ -1,11 +1,11 @@
 import admin from "firebase-admin";
-import serviceAccount from "./serviceAccountKey.json";
+import serviceAccountKey from "./env.js";
 
 admin.initializeApp({
   credential: admin.credential.cert({
-    projectId: serviceAccount.project_id,
-    clientEmail: serviceAccount.client_email,
-    privateKey: serviceAccount.private_key,
+    projectId: serviceAccountKey.project_id,
+    clientEmail: serviceAccountKey.client_email,
+    privateKey: serviceAccountKey.private_key,
   }),
 });
 

@@ -1,9 +1,9 @@
-import { Router } from 'express';
-import { LightNovelController } from './light-novel.controller.js';
-import { LightNovelService } from './light-novel.service.js';
-import { LightNovelRepository } from './light-novel.repo.js';
-import { validate } from '../../common/middlewares/validate-request.js';
-import { LightNovelSchema } from './light-novel.schema.js';
+import { Router } from "express";
+import { LightNovelController } from "./light-novel.controller.js";
+import { LightNovelService } from "./light-novel.service.js";
+import { LightNovelRepository } from "./light-novel.repo.js";
+import { validate } from "../../common/validators/validate-request.js";
+import { LightNovelSchema } from "./light-novel.schema.js";
 
 const router = Router();
 const lightNovelRepo = new LightNovelRepository();
