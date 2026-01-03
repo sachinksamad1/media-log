@@ -1,0 +1,19 @@
+[
+  {
+    "title": "Atomic Habits",
+    "genre": ["Self-Help", "Productivity", "Psychology"],
+    "origin": "USA",
+    "language": "English",
+    "progress": {
+      "currentSeason": 1,
+      "totalSeasons": 1
+    },
+    "userStats": {
+      "score": 10.0,
+      "status": "Completed",
+      "isCompleted": true
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2024-02-10T08:30:00Z"
+  }
+]

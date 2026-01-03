@@ -1,35 +1,40 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodObject, ZodError } from "zod";
+import { AppError } from "../errors/app-error.js";
 
-export const validate =
-  (schema: ZodObject<any>) =>
-  async (req: Request, res: Response, next: NextFunction) => {
+export const validate = (schema: ZodObject<any>) => {
+  return async (req: Request, res: Response, next: NextFunction) => {
     try {
-      // Validates and automatically strips unknown fields (if not .passthrough())
+      // 1. Parse the incoming request data
       const parsed = await schema.parseAsync({
         body: req.body,
         query: req.query,
         params: req.params,
       });
 
-      // Re-assign parsed data to ensure type-safety and cleaned values
-      req.body = parsed.body;
-      req.query = parsed.query as any;
-      req.params = parsed.params as any;
+      /**
+       * 2. THE FIX:
+       * Instead of req.query = parsed.query (which fails),
+       * we use Object.assign to update the properties inside the object.
+       */
+      Object.assign(req.params, parsed.params);
+      Object.assign(req.query, parsed.query);
+      req.body = parsed.body; // Overwriting req.body is usually allowed in Express
 
-      next();
+      return next();
     } catch (error) {
       if (error instanceof ZodError) {
-        // Standardize the error response for your Angular/Flutter apps
-        return res.status(400).json({
-          success: false,
-          message: "Validation Error",
-          errors: error.issues.map((err) => ({
-            path: err.path.join("."),
-            message: err.message,
-          })),
-        });
+        // Format Zod errors for your Flutter/Angular apps
+        const details = error.issues.map((e) => ({
+          path: e.path.join("."),
+          message: e.message,
+        }));
+
+        return next(
+          new AppError(`Validation Failed: ${JSON.stringify(details)}`, 400)
+        );
       }
-      next(error); // Pass other errors to global error handler
+      return next(error);
     }
   };
+};

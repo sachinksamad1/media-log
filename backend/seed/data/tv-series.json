@@ -1,0 +1,19 @@
+[
+  {
+    "title": "The Bear",
+    "genre": ["Drama", "Comedy"],
+    "origin": "USA",
+    "language": "English",
+    "progress": {
+      "currentSeason": 2,
+      "totalSeasons": 3
+    },
+    "userStats": {
+      "score": 9.2,
+      "status": "Ongoing",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2024-03-05T18:45:00Z"
+  }
+]

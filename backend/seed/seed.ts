@@ -1,53 +1,29 @@
-import admin from 'firebase-admin';
-import { getFirestore } from 'firebase-admin/firestore';
-import { readFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import path from 'path';
-import { AnimeSchema } from '../src/modules/anime/anime.schema.js';
+import { seedAnime } from "./module/anime-seed.js";
+import { seedManga } from "./module/manga-seed.js";
+import { seedLightNovels } from "./module/light-novel-seed.js";
+import { seedMovies } from "./module/movies-seed.js";
+import { seedTVSeries } from "./module/tv-series-seed.js";
+import { seedFiction } from "./module/fiction-seed.js";
+import { seedNonFiction } from "./module/non-fiction-seed.js";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const serviceAccountPath = new URL('../serviceAccountKey.json', import.meta.url);
-const serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-const db = admin.firestore();
-
-async function runSeed() {
+async function runSeeds() {
   try {
-    console.log("🚀 Starting Data Seed...");
-    
-    // Load your data.json
-    const dataPath = path.join(__dirname, "./data/anime.json");
-    const rawData = JSON.parse(readFileSync(dataPath, "utf8"));
+    console.log("🚀 Starting Firestore Seeding...");
 
-    const batch = db.batch();
-    const collectionRef = db.collection("anime");
+    await seedAnime();
+    await seedManga();
+    await seedLightNovels();
+    await seedMovies();
+    await seedTVSeries();
+    await seedFiction();
+    await seedNonFiction();
 
-    for (const item of rawData) {
-      // Validate with Zod to ensure data matches your Alpha schema
-      const validatedData = AnimeSchema.parse({
-        ...item,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
-
-      const newDocRef = collectionRef.doc(); 
-      batch.set(newDocRef, validatedData);
-      console.log(`✅ Prepared: ${validatedData.title}`);
-    }
-
-    await batch.commit();
-    console.log("✨ Database successfully seeded!");
+    console.log("✅ All collections seeded successfully");
     process.exit(0);
-  } catch (err) {
-    console.error("❌ Seeding failed:", err);
+  } catch (error) {
+    console.error("❌ Seeding failed:", error);
     process.exit(1);
   }
 }
 
-runSeed();
+runSeeds();

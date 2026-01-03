@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Days at the Torunka Cafe",
+    "author": "Satoshi Yagisawa",
+    "published": "2025",
+    "genre": ["Contemporary", "Healing", "Fiction"],
+    "origin": "Japan",
+    "language": "English",
+    "type": "Standalone",
+    "volume": {
+      "order": 1,
+      "total": 1
+    },
+    "userStats": {
+      "score": 8,
+      "status": "Plan to Read",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2025-01-01T12:00:00Z"
+  },
+  {
+    "title": "Days at the Morisaki Bookshop",
+    "author": "Satoshi Yagisawa",
+    "published": "2023",
+    "genre": ["Contemporary", "Healing", "Fiction"],
+    "origin": "Japan",
+    "language": "English",
+    "type": "Series",
+    "volume": {
+      "order": 1,
+      "total": 2
+    },
+    "userStats": {
+      "score": 8,
+      "status": "Plan to Read",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2025-01-01T12:00:00Z"
+  },
+  {
+    "title": "More Days at the Morisaki Bookshop",
+    "author": "Satoshi Yagisawa",
+    "published": "2023",
+    "genre": ["Contemporary", "Healing", "Fiction"],
+    "origin": "Japan",
+    "language": "English",
+    "type": "Series",
+    "volume": {
+      "order": 2,
+      "total": 2
+    },
+    "userStats": {
+      "score": 8,
+      "status": "Plan to Read",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2025-01-01T12:00:00Z"
+  }
+]

@@ -1,0 +1,19 @@
+[
+  {
+    "title": "Chainsaw Man",
+    "genre": ["Action", "Horror", "Comedy"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "progress": {
+      "currentSeason": 12,
+      "totalSeasons": 15
+    },
+    "userStats": {
+      "score": 9.5,
+      "status": "Ongoing",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2024-01-05T09:00:00Z"
+  }
+]

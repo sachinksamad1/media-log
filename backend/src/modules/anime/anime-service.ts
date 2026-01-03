@@ -7,10 +7,11 @@ export class AnimeService extends BaseService<Anime> {
     super(new AnimeRepository());
   }
 
-  // Example of custom business logic
+  // Mark as completed
   async completeSeries(id: string) {
     const anime = await this.getById(id);
     // Logic: Set status to Completed and score to 10 automatically
     return await this.update(id, { status: "Completed", score: 10 });
   }
+
 }

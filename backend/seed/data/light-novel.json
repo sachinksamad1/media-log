@@ -1,0 +1,68 @@
+[
+  {
+    "title": "Overlord",
+    "author": "Kugane Maruyama",
+    "illustrator": "so-bin",
+    "genre": ["Isekai", "Dark Fantasy", "RPG"],
+    "origin": "Japan",
+    "language": "English",
+    "originalRun": {
+      "started": "2010",
+      "ended": "2015"
+    },
+    "type": "Series",  
+    "volume": 16,
+    "userStats": {
+      "score": 9.0,
+      "currentVolume": 1,
+      "status": "Ongoing",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2024-01-20T14:00:00Z"
+  },
+  {
+    "title": "Adachi and Shimamura",
+    "author": "",
+    "illustrator": "",
+    "genre": ["Iyashikei", "Romance", "Slice of Life", "Yuri"],
+    "origin": "Japan",
+    "language": "English",
+    "originalRun": {
+      "started": "2015",
+      "ended": "2015"
+    },
+    "type": "Series",  
+    "volume": 11,
+    "userStats": {
+      "score": 9.5,
+      "currentVolume": 1,
+      "status": "Reading",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2024-01-20T14:00:00Z"
+  },
+  {
+    "title": "Rascal Does Not Dream",
+    "author": "Hajime Komoshida",
+    "illustrator": "Kēji Mizoguchi",
+    "genre": ["Psychological", "Slice of Life", "School Life", "Romance"],
+    "origin": "Japan",
+    "language": "English",
+    "originalRun": {
+      "started": "2014",
+      "ended": "2025"
+    },
+    "type": "Series",  
+    "volume": 15,
+    "userStats": {
+      "score": 9.0,
+      "currentVolume": 5,
+      "status": "Reading",
+      "isCompleted": false
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "createdAt": "2024-01-20T14:00:00Z"
+  }
+]
