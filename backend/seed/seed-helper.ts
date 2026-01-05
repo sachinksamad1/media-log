@@ -1,9 +1,8 @@
-// backend/seed/seed-helper.ts
 import * as fs from "fs";
 import * as path from "path";
 import { fileURLToPath } from "url";
-import { ZodSchema } from "zod";
-import { db } from "./firebase";
+import { ZodType } from "zod";
+import { db } from "../src/config/firebase";
 
 // ESM-compatible __dirname replacement
 const __filename = fileURLToPath(import.meta.url);
@@ -12,7 +11,7 @@ const __dirname = path.dirname(__filename);
 interface SeedOptions<T> {
   collectionName: string;
   dataFile: string;
-  schema: ZodSchema<T>;
+  schema: ZodType<T>;
   defaults?: Partial<T>;
 }
 
@@ -42,7 +41,9 @@ export async function seedCollectionWithSchema<T>({
 
     if (!parsed.success) {
       console.error(`❌ Validation failed at index ${index}`);
-      console.error(parsed.error.format());
+      parsed.error.issues.forEach((issue) => {
+        console.error(`[${issue.path.join(".")}] ${issue.message}`);
+      });
       throw new Error(`Seed validation failed for ${collectionName}`);
     }
 

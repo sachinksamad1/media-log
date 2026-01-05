@@ -1,15 +1,19 @@
-import { seedCollection } from "../seed-helper.js";
+import { seedCollectionWithSchema } from "../seed-helper.js";
+import { MovieSchema } from "../../src/modules/movie/movie-schema.js";
 
 export async function seedMovies() {
   console.log("📦 Seeding Movies...");
 
-  const count = await seedCollection({
-    collectionName: "movies",
-    dataFile: "movies.json",
+  const count = await seedCollectionWithSchema({
+    collectionName: "movie",
+    dataFile: "../data/movie.json",
+    schema: MovieSchema,
     defaults: {
-      durationMinutes: 0,
-      status: "Planned",
-    },
+      userStats: {
+        score: 5,
+        status: "Planned"
+      }
+    }
   });
 
   console.log(`✨ Movies seeded: ${count} documents`);

@@ -1,15 +1,20 @@
-import { seedCollection } from "../seed-helper.js";
+import { seedCollectionWithSchema } from "../seed-helper.js";
+import { LightNovelSchema } from "../../src/modules/light-novel/light-novel.schema.js";
 
-export async function seedLightNovels() {
+export async function seedLightNovel() {
   console.log("📦 Seeding Light Novels...");
 
-  const count = await seedCollection({
-    collectionName: "light_novels",
+  const count = await seedCollectionWithSchema({
+    collectionName: "light_novel",
     dataFile: "../data/light-novel.json",
+    schema: LightNovelSchema,
     defaults: {
-      volumes: 0,
-      status: "Plan to Read",
-    },
+      userStats: {
+        score: 0,
+        currentReadingVolume: 0,
+        readingStatus: "Planned"
+      }
+    }
   });
 
   console.log(`✨ Light Novels seeded: ${count} documents`);

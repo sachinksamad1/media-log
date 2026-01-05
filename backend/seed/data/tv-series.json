@@ -1,19 +1,72 @@
 [
   {
-    "title": "The Bear",
-    "genre": ["Drama", "Comedy"],
-    "origin": "USA",
-    "language": "English",
-    "progress": {
-      "currentSeason": 2,
-      "totalSeasons": 3
+    "title": "Shōgun",
+    "genre": ["Historical", "Drama", "Action"],
+    "director": ["Frederick E.O. Toye", "Jonathan van Tulleken"],
+    "writer": ["Rachel Kondo", "Justin Marks"],
+    "cast": ["Hiroyuki Sanada", "Cosmo Jarvis", "Anna Sawai"],
+    "origin": "USA/Japan",
+    "language": "Japanese/English",
+    "tvSeriesStats": {
+      "initialSeasonRun": "2024",
+      "currentSeason": 1,
+      "totalSeasons": 1,
+      "isCompleted": true
     },
     "userStats": {
-      "score": 9.2,
-      "status": "Ongoing",
-      "isCompleted": false
+      "score": 9.5,
+      "status": "Completed"
     },
     "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2024-03-05T18:45:00Z"
+    "metadata": {
+      "createdAt": "2026-01-05T20:14:00Z",
+      "updatedAt": "2026-01-05T20:14:00Z"
+    }
+  },
+  {
+    "title": "Severance",
+    "genre": ["Psychological Thriller", "Sci-Fi"],
+    "director": ["Ben Stiller"],
+    "cast": ["Adam Scott", "Britt Lower", "John Turturro"],
+    "origin": "USA",
+    "language": "English",
+    "tvSeriesStats": {
+      "initialSeasonRun": "2022",
+      "currentSeason": 1,
+      "totalSeasons": 2,
+      "isCompleted": false
+    },
+    "userStats": {
+      "score": 9.0,
+      "status": "Watching"
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "metadata": {
+    "createdAt": "2026-01-05T20:14:00Z",
+    "updatedAt": "2026-01-05T20:14:00Z"
+    }
+  },
+  {
+    "title": "Succession",
+    "genre": ["Drama", "Satire"],
+    "writer": ["Jesse Armstrong"],
+    "cast": ["Brian Cox", "Jeremy Strong", "Sarah Snook"],
+    "origin": "USA",
+    "language": "English",
+    "tvSeriesStats": {
+      "initialSeasonRun": "2018",
+      "currentSeason": 0,
+      "totalSeasons": 4,
+      "isCompleted": true
+    },
+    "userStats": {
+      "score": 0,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "metadata": {
+      "createdAt": "2026-01-05T20:14:00Z",
+      "updatedAt": "2026-01-05T20:14:00Z"
+    }
   }
 ]

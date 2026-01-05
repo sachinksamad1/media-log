@@ -3,45 +3,46 @@
     "title": "Overlord",
     "author": "Kugane Maruyama",
     "illustrator": "so-bin",
-    "genre": ["Isekai", "Dark Fantasy", "RPG"],
     "origin": "Japan",
+    "genre": ["Isekai", "Dark Fantasy", "RPG"],
     "language": "English",
-    "originalRun": {
-      "started": "2010",
-      "ended": "2015"
-    },
+    "format": "Light Novel",
     "type": "Series",  
-    "volume": 16,
+    "releaseStats": {
+      "publishedVolumes": 16,
+      "releaseStatus": "Completed"
+    },
     "userStats": {
       "score": 9.0,
-      "currentVolume": 1,
-      "status": "Ongoing",
-      "isCompleted": false
+      "currentReadingVolume": 1,
+      "readingStatus": "Planned"
     },
-    "imageUrl": "https://placehold.co/600x400.png",
+    "metadata": {
+      "imageUrl": "https://placehold.co/600x400.png"
+    },
     "createdAt": "2024-01-20T14:00:00Z"
   },
   {
     "title": "Adachi and Shimamura",
-    "author": "",
-    "illustrator": "",
-    "genre": ["Iyashikei", "Romance", "Slice of Life", "Yuri"],
+    "author": "Hitomi Iruma",
+    "illustrator": "Non",
     "origin": "Japan",
+    "genre": ["Iyashikei", "Romance", "Slice of Life", "Yuri"],
     "language": "English",
-    "originalRun": {
-      "started": "2015",
-      "ended": "2015"
-    },
+    "format": "Light Novel",
     "type": "Series",  
-    "volume": 11,
+    "releaseStats": {
+      "publishedVolumes": 11,
+      "releaseStatus": "Completed"
+    },
     "userStats": {
       "score": 9.5,
-      "currentVolume": 1,
-      "status": "Reading",
-      "isCompleted": false
+      "currentReadingVolume": 1,
+      "readingStatus": "Reading"
     },
-    "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2024-01-20T14:00:00Z"
+    "metadata": {
+      "imageUrl": "https://placehold.co/600x400.png"
+    }
   },
   {
     "title": "Rascal Does Not Dream",
@@ -50,19 +51,39 @@
     "genre": ["Psychological", "Slice of Life", "School Life", "Romance"],
     "origin": "Japan",
     "language": "English",
-    "originalRun": {
-      "started": "2014",
-      "ended": "2025"
+    "format": "Light Novel",
+    "releaseStats": {
+      "publishedVolumes": 15,
+      "releaseStatus": "Completed"
     },
-    "type": "Series",  
-    "volume": 15,
     "userStats": {
       "score": 9.0,
-      "currentVolume": 5,
-      "status": "Reading",
-      "isCompleted": false
+      "currentReadingVolume": 5,
+      "readingStatus": "Reading"
     },
-    "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2024-01-20T14:00:00Z"
+    "metadata": {
+      "imageUrl": "https://placehold.co/600x400.png"
+    }
+  },
+  {
+    "title": "Rascal Does Not Dream",
+    "author": "Hajime Komoshida",
+    "illustrator": "Kēji Mizoguchi",
+    "genre": ["Psychological", "Slice of Life", "School Life", "Romance"],
+    "origin": "Japan",
+    "language": "English",
+    "format": "Light Novel",
+    "releaseStats": {
+      "publishedVolumes": 15,
+      "releaseStatus": "Completed"
+    },
+    "userStats": {
+      "score": 9.0,
+      "currentReadingVolume": 5,
+      "readingStatus": "Reading"
+    },
+    "metadata": {
+      "imageUrl": "https://placehold.co/600x400.png"
+    }
   }
 ]

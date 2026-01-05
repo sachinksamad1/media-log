@@ -1,12 +1,12 @@
 import { seedCollectionWithSchema } from "../seed-helper.js";
-import { GameSchema } from "../../src/modules/games/games-schema.js";
+import { GameSchema } from "../../src/modules/game/game-schema.js";
 
-export async function seedGames() {
+export async function seedGame() {
   console.log("📦 Seeding Games...");
 
   const count = await seedCollectionWithSchema({
-    collectionName: "games",
-    dataFile: "../data/games.json",
+    collectionName: "game",
+    dataFile: "../data/game.json",
     schema: GameSchema,
     defaults: {
       userStats: {
@@ -19,3 +19,5 @@ export async function seedGames() {
 
   console.log(`✨ Games seeded: ${count} documents`);
 }
+
+

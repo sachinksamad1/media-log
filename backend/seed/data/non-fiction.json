@@ -1,19 +1,63 @@
 [
   {
     "title": "Atomic Habits",
-    "genre": ["Self-Help", "Productivity", "Psychology"],
+    "author": "James Clear",
+    "published": "2018-10-16T00:00:00Z",
+    "genres": ["Self-Help", "Productivity", "Psychology"],
     "origin": "USA",
     "language": "English",
-    "progress": {
-      "currentSeason": 1,
-      "totalSeasons": 1
-    },
-    "userStats": {
-      "score": 10.0,
-      "status": "Completed",
-      "isCompleted": true
-    },
-    "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2024-02-10T08:30:00Z"
+    "format": "Physical",
+    "volumes": [
+      {
+        "standalone": true,
+        "order": 1,
+        "total": 1,
+        "isCompleted": true
+      }
+    ],
+    "readingStatus": "Completed",
+    "score": 9.5,
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Sapiens: A Brief History of Humankind",
+    "author": "Yuval Noah Harari",
+    "published": "2011",
+    "genres": ["History", "Anthropology", "Science"],
+    "origin": "Israel",
+    "language": "English",
+    "format": "E-Book",
+    "volumes": [
+      {
+        "standalone": false,
+        "seriesName": "Sapiens Series",
+        "order": 1,
+        "total": 3,
+        "isCompleted": true
+      }
+    ],
+    "readingStatus": "Completed",
+    "score": 8.0,
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Thinking, Fast and Slow",
+    "author": "Daniel Kahneman",
+    "published": "2011-10-25T00:00:00Z",
+    "genres": ["Psychology", "Economics", "Non-Fiction"],
+    "origin": "Israel/USA",
+    "language": "English",
+    "format": "Physical",
+    "volumes": [
+      {
+        "standalone": true,
+        "order": 1,
+        "total": 1,
+        "isCompleted": true
+      }
+    ],
+    "readingStatus": "Planned",
+    "score": 0,
+    "imageUrl": ""
   }
 ]

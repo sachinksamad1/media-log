@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { GameSchema } from "./games-schema.js";
+import { GameSchema } from "./game-schema.js";
 
 // 1. Validation for CREATE (POST)
 export const createGamesValidator = z.object({

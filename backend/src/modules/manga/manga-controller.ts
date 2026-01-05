@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../common/base/base-controller.js";
-import { GamesService } from "./games-service.js";
+import { MangaService } from "./manga-service.js";
 import { catchAsync } from "../../common/utils/catch-async.js";
-import { GamesMapper } from "./games-mapper.js";
+import { MangaMapper } from "./manga-mapper.js";
 
-export class GamesController extends BaseController {
-  private service = new GamesService();
-  private mapper = new GamesMapper();
+export class MangaController extends BaseController {
+  private service = new MangaService();
+  private mapper = new MangaMapper();
 
   // Create Fiction Entry
   create = catchAsync(async (req: Request, res: Response) => {
@@ -14,11 +14,11 @@ export class GamesController extends BaseController {
     this.sendCreated(
       res,
       this.mapper.toDto(result),
-      "Game added to library"
+      "Light Novel added to library"
     );
   });
 
-  // Get all Fiction
+  // Get all Light Novels
   getAll = catchAsync(async (req: Request, res: Response) => {
     const { limit, lastDocId } = req.query;
     const result = await this.service.getAll(
@@ -34,28 +34,28 @@ export class GamesController extends BaseController {
     });
   });
 
-  // Get Games by id
+  // Get Light Novel by id
   getById = catchAsync(async (req: Request, res: Response) => {
     const result = await this.service.getById(req.params.id as string);
-    this.sendSuccess(res, this.mapper.toDto(result), "Game fetched");
+    this.sendSuccess(res, this.mapper.toDto(result), "Light Novel fetched");
   });
 
   // Mark as Completed
   complete = catchAsync(async (req: Request, res: Response) => {
     const score =
       req.body.score !== undefined ? Number(req.body.score) : undefined;
-    const result = await this.service.completeGame(
+    const result = await this.service.complete(
       req.params.id as string,
       score
     );
     this.sendSuccess(
       res,
       this.mapper.toDto(result),
-      "Game marked as complete"
+      "Light Novel marked as complete"
     );
   });
 
-  // Delete Game Entry
+  // Delete Light Novel Entry
   delete = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
 
@@ -65,10 +65,10 @@ export class GamesController extends BaseController {
     this.sendSuccess(res, null, `Entry with ID ${id} deleted successfully`);
   });
 
-  // Update Game
+  // Update Light Novel
   update = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const result = await this.service.update(id, req.body);
-    this.sendSuccess(res, this.mapper.toDto(result), "Game updated");
+    this.sendSuccess(res, this.mapper.toDto(result), "Light Novel updated");
   });
 }
