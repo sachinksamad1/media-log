@@ -1,18 +1,18 @@
 import { BaseService } from "../../common/base/base-service.js";
-import { AnimeRepository } from "./anime-repo.js";
-import { Anime } from "./anime-schema.js";
+import { FictionRepository } from "./fiction-repo.js";
+import { Fiction } from "./fiction-schema.js";
 
-export class AnimeService extends BaseService<Anime> {
+export class FictionService extends BaseService<Fiction> {
   constructor() {
-    super(new AnimeRepository());
+    super(new FictionRepository());
   }
 
   // Mark as completed
   async completeSeries(id: string, score: number = 7) {
-    const anime = await this.getById(id);
     // Logic: Set status to Completed and score to the provided value
     return await this.update(id, {
-      userStats: { status: "Completed", score },
+      readingStatus: "Completed",
+      score,
     });
   }
 }

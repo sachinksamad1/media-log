@@ -2,61 +2,64 @@
   {
     "title": "Days at the Torunka Cafe",
     "author": "Satoshi Yagisawa",
-    "published": "2025",
-    "genre": ["Contemporary", "Healing", "Fiction"],
+    "published": "2023-07-11T00:00:00Z",
+    "genres": ["Contemporary", "Healing", "Japanese Literature"],
     "origin": "Japan",
     "language": "English",
-    "type": "Standalone",
-    "volume": {
-      "order": 1,
-      "total": 1
-    },
-    "userStats": {
-      "score": 8,
-      "status": "Plan to Read",
-      "isCompleted": false
-    },
-    "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2025-01-01T12:00:00Z"
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 1,
+        "isCompleted": true
+      }
+    ],
+    "publicationStatus": "Completed",
+    "readingStatus": "Completed",
+    "score": 8.5,
+    "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1689034567i/123456.jpg"
   },
   {
-    "title": "Days at the Morisaki Bookshop",
-    "author": "Satoshi Yagisawa",
-    "published": "2023",
-    "genre": ["Contemporary", "Healing", "Fiction"],
-    "origin": "Japan",
+    "title": "The Seven Husbands of Evelyn Hugo",
+    "author": "Taylor Jenkins Reid",
+    "published": "2017-06-13T00:00:00Z",
+    "genres": ["Historical Fiction", "Romance", "Drama"],
+    "origin": "USA",
     "language": "English",
-    "type": "Series",
-    "volume": {
-      "order": 1,
-      "total": 2
-    },
-    "userStats": {
-      "score": 8,
-      "status": "Plan to Read",
-      "isCompleted": false
-    },
-    "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2025-01-01T12:00:00Z"
+    "format": "E-Book",
+    "type": "Novel",
+    "volumes": [
+      {
+        "total": 1,
+        "isCompleted": false,
+        "order": 1
+      }
+    ],
+    "publicationStatus": "Completed",
+    "readingStatus": "Reading",
+    "score": 9.0,
+    "imageUrl": ""
   },
   {
-    "title": "More Days at the Morisaki Bookshop",
-    "author": "Satoshi Yagisawa",
-    "published": "2023",
-    "genre": ["Contemporary", "Healing", "Fiction"],
-    "origin": "Japan",
+    "title": "Project Hail Mary",
+    "author": "Andy Weir",
+    "published": "2021-05-04T00:00:00Z",
+    "genres": ["Sci-Fi", "Adventure"],
+    "origin": "USA",
     "language": "English",
-    "type": "Series",
-    "volume": {
-      "order": 2,
-      "total": 2
-    },
-    "userStats": {
-      "score": 8,
-      "status": "Plan to Read",
-      "isCompleted": false
-    },
-    "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2025-01-01T12:00:00Z"
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 1,
+        "isCompleted": false
+      }
+    ],
+    "publicationStatus": "Completed",
+    "readingStatus": "Planned",
+    "score": 8,
+    "imageUrl": "https://placehold.co/600x400.png"
   }
 ]

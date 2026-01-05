@@ -1,11 +1,9 @@
 import admin from "firebase-admin";
-
-// CommonJS import for service account
-const serviceAccount = require("../serviceAccountKey.json");
+import serviceAccount from "../serviceAccountKey.json";
 
 if (!admin.apps.length) {
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
   });
 }
 

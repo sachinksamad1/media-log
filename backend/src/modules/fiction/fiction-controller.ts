@@ -1,20 +1,24 @@
 import { Request, Response } from "express";
 import { BaseController } from "../../common/base/base-controller.js";
-import { AnimeService } from "./anime-service.js";
+import { FictionService } from "./fiction-service.js";
 import { catchAsync } from "../../common/utils/catch-async.js";
-import { AnimeMapper } from "./anime-mapper.js";
+import { FictionMapper } from "./fiction-mapper.js";
 
-export class AnimeController extends BaseController {
-  private service = new AnimeService();
-  private mapper = new AnimeMapper();
+export class FictionController extends BaseController {
+  private service = new FictionService();
+  private mapper = new FictionMapper();
 
-  // Create Anime Entry
+  // Create Fiction Entry
   create = catchAsync(async (req: Request, res: Response) => {
     const result = await this.service.create(req.body);
-    this.sendCreated(res, this.mapper.toDto(result), "Anime added to library");
+    this.sendCreated(
+      res,
+      this.mapper.toDto(result),
+      "Fiction added to library"
+    );
   });
 
-  // Get all anime
+  // Get all Fiction
   getAll = catchAsync(async (req: Request, res: Response) => {
     const { limit, lastDocId } = req.query;
     const result = await this.service.getAll(
@@ -30,10 +34,10 @@ export class AnimeController extends BaseController {
     });
   });
 
-  // Get anime by id
+  // Get Fiction by id
   getById = catchAsync(async (req: Request, res: Response) => {
     const result = await this.service.getById(req.params.id as string);
-    this.sendSuccess(res, this.mapper.toDto(result), "Anime fetched");
+    this.sendSuccess(res, this.mapper.toDto(result), "Fiction fetched");
   });
 
   // Mark as Completed
@@ -47,11 +51,11 @@ export class AnimeController extends BaseController {
     this.sendSuccess(
       res,
       this.mapper.toDto(result),
-      "Series marked as complete"
+      "Fiction marked as complete"
     );
   });
 
-  // Delete anime
+  // Delete Fiction Entry
   delete = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
 
@@ -61,10 +65,10 @@ export class AnimeController extends BaseController {
     this.sendSuccess(res, null, `Entry with ID ${id} deleted successfully`);
   });
 
-  // Update anime
+  // Update Fiction
   update = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const result = await this.service.update(id, req.body);
-    this.sendSuccess(res, this.mapper.toDto(result), "Anime updated");
+    this.sendSuccess(res, this.mapper.toDto(result), "Fiction updated");
   });
 }

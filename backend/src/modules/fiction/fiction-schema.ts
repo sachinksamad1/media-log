@@ -4,21 +4,25 @@ export const FictionSchema = z.object({
   id: z.string().optional(), // Auto-entry handled by Firestore
   title: z.string().min(1, "Title is required"),
   author: z.string().min(1, "Author is required"),
-  
-  // Using arrays for better search/filtering in Flutter/Angular
-  genres: z.array(z.string()).default([]),
+  published: z.date().optional().or(z.string().regex(/\d{4}/)),
   
   // Categorization
-  format: z.enum(["Standalone", "Series", "Trilogy"]).default("Standalone"),
-  type: z.enum(["Novel", "Novella", "Short Story", "Anthology"]).default("Novel"),
-  origin: z.string().default("Japan"),
+  genres: z.array(z.string()).default([]),
+  origin: z.string().optional(),
+  language: z.string().optional(),
+  format: z.enum(["E-Book", "Physical"]).default("E-Book"),
+  type: z.enum(["Novel", "Short Story"]).default("Novel"),
+
   
   // Volume tracking
-  volumeOrder: z.number().int().min(1).default(1),
-  volumesPublished: z.number().int().min(1).default(1),
+  volumes: z.array(z.object({
+    order: z.number().int().min(1).default(1),
+    total: z.number().int().min(1).default(1),
+    isCompleted: z.boolean().default(false),
+  })).default([]),
   
   // Status Tracking
-  releaseStatus: z.enum(["Completed", "Ongoing", "Hiatus"]).default("Completed"),
+  publicationStatus: z.enum(["Completed", "Ongoing", "Hiatus"]).default("Completed"),
   readingStatus: z.enum(["Planned", "Reading", "Completed", "Dropped"]).default("Planned"),
   
   // Scoring & Metadata

@@ -1,15 +1,24 @@
-import { seedCollection } from "../seed-helper.js";
+// backend/seed/module/anime-seed.ts
+import { seedCollectionWithSchema } from "../seed-helper.js";
+import { AnimeSchema } from "../../src/modules/anime/anime-schema.js";
 
 export async function seedAnime() {
   console.log("📦 Seeding Anime...");
 
-  const count = await seedCollection({
+  const count = await seedCollectionWithSchema({
     collectionName: "anime",
-    dataFile: "./data/anime.json",
+    dataFile: "../data/anime.json",
+    schema: AnimeSchema,
     defaults: {
-      episodes: 0,
-      score: 0,
-      status: "Plan to Watch",
+      animeStats: {
+        currentSeason: 0,
+        totalSeasons: 1,
+        isCompleted: false,
+      },
+      userStats: {
+        score: 0,
+        status: "Planned",
+      },
     },
   });
 
