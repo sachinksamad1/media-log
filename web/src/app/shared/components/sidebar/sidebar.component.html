@@ -1,0 +1,32 @@
+<div class="flex flex-col h-full py-2">
+  <!-- Main Menu -->
+  <nav class="flex flex-col space-y-1 px-2">
+    <a
+      *ngFor="let item of menuItems"
+      [routerLink]="item.route"
+      routerLinkActive="bg-sidebar-accent text-sidebar-accent-foreground"
+      [routerLinkActiveOptions]="{ exact: item.route === '/' }"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200
+             text-sidebar-foreground cursor-pointer
+             hover:text-sidebar-accent-foreground hover:bg-sidebar-accent"
+      (click)="onClose()"
+    >
+      <lucide-icon [img]="item.icon" class="h-5 w-5 shrink-0" />
+      <span *ngIf="!isCollapsed">{{ item.label }}</span>
+    </a>
+  </nav>
+
+  <!-- Bottom Menu -->
+  <nav class="mt-auto space-y-1 px-2 border-sidebar-border pt-4">
+    <a
+      *ngFor="let item of bottomItems"
+      [routerLink]="item.route"
+      class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200
+             text-sidebar-foreground hover:bg-sidebar-accent"
+      (click)="onClose()"
+    >
+      <lucide-icon [img]="item.icon" class="h-5 w-5 shrink-0" />
+      <span *ngIf="!isCollapsed">{{ item.label }}</span>
+    </a>
+  </nav>
+</div>
