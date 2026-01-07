@@ -1,12 +1,12 @@
 import { Router } from "express";
-import animeRoutes from "./modules/anime/anime-routes.js";
-import fictionRoutes from "./modules/fiction/fiction-routes.js";
-import gamesRoutes from "./modules/game/game-routes.js";
-import lightNovelRoutes from "./modules/light-novel/light-novel-routes.js";
-import mangaRoutes from "./modules/manga/manga-routes.js";
-import moviesRoutes from "./modules/movie/movie-routes.js";
-import nonFictionRoutes from "./modules/non-fiction/non-fiction-routes.js";
-import tvSeriesRoutes from "./modules/tv-series/tv-series-routes.js";
+import animeRoutes from "./modules/media/anime/anime-routes.js";
+import fictionRoutes from "./modules/media/fiction/fiction-routes.js";
+import gamesRoutes from "./modules/media/game/game-routes.js";
+import lightNovelRoutes from "./modules/media/light-novel/light-novel-routes.js";
+import mangaRoutes from "./modules/media/manga/manga-routes.js";
+import moviesRoutes from "./modules/media/movie/movie-routes.js";
+import nonFictionRoutes from "./modules/media/non-fiction/non-fiction-routes.js";
+import tvSeriesRoutes from "./modules/media/tv-series/tv-series-routes.js";
 
 const router = Router();
 

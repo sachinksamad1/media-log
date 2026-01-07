@@ -1,5 +1,5 @@
 import { seedCollectionWithSchema } from "../seed-helper.js";
-import { FictionSchema } from "../../src/modules/fiction/fiction-schema.js";
+import { FictionSchema } from "../../src/modules/media/fiction/fiction-schema.js";
 
 export async function seedFiction() {
   console.log("📦 Seeding Fiction...");
@@ -8,10 +8,7 @@ export async function seedFiction() {
     collectionName: "fiction",
     dataFile: "../data/fiction.json",
     schema: FictionSchema,
-    defaults: {
-      publicationStatus: "Completed",
-      readingStatus: "Planned",
-    },
+    defaults: {},
   });
 
   console.log(`✨ Fiction seeded: ${count} documents`);

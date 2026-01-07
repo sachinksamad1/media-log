@@ -12,13 +12,13 @@ async function runSeeds() {
     console.log("🚀 Starting Firestore Seeding...");
 
     // await seedAnime();
-    // await seedFiction();
+    await seedFiction();
     // await seedGame();
     // await seedLightNovel();
     // await seedManga();
     // await seedMovies();
     // await seedNonFiction();
-    await seedTVSeries();
+    // await seedTVSeries();
 
     console.log("✅ All collections seeded successfully");
     process.exit(0);

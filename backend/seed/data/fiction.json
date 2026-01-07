@@ -2,7 +2,6 @@
   {
     "title": "Days at the Torunka Cafe",
     "author": "Satoshi Yagisawa",
-    "published": "2023-07-11T00:00:00Z",
     "genres": ["Contemporary", "Healing", "Japanese Literature"],
     "origin": "Japan",
     "language": "English",
@@ -15,9 +14,12 @@
         "isCompleted": true
       }
     ],
+    "published": "2023-07-11T00:00:00Z",
     "publicationStatus": "Completed",
-    "readingStatus": "Completed",
-    "score": 8.5,
+    "userStats": {
+      "score": 8.5,
+      "status": "Completed"
+    },
     "imageUrl": "https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1689034567i/123456.jpg"
   },
   {
@@ -27,7 +29,7 @@
     "genres": ["Historical Fiction", "Romance", "Drama"],
     "origin": "USA",
     "language": "English",
-    "format": "E-Book",
+    "format": "Physical",
     "type": "Novel",
     "volumes": [
       {
@@ -36,10 +38,12 @@
         "order": 1
       }
     ],
+    "userStats": {
+      "score": 9.0,
+      "status": "Planned"
+    },
     "publicationStatus": "Completed",
-    "readingStatus": "Reading",
-    "score": 9.0,
-    "imageUrl": ""
+    "imageUrl": "https://placehold.co/600x400.png"
   },
   {
     "title": "Project Hail Mary",
@@ -57,9 +61,297 @@
         "isCompleted": false
       }
     ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
     "publicationStatus": "Completed",
-    "readingStatus": "Planned",
-    "score": 8,
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Days at the Torunka Cafe",
+    "author": "Satoshi Yagisawa",
+    "genre": "Contemporary, Healing",
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 1,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Water Moon",
+    "author": "Samantha Sotto",
+    "genre": "Contemporary",
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 1,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "The Tatami Galaxy",
+    "author": "Tomihiko Morimi",
+    "genre": "Drama, Romance",
+    "format": "Physical",
+    "type":"Novel",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 1,
+        "isCompleted": false
+      }
+    ],
+    "publicationStatus": "Completed",
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Strange Weather in Tokyo",
+    "author": "Hiromi Kawakami",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 1,
+        "isCompleted": false
+      }
+    ],
+    "publicationStatus": "Completed",
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "The Secret of Secrets",
+    "author": "Dan Brown",
+    "genre": "Mystery, Thriller",
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 6,
+        "total": 6,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Days at the Morisaki Bookshop",
+    "author": "Satoshi Yagisawa",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 2,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "publicationStatus": "Completed",
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "More Days at the Morisaki Bookshop",
+    "author": "Satoshi Yagisawa",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 2,
+        "total": 2,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "publicationStatus": "Completed",
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Before the Coffee Gets Cold",
+    "author": "Toshikazu Kawaguchi",
+    "genre": "Healing, Contemporary",
+    "format": "E-Book",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 6,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "publicationStatus": "Completed",
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Tales from the Cafe",
+    "author": "Toshikazu Kawaguchi",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 2,
+        "total": 6,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "publicationStatus": "Completed",
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Before Your Memory Fades",
+    "author": "Toshikazu Kawaguchi",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "type": "Novel",
+    "volumes": [
+      {
+        "order": 3,
+        "total": 6,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Before We Say Goodbye",
+    "author": "Toshikazu Kawaguchi",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "volumes": [
+      {
+        "order": 4,
+        "total": 6,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Before We Forget Kindness",
+    "author": "Toshikazu Kawaguchi",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "volumes": [
+      {
+        "order": 5,
+        "total": 6,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Before I Knew I Loved You",
+    "author": "Toshikazu Kawaguchi",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "volumes": [
+      {
+        "order": 6,
+        "total": 6,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "What You Are Looking For Is in the Library",
+    "author": "Michiko Aoyama",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 1,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "The City and Its Uncertain Walls",
+    "author": "Haruki Murakami",
+    "genre": "Healing, Contemporary",
+    "format": "Physical",
+    "volumes": [
+      {
+        "order": 1,
+        "total": 1,
+        "isCompleted": false
+      }
+    ],
+    "userStats": {
+      "score": 8,
+      "status": "Planned"
+    },
     "imageUrl": "https://placehold.co/600x400.png"
   }
 ]

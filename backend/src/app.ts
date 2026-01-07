@@ -10,7 +10,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/health", (req, res) => res.send("OK"));
-app.use("/api", routes); // API Routes
+app.use("/api/v1", routes); // API Routes (v1)
 app.use(errorHandler); // Global Error Handler
 app.use(morgan("dev"));
 

@@ -4,8 +4,7 @@
     "genre": ["Psychological", "Thriller", "Supernatural"],
     "origin": "Japan",
     "language": "Japanese",
-    "animeStats": {
-      "currentSeason": 1,
+    "releaseStats": {
       "totalSeasons": 1,
       "isCompleted": true
     },
@@ -13,32 +12,29 @@
       "score": 9.0,
       "status": "Completed"
     },
-    "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2024-01-10T08:00:00Z"
+    "imageUrl": "https://placehold.co/600x400.png"
   },
   {
     "title": "Spy x Family",
     "genre": ["Action", "Comedy", "Slice of Life"],
     "origin": "Japan",
     "language": "Japanese",
-    "animeStats": {
-      "currentSeason": 2,
+    "releaseStats": {
       "totalSeasons": 2,
       "isCompleted": false
     },
     "userStats": {
       "score": 8.5,
-      "status": "Watching"
+      "status": "Ongoing"
     },
-    "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2024-03-15T10:30:00Z"
+    "imageUrl": "https://placehold.co/600x400.png"
   },
   {
     "title": "Fullmetal Alchemist: Brotherhood",
     "genre": ["Adventure", "Fantasy", "Drama"],
     "origin": "Japan",
     "language": "Japanese",
-    "animeStats": {
+    "releaseStats": {
       "currentSeason": 1,
       "totalSeasons": 1,
       "isCompleted": false
@@ -47,7 +43,156 @@
       "score": 9.1,
       "status": "Planned"
     },
-    "imageUrl": "https://placehold.co/600x400.png",
-    "createdAt": "2024-05-20T14:15:00Z"
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Seitokai Yakuindomo",
+    "genre": ["Slice of Life"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 2,
+      "isCompleted": true
+    },
+    "userStats": {
+      "score": 7.1,
+      "status": "Completed"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Death Note",
+    "genre": ["Psychological", "Horror"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 1,
+      "isCompleted": true
+    },
+    "userStats": {
+      "score": 8.9,
+      "status": "Completed"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Berserk",
+    "genre": ["Epic", "Action", "Adventure"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 1,
+      "isCompleted": false
+    },
+    "userStats": {
+      "score": 8.7,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Demon Slayer: Kimetsu no Yaiba",
+    "genre": ["Action", "Adventure"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 4,
+      "isCompleted": false
+    },
+    "userStats": {
+      "score": 8.3,
+      "status": "Ongoing"
+    },
+    "Status": "Ongoing"
+  },
+  {
+    "title": "Dororo",
+    "genre": ["Action, Historical, Fantasy"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 1,
+      "isCompleted": true
+    },
+    "userStats": {
+      "score": 8.2,
+      "status": "Completed"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Vinalnd Saga",
+    "genre": ["Epic, Historical"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 2,
+      "isCompleted": false
+    },
+    "userStats": {
+      "score": 8.8,
+      "status": "Ongoing"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Konsuba: God's Blessing on The Wonderful World!",
+    "genre": ["Isekai"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 3,
+      "isCompleted": false
+    },
+    "userStats": {
+      "score": 7.8,
+      "status": "Ongoing"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Mushoko Tensei Jobless Reincarnation",
+    "genre": ["Isekai, Psychological, Drama, Romance"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 3,
+      "isCompleted": false
+    },
+    "userStats": {
+      "score": 8.2,
+      "status": "Ongoing"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Girl's Last Tour",
+    "genre": ["Fantasy, Mystery"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 1,
+      "isCompleted": true
+    },
+    "userStats": {
+      "score": 7.8,
+      "status": "Completed"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
+  },
+  {
+    "title": "Rascal Does No Dream",
+    "genre": ["Romance, Slice of Life"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "releaseStats": {
+      "totalSeasons": 2,
+      "isCompleted": false
+    },
+    "userStats": {
+      "score": 8,
+      "status": "Ongoing"
+    },
+    "imageUrl": "https://placehold.co/600x400.png"
   }
 ]
