@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { BaseController } from "../../../common/base/base-controller.js";
+import { MediaController } from "../../../common/media/media-controller.js";
 import { TvSeriesService } from "./tv-series-service.js";
 import { catchAsync } from "../../../common/utils/catch-async.js";
 import { TvSeriesMapper } from "./tv-series-mapper.js";
 
-export class TvSeriesController extends BaseController {
+export class TvSeriesController extends MediaController {
   private service = new TvSeriesService();  
   private mapper = new TvSeriesMapper();
 

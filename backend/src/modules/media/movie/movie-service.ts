@@ -1,17 +1,14 @@
-import { BaseService } from "../../../common/base/base-service.js";
+import { MediaService } from "../../../common/media/media-service.js";
 import { MovieRepository } from "./movie-repo.js";
 import { Movie } from "./movie-schema.js";
 
-export class MovieService extends BaseService<Movie> {
+export class MovieService extends MediaService<Movie> {
   constructor() {
     super(new MovieRepository());
   }
 
   // Mark as completed
-  async complete(
-    id: string,
-    score: number = 7,
-  ) {
+  async complete(id: string, score: number = 7) {
     // Logic: Set status to Completed and score to the provided value
     return await this.update(id, {
       userStats: {

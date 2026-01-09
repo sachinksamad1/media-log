@@ -10,11 +10,8 @@ export const MangaSchema = z.object({
   illustrator: z.string().optional(),
   origin: z.string().default("Japan"), // e.g., Japan, South Korea, China
   genres: z.array(z.string()).default([]),
-
-  // Format & Type
   type: z.enum(["Manga", "Manhwa", "Manhua", "One-shot", "Doujinshi"]).default("Manga"),
   format: z.enum(["Physical", "Digital", "Magazine"]).default("Digital"),
-  
 
   // Release and Reading Status
   releaseStats: z.object({
@@ -24,18 +21,20 @@ export const MangaSchema = z.object({
       .default("Ongoing"),
   }),
 
+  readingStats: z.object({
+    currentReadingChapter: z.number().int().min(0),
+    currentReadingVolume: z.number().int().min(0),
+  }).default({
+    currentReadingChapter: 0,
+    currentReadingVolume: 0,
+  }),
+
   // Progress tracking
   userStats: z.object({
     score: z.number().min(0).max(10).default(5),
-    currentChapter: z.number().int().min(0),
-    currentVolume: z.number().int().min(0),
-    totalVolumes: z.number().int().min(1).optional(),
     status: z.enum(["Planned", "Ongoing", "Completed", "Dropped"]).default("Planned"),
   }).default({
     score: 5,
-    currentChapter: 1,
-    currentVolume: 1,
-    totalVolumes: 1,
     status: "Planned",
   }),
 

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { BaseController } from "../../../common/base/base-controller.js";
+import { MediaController } from "../../../common/media/media-controller.js";
 import { LightNovelService } from "./light-novel-service.js";
 import { catchAsync } from "../../../common/utils/catch-async.js";
 import { LightNovelMapper } from "./light-novel-mapper.js";
 
-export class LightNovelController extends BaseController {
+export class LightNovelController extends MediaController {
   private service = new LightNovelService();
   private mapper = new LightNovelMapper();
 

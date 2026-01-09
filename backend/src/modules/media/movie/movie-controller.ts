@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { BaseController } from "../../../common/base/base-controller.js";
+import { MediaController } from "../../../common/media/media-controller.js";
 import { MovieService } from "./movie-service.js";
 import { catchAsync } from "../../../common/utils/catch-async.js";
 import { MovieMapper } from "./movie-mapper.js";
 
-export class MovieController extends BaseController {
+export class MovieController extends MediaController {
   private service = new MovieService();
   private mapper = new MovieMapper();
 

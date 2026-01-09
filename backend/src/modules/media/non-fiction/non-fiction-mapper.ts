@@ -1,9 +1,9 @@
-import { BaseMapper } from "../../../common/base/base-mapper.js";
+import { MediaMapper } from "../../../common/media/media-mapper.js";
 import { NonFiction } from "./non-fiction-schema.js";
 import { NonFictionDTO } from "./non-fiction-dto.js";
 import { formatTimestamp } from "../../../common/utils/date-utils.js";
 
-export class NonFictionMapper extends BaseMapper<NonFiction, NonFictionDTO> {
+export class NonFictionMapper extends MediaMapper<NonFiction, NonFictionDTO> {
   toDto(entity: NonFiction): NonFictionDTO {
     return {
       id: entity.id!,

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { BaseController } from "../../../common/base/base-controller.js";
+import { MediaController } from "../../../common/media/media-controller.js";
 import { MangaService } from "./manga-service.js";
 import { catchAsync } from "../../../common/utils/catch-async.js";
 import { MangaMapper } from "./manga-mapper.js";
 
-export class MangaController extends BaseController {
+export class MangaController extends MediaController {
   private service = new MangaService();
   private mapper = new MangaMapper();
 

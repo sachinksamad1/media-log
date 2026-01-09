@@ -1,0 +1,46 @@
+// src/features/anime/store/anime.store.ts
+import { defineStore } from 'pinia';
+import { Anime } from './types';
+import { AnimeService } from '../services/anime.service';
+
+interface AnimeState {
+  items: Anime[];
+  loading: boolean;
+  error: string | null;
+}
+
+export const useAnimeStore = defineStore('anime', {
+  state: (): AnimeState => ({
+    items: [],
+    loading: false,
+    error: null,
+  }),
+
+  getters: {
+    completed: (state) =>
+      state.items.filter(a => a.status === 'completed'),
+  },
+
+  actions: {
+    async fetchAll() {
+      this.loading = true;
+      try {
+        this.items = await AnimeService.getAll();
+      } catch (err) {
+        this.error = 'Failed to load anime';
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async add(payload: Partial<Anime>) {
+      const created = await AnimeService.create(payload);
+      this.items.unshift(created);
+    },
+
+    async update(id: string, payload: Partial<Anime>) {
+      const updated = await AnimeService.update(id, payload);
+      this.items = this.items.map(i => i.id === id ? updated : i);
+    },
+  },
+});

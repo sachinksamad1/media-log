@@ -1,9 +1,9 @@
-import { BaseMapper } from "../../../common/base/base-mapper.js";
+import { MediaMapper } from "../../../common/media/media-mapper.js";
 import { Manga } from "./manga-schema.js";
 import { MangaDTO } from "./manga-dto.js";
 import { formatTimestamp } from "../../../common/utils/date-utils.js";
 
-export class MangaMapper extends BaseMapper<Manga, MangaDTO> {
+export class MangaMapper extends MediaMapper<Manga, MangaDTO> {
   toDto(entity: Manga): MangaDTO {
     return {
       id: entity.id!,
@@ -14,6 +14,7 @@ export class MangaMapper extends BaseMapper<Manga, MangaDTO> {
       genres: entity.genres,
       type: entity.type,
       format: entity.format,
+      readingStats: entity.readingStats,
       releaseStats: entity.releaseStats,
       userStats: entity.userStats,
       imageUrl: entity.imageUrl,

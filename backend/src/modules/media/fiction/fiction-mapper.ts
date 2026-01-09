@@ -1,9 +1,9 @@
 import { formatTimestamp } from "../../../common/utils/date-utils.js";
-import { BaseMapper } from "../../../common/base/base-mapper.js";
+import { MediaMapper } from "../../../common/media/media-mapper.js";
 import { Fiction } from "./fiction-schema.js";
 import { FictionDTO } from "./fiction-dto.js";
 
-export class FictionMapper extends BaseMapper<Fiction, FictionDTO> {
+export class FictionMapper extends MediaMapper<Fiction, FictionDTO> {
   toDto(entity: Fiction): FictionDTO {
     return {
       id: entity.id!,

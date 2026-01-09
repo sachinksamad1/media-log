@@ -10,8 +10,6 @@ export const LightNovelSchema = z.object({
   illustrator: z.string().optional(),
   origin: z.string().default("Japan"), // e.g., Japan, South Korea, China
   genres: z.array(z.string()).optional(),
-
-  // Format & Type
   type: z.enum(["Series", "Standalone"]).optional().default("Series"),
   format: z
     .enum(["Web Novel", "Light Novel", "Physical", "Digital"])
@@ -26,15 +24,19 @@ export const LightNovelSchema = z.object({
     volumes: z.number().int().min(1).default(1),
   }),
 
-  // User Stats & Progress tracking
-  userStats: z.object({
+  readingStats: z.object({
     currentReadingChapter: z.number().int().min(0),
     currentReadingVolume: z.number().int().min(0),
+  }).default({
+    currentReadingChapter: 0,
+    currentReadingVolume: 0,
+  }),
+
+  // User Stats
+  userStats: z.object({
     score: z.number().min(0).max(10),
     status: z.enum(["Planned", "Ongoing", "Completed", "Dropped"]),
   }).default({
-    currentReadingChapter: 1,
-    currentReadingVolume: 1,
     score: 5,
     status: "Planned",
   }),

@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { BaseController } from "../../../common/base/base-controller.js";
+import { MediaController } from "../../../common/media/media-controller.js";
 import { FictionService } from "./fiction-service.js";
 import { catchAsync } from "../../../common/utils/catch-async.js";
 import { FictionMapper } from "./fiction-mapper.js";
 
-export class FictionController extends BaseController {
+export class FictionController extends MediaController {
   private service = new FictionService();
   private mapper = new FictionMapper();
 

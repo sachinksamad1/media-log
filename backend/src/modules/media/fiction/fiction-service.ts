@@ -1,8 +1,8 @@
-import { BaseService } from "../../../common/base/base-service.js";
+import { MediaService } from "../../../common/media/media-service.js";
 import { FictionRepository } from "./fiction-repo.js";
 import { Fiction } from "./fiction-schema.js";
 
-export class FictionService extends BaseService<Fiction> {
+export class FictionService extends MediaService<Fiction> {
   constructor() {
     super(new FictionRepository());
   }

@@ -1,9 +1,9 @@
-import { BaseMapper } from "../../../common/base/base-mapper.js";
+import { MediaMapper } from "../../../common/media/media-mapper.js";
 import { Games } from "./game-schema.js";
 import { GameDTO } from "./game-dto.js";
 import { formatTimestamp } from "../../../common/utils/date-utils.js";
 
-export class GamesMapper extends BaseMapper<Games, GameDTO> {
+export class GamesMapper extends MediaMapper<Games, GameDTO> {
   toDto(entity: Games): GameDTO {
     return {
       id: entity.id!,

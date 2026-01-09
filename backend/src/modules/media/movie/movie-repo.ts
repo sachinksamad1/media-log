@@ -1,7 +1,7 @@
-import { BaseRepository } from "../../../common/base/base-repository.js";
+import { MediaRepository } from "../../../common/media/media-repository.js";
 import { Movie } from "./movie-schema.js";
 
-export class MovieRepository extends BaseRepository<Movie> {
+export class MovieRepository extends MediaRepository<Movie> {
   constructor() {
     super("movie");
   }

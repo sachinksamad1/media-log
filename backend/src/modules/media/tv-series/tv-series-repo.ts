@@ -1,7 +1,7 @@
-import { BaseRepository } from "../../../common/base/base-repository.js";
+import { MediaRepository } from "../../../common/media/media-repository.js";
 import { TvSeries } from "./tv-series-schema.js";
 
-export class TvSeriesRepository extends BaseRepository<TvSeries> {
+export class TvSeriesRepository extends MediaRepository<TvSeries> {
   constructor() {
     super("tv_series");
   }

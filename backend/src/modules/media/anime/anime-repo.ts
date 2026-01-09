@@ -1,12 +1,12 @@
-import { BaseRepository } from "../../../common/base/base-repository.js";
+import { MediaRepository } from "../../../common/media/media-repository.js";
 import { Anime } from "./anime-schema.js";
 
-export class AnimeRepository extends BaseRepository<Anime> {
+export class AnimeRepository extends MediaRepository<Anime> {
   constructor() {
     super("anime"); // Defines the Firestore collection name
   }
   // Add custom queries here if needed (e.g., findByDirector)
-  
+
   // Find anime by title
   async findAnimeByTitle(title: string) {
     return this.collection.where("title", "==", title).get();

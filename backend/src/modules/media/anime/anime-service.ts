@@ -1,8 +1,8 @@
-import { BaseService } from "../../../common/base/base-service.js";
+import { MediaService } from "../../../common/media/media-service.js";
 import { AnimeRepository } from "./anime-repo.js";
 import { Anime } from "./anime-schema.js";
 
-export class AnimeService extends BaseService<Anime> {
+export class AnimeService extends MediaService<Anime> {
   constructor() {
     super(new AnimeRepository());
   }

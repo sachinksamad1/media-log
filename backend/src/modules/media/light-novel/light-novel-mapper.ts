@@ -1,9 +1,9 @@
-import { BaseMapper } from "../../../common/base/base-mapper.js";
+import { MediaMapper } from "../../../common/media/media-mapper.js";
 import { LightNovel } from "./light-novel-schema.js";
 import { LightNovelDTO } from "./light-novel-dto.js";
 import { formatTimestamp } from "../../../common/utils/date-utils.js";
 
-export class LightNovelMapper extends BaseMapper<LightNovel, LightNovelDTO> {
+export class LightNovelMapper extends MediaMapper<LightNovel, LightNovelDTO> {
   toDto(entity: LightNovel): LightNovelDTO {
     return {
       id: entity.id!,
@@ -15,6 +15,7 @@ export class LightNovelMapper extends BaseMapper<LightNovel, LightNovelDTO> {
       type: entity.type,
       format: entity.format,
       releaseStats: entity.releaseStats,
+      readingStats: entity.readingStats,
       userStats: entity.userStats,
       imageUrl: entity.imageUrl,
       createdAt: formatTimestamp(entity.createdAt),

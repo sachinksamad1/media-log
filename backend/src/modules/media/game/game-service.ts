@@ -1,8 +1,8 @@
-import { BaseService } from "../../../common/base/base-service.js";
-import { GameRepository } from "./game-reop.js";
+import { MediaService } from "../../../common/media/media-service.js";
+import { GameRepository } from "./game-repo.js";
 import { Games } from "./game-schema.js";
 
-export class GamesService extends BaseService<Games> {
+export class GamesService extends MediaService<Games> {
   constructor() {
     super(new GameRepository());
   }
@@ -13,7 +13,7 @@ export class GamesService extends BaseService<Games> {
     return await this.update(id, {
       userStats: {
         score: score,
-        playStatus: "Completed",
+        status: "Completed",
       },
     });
   }
