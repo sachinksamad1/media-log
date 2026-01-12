@@ -1,15 +1,18 @@
-import { seedCollectionWithSchema } from "../seed-helper.js";
-import { NonFictionSchema } from "../../src/modules/non-fiction/non-fiction-schema.js";
+import { seedCollectionWithSchema } from '../seed-helper.js';
+import { NonFictionSchema } from '../../src/modules/media/non-fiction/non-fiction-schema.js';
 
 export async function seedNonFiction() {
-  console.log("📦 Seeding Non-Fiction...");
+  console.log('📦 Seeding Non-Fiction...');
 
   const count = await seedCollectionWithSchema({
-    collectionName: "non_fiction",
-    dataFile: "non-fiction.json",
+    collectionName: 'non_fiction',
+    dataFile: 'non-fiction.json',
     schema: NonFictionSchema,
     defaults: {
-      readingStatus: "Planned",
+      userStats: {
+        score: 0,
+        status: 'Planned',
+      },
     },
   });
 

@@ -1,8 +1,10 @@
-import { Request, Response } from "express";
-import { MediaController } from "../../../common/media/media-controller.js";
-import { GamesService } from "./game-service.js";
-import { catchAsync } from "../../../common/utils/catch-async.js";
-import { GamesMapper } from "./game-mapper.js";
+import type { Request, Response } from 'express';
+
+import { MediaController } from '../../../common/media/media-controller.js';
+import { catchAsync } from '../../../common/utils/catch-async.js';
+
+import { GamesMapper } from './game-mapper.js';
+import { GamesService } from './game-service.js';
 
 export class GamesController extends MediaController {
   private service = new GamesService();
@@ -11,11 +13,7 @@ export class GamesController extends MediaController {
   // Create Fiction Entry
   create = catchAsync(async (req: Request, res: Response) => {
     const result = await this.service.create(req.body);
-    this.sendCreated(
-      res,
-      this.mapper.toDto(result),
-      "Game added to library"
-    );
+    this.sendCreated(res, this.mapper.toDto(result), 'Game added to library');
   });
 
   // Get all Fiction
@@ -23,13 +21,13 @@ export class GamesController extends MediaController {
     const { limit, lastDocId } = req.query;
     const result = await this.service.getAll(
       Number(limit) || 10,
-      lastDocId as string
+      lastDocId as string,
     );
 
     // Map each item in the data array to its DTO version
     const mappedData = this.mapper.toDtoList(result.data);
 
-    this.sendSuccess(res, mappedData, "Library fetched", {
+    this.sendSuccess(res, mappedData, 'Library fetched', {
       nextCursor: result.nextCursor,
     });
   });
@@ -37,7 +35,7 @@ export class GamesController extends MediaController {
   // Get Games by id
   getById = catchAsync(async (req: Request, res: Response) => {
     const result = await this.service.getById(req.params.id as string);
-    this.sendSuccess(res, this.mapper.toDto(result), "Game fetched");
+    this.sendSuccess(res, this.mapper.toDto(result), 'Game fetched');
   });
 
   // Mark as Completed
@@ -46,13 +44,9 @@ export class GamesController extends MediaController {
       req.body.score !== undefined ? Number(req.body.score) : undefined;
     const result = await this.service.completeGame(
       req.params.id as string,
-      score
+      score,
     );
-    this.sendSuccess(
-      res,
-      this.mapper.toDto(result),
-      "Game marked as complete"
-    );
+    this.sendSuccess(res, this.mapper.toDto(result), 'Game marked as complete');
   });
 
   // Delete Game Entry
@@ -69,6 +63,6 @@ export class GamesController extends MediaController {
   update = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const result = await this.service.update(id, req.body);
-    this.sendSuccess(res, this.mapper.toDto(result), "Game updated");
+    this.sendSuccess(res, this.mapper.toDto(result), 'Game updated');
   });
 }

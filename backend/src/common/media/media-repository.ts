@@ -1,60 +1,197 @@
-import { db } from "../../config/firebase.js";
-import { AppError } from "../errors/app-error.js";
+import type { CollectionReference } from 'firebase-admin/firestore';
 
-export abstract class MediaRepository<T extends { id?: string }> {
-  protected collectionName: string;
-  protected collection: FirebaseFirestore.CollectionReference;
+import { db } from '../../config/firebase.js';
+import { AppError } from '../errors/app-error.js';
+import { StorageHelper } from '../utils/firestorage-helper.js';
+
+import type { MediaStatus, BaseMediaType } from './media-types.js';
+
+export abstract class MediaRepository<T extends BaseMediaType> {
+  public readonly collectionName: string;
+  protected readonly collection: CollectionReference;
 
   constructor(collectionName: string) {
     this.collectionName = collectionName;
     this.collection = db.collection(collectionName);
   }
 
-  async getAll(limit: number = 10, lastDocId?: string) {
-    let query = this.collection.orderBy("createdAt", "desc").limit(limit);
+  create(data: T) {
+    return this.createWithImage(data);
+  }
 
-    if (lastDocId) {
-      const lastDoc = await this.collection.doc(lastDocId).get();
-      if (lastDoc.exists) {
-        query = query.startAfter(lastDoc);
+  update(id: string, data: Partial<T>) {
+    return this.updateWithImage(id, data);
+  }
+
+  // Helper to generate keywords for partial search
+  private generateSearchKeywords(title: string): string[] {
+    const words = title.toLowerCase().split(/\s+/);
+    const keywords = new Set<string>();
+
+    // Add full title for prefix search backup
+    // keywords.add(title.toLowerCase());
+
+    words.forEach((word) => {
+      // Generate all prefixes for each word
+      let current = '';
+      for (const char of word) {
+        current += char;
+        keywords.add(current);
+      }
+    });
+
+    return Array.from(keywords);
+  }
+
+  async createWithImage(data: T, imageFile?: Express.Multer.File): Promise<T> {
+    let imageUrl = data.imageUrl;
+
+    if (imageFile) {
+      imageUrl = await StorageHelper.uploadMediaImage(
+        imageFile,
+        this.collectionName,
+      );
+    }
+
+    const payload: any = {
+      ...data,
+      imageUrl,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    if (data.title) {
+      const title = data.title;
+      payload.titleLower = title.toLowerCase();
+      payload.searchKeywords = this.generateSearchKeywords(title);
+    }
+
+    const docRef = await this.collection.add(payload);
+
+    return { ...(payload as T), id: docRef.id };
+  }
+
+  async updateWithImage(
+    id: string,
+    data: Partial<T>,
+    imageFile?: Express.Multer.File,
+  ): Promise<T> {
+    const docRef = this.collection.doc(id);
+    const existing = await docRef.get();
+
+    if (!existing.exists) {
+      throw new AppError(`${this.collectionName} item not found`, 404);
+    }
+
+    const oldData = existing.data() as T;
+
+    const updateData: any = {
+      ...data,
+      updatedAt: new Date(),
+    };
+
+    if (data.title) {
+      const title = data.title;
+      updateData.titleLower = title.toLowerCase();
+      updateData.searchKeywords = this.generateSearchKeywords(title);
+    }
+
+    if (imageFile) {
+      updateData.imageUrl = await StorageHelper.uploadMediaImage(
+        imageFile,
+        this.collectionName,
+      );
+
+      if (oldData.imageUrl) {
+        await StorageHelper.deleteMediaImage(oldData.imageUrl);
       }
     }
 
-    const snapshot = await query.get();
-    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as T));
-    const lastVisible = snapshot.docs[snapshot.docs.length - 1];
+    await docRef.update(updateData);
 
-    return { 
-      data, 
-      nextCursor: lastVisible ? lastVisible.id : null 
-    };
+    const updated = await docRef.get();
+    return { ...(updated.data() as T), id: updated.id };
+  }
+
+  async delete(id: string): Promise<void> {
+    const docRef = this.collection.doc(id);
+    const doc = await docRef.get();
+
+    if (!doc.exists) return;
+
+    const data = doc.data() as T;
+
+    if (data.imageUrl) {
+      await StorageHelper.deleteMediaImage(data.imageUrl);
+    }
+
+    await docRef.delete();
+  }
+
+  async getAll(limit = 10, lastDocId?: string) {
+    let query = this.collection.orderBy('createdAt', 'desc').limit(limit);
+
+    if (lastDocId) {
+      const last = await this.collection.doc(lastDocId).get();
+      if (last.exists) query = query.startAfter(last);
+    }
+
+    const snapshot = await query.get();
+    const data = snapshot.docs.map((d) => ({ ...(d.data() as T), id: d.id }));
+    const lastVisible = snapshot.docs.at(-1);
+
+    return { data, nextCursor: lastVisible?.id ?? null };
   }
 
   async getById(id: string): Promise<T | null> {
     const doc = await this.collection.doc(id).get();
-    return doc.exists ? ({ id: doc.id, ...doc.data() } as T) : null;
+    return doc.exists ? { ...(doc.data() as T), id: doc.id } : null;
   }
 
-  async create(data: T): Promise<T> {
-    const docRef = await this.collection.add({
-      ...data,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
-    return { id: docRef.id, ...data };
+  async searchByTitle(
+    query: string,
+    limitCount = 5,
+  ): Promise<(T & { id: string })[]> {
+    const term = query.toLowerCase();
+
+    // If the query is a single word (no spaces), use the keywords array for flexible partial matching
+    // allowing "Torun" to find "Torunka"
+    if (!term.includes(' ')) {
+      const keywordSnapshot = await this.collection
+        .where('searchKeywords', 'array-contains', term)
+        .limit(limitCount)
+        .get();
+
+      return keywordSnapshot.docs.map((d) => ({
+        ...(d.data() as T),
+        id: d.id,
+      })) as (T & { id: string })[];
+    }
+
+    // Fallback to titleLower range query for multi-word phrases "Days at"
+    const snapshot = await this.collection
+      .where('titleLower', '>=', term)
+      .where('titleLower', '<=', term + '\uf8ff')
+      .limit(limitCount)
+      .get();
+
+    return snapshot.docs.map((d) => ({
+      ...(d.data() as T),
+      id: d.id,
+    })) as (T & { id: string })[];
   }
 
-  async update(id: string, data: Partial<T>): Promise<T> {
-    const docRef = this.collection.doc(id);
-    await docRef.update({
-      ...data,
-      updatedAt: new Date()
-    });
-    const updated = await docRef.get();
-    return { id: updated.id, ...updated.data() } as T;
+  async getCount(): Promise<number> {
+    const snapshot = await this.collection.count().get();
+    return snapshot.data().count;
   }
 
-  async delete(id: string): Promise<void> {
-    await this.collection.doc(id).delete();
+  async getCountByStatus(status: MediaStatus): Promise<number> {
+    const snapshot = await this.collection
+      .where('userStats.status', '==', status)
+      .count()
+      .get();
+
+    return snapshot.data().count;
   }
 }

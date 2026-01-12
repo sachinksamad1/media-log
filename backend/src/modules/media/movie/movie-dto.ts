@@ -1,11 +1,25 @@
-import { Movie } from "./movie-schema.js";
+import type { MediaDTO } from '../../../common/media/media-dto.js';
 
-export type CreateMovieDto = Omit<Movie, "id" | "createdAt" | "updatedAt">;
+import type { Movie } from './movie-schema.js';
 
+/**
+ * Response DTO: Sent to the client
+ */
+export interface MovieDTO extends MediaDTO {
+  director?: string;
+  cast: string[];
+  genres: string[];
+  origin?: string;
+  language?: string;
+  movieStats: {
+    releaseDate?: string;
+    runtimeMinutes?: number;
+    productionCompany?: string;
+  };
+}
+
+/**
+ * Request DTOs
+ */
+export type CreateMovieDto = Omit<Movie, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateMovieDto = Partial<CreateMovieDto>;
-
-export type MovieDTO = Omit<Movie, "createdAt" | "updatedAt"> & {
-  createdAt: string;
-  updatedAt: string;
-};
-

@@ -1,5 +1,6 @@
-import { z } from "zod";
-import { GameSchema } from "./game-schema.js";
+import { z } from 'zod';
+
+import { GameSchema } from './game-schema.js';
 
 // 1. Validation for CREATE (POST)
 export const createGamesValidator = z.object({
@@ -13,7 +14,7 @@ export const createGamesValidator = z.object({
 // 2. Validation for UPDATE (PATCH)
 export const updateGamesValidator = z.object({
   params: z.object({
-    id: z.string().min(1, "ID parameter is required"),
+    id: z.string().min(1, 'ID parameter is required'),
   }),
   body: GameSchema.partial(), // Makes all fields optional for partial updates
 });

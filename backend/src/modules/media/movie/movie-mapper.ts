@@ -1,23 +1,24 @@
-import { MediaMapper } from "../../../common/media/media-mapper.js";
-import { Movie } from "./movie-schema.js";
-import { MovieDTO } from "./movie-dto.js";
-import { formatTimestamp } from "../../../common/utils/date-utils.js";
+import { MediaMapper } from '../../../common/media/media-mapper.js';
+
+import type { MovieDTO } from './movie-dto.js';
+import type { Movie } from './movie-schema.js';
 
 export class MovieMapper extends MediaMapper<Movie, MovieDTO> {
-  toDto(entity: Movie): MovieDTO {
+  protected mapSpecializedFields(entity: Movie): Partial<MovieDTO> {
     return {
-      id: entity.id!,
-      title: entity.title,
-      genre: entity.genre,
       director: entity.director,
-      cast: entity.cast,
+      cast: entity.cast ?? [],
+      genres: entity.genres ?? [],
       origin: entity.origin,
       language: entity.language,
-      movieStats: entity.movieStats,
-      userStats: entity.userStats,
-      imageUrl: entity.imageUrl,
-      createdAt: formatTimestamp(entity.createdAt),
-      updatedAt: formatTimestamp(entity.updatedAt),
+      movieStats: {
+        releaseDate:
+          entity.movieStats?.releaseDate instanceof Date
+            ? entity.movieStats.releaseDate.toISOString()
+            : undefined,
+        runtimeMinutes: entity.movieStats?.runtimeMinutes,
+        productionCompany: entity.movieStats?.productionCompany,
+      },
     };
   }
 }

@@ -1,8 +1,10 @@
-import { Request, Response } from "express";
-import { MediaController } from "../../../common/media/media-controller.js";
-import { LightNovelService } from "./light-novel-service.js";
-import { catchAsync } from "../../../common/utils/catch-async.js";
-import { LightNovelMapper } from "./light-novel-mapper.js";
+import type { Request, Response } from 'express';
+
+import { MediaController } from '../../../common/media/media-controller.js';
+import { catchAsync } from '../../../common/utils/catch-async.js';
+
+import { LightNovelMapper } from './light-novel-mapper.js';
+import { LightNovelService } from './light-novel-service.js';
 
 export class LightNovelController extends MediaController {
   private service = new LightNovelService();
@@ -14,7 +16,7 @@ export class LightNovelController extends MediaController {
     this.sendCreated(
       res,
       this.mapper.toDto(result),
-      "Light Novel added to library"
+      'Light Novel added to library',
     );
   });
 
@@ -23,13 +25,13 @@ export class LightNovelController extends MediaController {
     const { limit, lastDocId } = req.query;
     const result = await this.service.getAll(
       Number(limit) || 10,
-      lastDocId as string
+      lastDocId as string,
     );
 
     // Map each item in the data array to its DTO version
     const mappedData = this.mapper.toDtoList(result.data);
 
-    this.sendSuccess(res, mappedData, "Library fetched", {
+    this.sendSuccess(res, mappedData, 'Library fetched', {
       nextCursor: result.nextCursor,
     });
   });
@@ -37,21 +39,18 @@ export class LightNovelController extends MediaController {
   // Get Light Novel by id
   getById = catchAsync(async (req: Request, res: Response) => {
     const result = await this.service.getById(req.params.id as string);
-    this.sendSuccess(res, this.mapper.toDto(result), "Light Novel fetched");
+    this.sendSuccess(res, this.mapper.toDto(result), 'Light Novel fetched');
   });
 
   // Mark as Completed
   complete = catchAsync(async (req: Request, res: Response) => {
     const score =
       req.body.score !== undefined ? Number(req.body.score) : undefined;
-    const result = await this.service.complete(
-      req.params.id as string,
-      score
-    );
+    const result = await this.service.complete(req.params.id as string, score);
     this.sendSuccess(
       res,
       this.mapper.toDto(result),
-      "Light Novel marked as complete"
+      'Light Novel marked as complete',
     );
   });
 
@@ -69,6 +68,6 @@ export class LightNovelController extends MediaController {
   update = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const result = await this.service.update(id, req.body);
-    this.sendSuccess(res, this.mapper.toDto(result), "Light Novel updated");
+    this.sendSuccess(res, this.mapper.toDto(result), 'Light Novel updated');
   });
 }

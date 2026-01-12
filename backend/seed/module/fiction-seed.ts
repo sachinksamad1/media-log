@@ -1,12 +1,12 @@
-import { seedCollectionWithSchema } from "../seed-helper.js";
-import { FictionSchema } from "../../src/modules/media/fiction/fiction-schema.js";
+import { seedCollectionWithSchema } from '../seed-helper.js';
+import { FictionSchema } from '../../src/modules/media/fiction/fiction-schema.js';
 
 export async function seedFiction() {
-  console.log("📦 Seeding Fiction...");
+  console.log('📦 Seeding Fiction...');
 
   const count = await seedCollectionWithSchema({
-    collectionName: "fiction",
-    dataFile: "../data/fiction.json",
+    collectionName: 'fiction',
+    dataFile: '../data/fiction.json',
     schema: FictionSchema,
     defaults: {},
   });

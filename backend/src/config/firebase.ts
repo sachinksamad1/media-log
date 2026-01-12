@@ -1,12 +1,15 @@
-import admin from "firebase-admin";
-import serviceAccountKey from "./env.js";
+import admin from 'firebase-admin';
+
+import env from './env.js';
 
 admin.initializeApp({
   credential: admin.credential.cert({
-    projectId: serviceAccountKey.project_id,
-    clientEmail: serviceAccountKey.client_email,
-    privateKey: serviceAccountKey.private_key,
+    projectId: env.firebase.projectId,
+    clientEmail: env.firebase.clientEmail,
+    privateKey: env.firebase.privateKey,
   }),
+  storageBucket: env.firebase.storageBucket,
 });
 
 export const db = admin.firestore();
+export const storage = admin.storage();

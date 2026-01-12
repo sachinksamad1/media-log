@@ -1,7 +1,33 @@
-export abstract class MediaMapper<DomainEntity, ResponseDto> {
-  abstract toDto(entity: DomainEntity): ResponseDto;
+import type { z } from 'zod';
 
-  toDtoList(entities: DomainEntity[]): ResponseDto[] {
+import { formatTimestamp } from '../utils/date-utils.js';
+
+import type { MediaSchema } from './media-schema.js';
+
+export abstract class MediaMapper<T extends z.infer<typeof MediaSchema>, DTO> {
+  /**
+   * Transforms a database record (Entity) into a clean DTO.
+   * Handles common conversions like Firestore Timestamps to ISO strings.
+   */
+  toDto(entity: T): DTO {
+    return {
+      id: entity.id,
+      title: entity.title,
+      imageUrl: entity.imageUrl || '',
+      userStats: entity.userStats,
+      // Convert Dates to ISO strings for frontend consistency
+      createdAt: formatTimestamp(entity.createdAt),
+      updatedAt: formatTimestamp(entity.updatedAt),
+      ...this.mapSpecializedFields(entity),
+    } as DTO;
+  }
+
+  /**
+   * Transforms an array of entities into an array of DTOs.
+   */
+  toDtoList(entities: T[]): DTO[] {
     return entities.map((entity) => this.toDto(entity));
   }
+
+  protected abstract mapSpecializedFields(entity: T): Partial<DTO>;
 }

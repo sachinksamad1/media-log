@@ -1,24 +1,29 @@
-import { formatTimestamp } from "../../../common/utils/date-utils.js";
-import { MediaMapper } from "../../../common/media/media-mapper.js";
-import { Fiction } from "./fiction-schema.js";
-import { FictionDTO } from "./fiction-dto.js";
+import { MediaMapper } from '../../../common/media/media-mapper.js';
+
+import type { FictionDTO } from './fiction-dto.js';
+import type { Fiction } from './fiction-schema.js';
 
 export class FictionMapper extends MediaMapper<Fiction, FictionDTO> {
-  toDto(entity: Fiction): FictionDTO {
+  protected mapSpecializedFields(entity: Fiction): Partial<FictionDTO> {
     return {
-      id: entity.id!,
-      title: entity.title,
       author: entity.author,
-      genres: entity.genres,
+      genres: entity.genres || [],
       origin: entity.origin,
       language: entity.language,
       format: entity.format,
       type: entity.type,
-      publicationInfo: entity.publicationInfo,
-      userStats: entity.userStats,
-      imageUrl: entity.imageUrl,
-      createdAt: formatTimestamp(entity.createdAt),
-      updatedAt: formatTimestamp(entity.updatedAt),
+      publicationInfo: {
+        published: this.formatPublishedDate(entity.publicationInfo?.published),
+        volumes: entity.publicationInfo?.volumes ?? 1,
+        status: entity.publicationInfo?.status ?? 'Completed',
+      },
     };
+  }
+
+  private formatPublishedDate(
+    date: Date | string | undefined,
+  ): string | undefined {
+    if (!date) return undefined;
+    return date instanceof Date ? date.toISOString() : date;
   }
 }

@@ -1,19 +1,19 @@
-import { seedCollectionWithSchema } from "../seed-helper.js";
-import { TvSeriesSchema } from "../../src/modules/tv-series/tv-series-schema.js";
+import { seedCollectionWithSchema } from '../seed-helper.js';
+import { TvSeriesSchema } from '../../src/modules/media/tv-series/tv-series-schema.js';
 
 export async function seedTVSeries() {
-  console.log("📦 Seeding TV Series...");
+  console.log('📦 Seeding TV Series...');
 
   const count = await seedCollectionWithSchema({
-    collectionName: "tv_series",
-    dataFile: "../data/tv-series.json",
+    collectionName: 'tv_series',
+    dataFile: '../data/tv-series.json',
     schema: TvSeriesSchema,
     defaults: {
       userStats: {
         score: 5,
-        status: "Planned"
-      }
-    }
+        status: 'Planned',
+      },
+    },
   });
 
   console.log(`✨ TV Series seeded: ${count} documents`);

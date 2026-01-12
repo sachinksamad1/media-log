@@ -1,36 +1,45 @@
-import { Router } from "express";
-import { AnimeController } from "./anime-controller.js";
+import { Router } from 'express';
+
+import { validate } from '../../../common/validators/validate-request.js';
+import { upload } from '../../../config/firestorage.js';
+
+import { AnimeController } from './anime-controller.js';
 import {
   createAnimeValidator,
   updateAnimeValidator,
   animeIdValidator,
-} from "./anime-validator.js";
-import { validate } from "../../../common/validators/validate-request.js";
+} from './anime-validator.js';
 
 const router = Router();
 const controller = new AnimeController();
 
 router
-  .route("/")
+  .route('/')
   .post(
+    // 1. Process the multipart/form-data first to populate req.body
+    upload.single('imageUrl'),
+    // 2. Validate the populated body
     (req, res, next) => validate(createAnimeValidator)(req, res, next),
-    controller.create
+    controller.create,
   )
   .get(controller.getAll);
 
 router
-  .route("/:id")
+  .route('/:id')
   .get(
     (req, res, next) => validate(animeIdValidator)(req, res, next),
-    controller.getById
-  ) // Get specific
+    controller.getById,
+  )
   .patch(
+    // 1. Allow optional image updates
+    upload.single('imageUrl'),
+    // 2. Validate the update data
     (req, res, next) => validate(updateAnimeValidator)(req, res, next),
-    controller.update
-  ) // Update specific
+    controller.update,
+  )
   .delete(
     (req, res, next) => validate(animeIdValidator)(req, res, next),
-    controller.delete
-  ); // Delete specific
+    controller.delete,
+  );
 
 export default router;

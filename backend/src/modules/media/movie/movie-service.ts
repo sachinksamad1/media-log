@@ -1,6 +1,7 @@
-import { MediaService } from "../../../common/media/media-service.js";
-import { MovieRepository } from "./movie-repo.js";
-import { Movie } from "./movie-schema.js";
+import { MediaService } from '../../../common/media/media-service.js';
+
+import { MovieRepository } from './movie-repo.js';
+import type { Movie } from './movie-schema.js';
 
 export class MovieService extends MediaService<Movie> {
   constructor() {
@@ -8,12 +9,11 @@ export class MovieService extends MediaService<Movie> {
   }
 
   // Mark as completed
-  async complete(id: string, score: number = 7) {
-    // Logic: Set status to Completed and score to the provided value
-    return await this.update(id, {
+  complete(id: string, score: number = 7) {
+    return this.update(id, {
       userStats: {
         score,
-        status: "Completed",
+        status: 'Completed',
       },
     });
   }

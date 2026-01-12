@@ -1,18 +1,35 @@
-import { MediaService } from "../../../common/media/media-service.js";
-import { AnimeRepository } from "./anime-repo.js";
-import { Anime } from "./anime-schema.js";
+import type { z } from 'zod';
+import 'multer';
 
-export class AnimeService extends MediaService<Anime> {
+import { MediaService } from '../../../common/media/media-service.js';
+
+import { AnimeRepository } from './anime-repo.js';
+import type { AnimeSchema } from './anime-schema.js';
+
+export class AnimeService extends MediaService<z.infer<typeof AnimeSchema>> {
+  protected repository: AnimeRepository;
+
   constructor() {
-    super(new AnimeRepository());
+    const repo = new AnimeRepository();
+    super(repo);
+    this.repository = repo;
   }
 
-  // Mark as completed
+  async create(data: z.infer<typeof AnimeSchema>, file?: Express.Multer.File) {
+    return this.repository.createWithImage(data, file);
+  }
+  async update(
+    id: string,
+    data: Partial<z.infer<typeof AnimeSchema>>,
+    file?: Express.Multer.File,
+  ) {
+    return this.repository.updateWithImage(id, data, file);
+  }
+
   async completeSeries(id: string, score: number = 7) {
     const anime = await this.getById(id);
-    // Logic: Set status to Completed and score to the provided value
-    return await this.update(id, {
-      userStats: { ...anime.userStats, status: "Completed", score },
+    return this.update(id, {
+      userStats: { ...anime.userStats, status: 'Completed', score },
     });
   }
 }

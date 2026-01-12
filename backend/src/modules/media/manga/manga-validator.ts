@@ -1,5 +1,6 @@
-import { z } from "zod";
-import { MangaSchema } from "./manga-schema.js";
+import { z } from 'zod';
+
+import { MangaSchema } from './manga-schema.js';
 
 // 1. Validation for CREATE (POST)
 export const createMangaValidator = z.object({
@@ -13,7 +14,7 @@ export const createMangaValidator = z.object({
 // 2. Validation for UPDATE (PATCH)
 export const updateMangaValidator = z.object({
   params: z.object({
-    id: z.string().min(1, "ID parameter is required"),
+    id: z.string().min(1, 'ID parameter is required'),
   }),
   body: MangaSchema.partial(), // Makes all fields optional for partial updates
 });

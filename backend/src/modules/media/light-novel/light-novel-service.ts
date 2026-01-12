@@ -1,6 +1,7 @@
-import { MediaService } from "../../../common/media/media-service.js";
-import { LightNovelRepository } from "./light-novel-repo.js";
-import { LightNovel } from "./light-novel-schema.js";
+import { MediaService } from '../../../common/media/media-service.js';
+
+import { LightNovelRepository } from './light-novel-repo.js';
+import type { LightNovel } from './light-novel-schema.js';
 
 export class LightNovelService extends MediaService<LightNovel> {
   constructor() {
@@ -8,12 +9,11 @@ export class LightNovelService extends MediaService<LightNovel> {
   }
 
   // Mark as completed
-  async complete(id: string, score: number = 7) {
-    // Logic: Set status to Completed and score to the provided value
-    return await this.update(id, {
+  complete(id: string, score: number = 7) {
+    return this.update(id, {
       userStats: {
-        score: score,
-        status: "Completed",
+        score,
+        status: 'Completed',
       },
     });
   }

@@ -1,10 +1,19 @@
-import { Fiction } from "./fiction-schema.js";
+import type { MediaDTO } from '../../../common/media/media-dto.js';
 
-export type CreateFictionDto = Omit<Fiction, "id" | "createdAt" | "updatedAt">;
+import type { Fiction } from './fiction-schema.js';
+export interface FictionDTO extends MediaDTO {
+  author?: string;
+  genres: string[];
+  origin?: string;
+  language?: string;
+  format: 'E-Book' | 'Physical';
+  type: 'Novel' | 'Short Story';
+  publicationInfo: {
+    published?: string;
+    volumes: number;
+    status: 'Completed' | 'Ongoing' | 'Hiatus';
+  };
+}
 
+export type CreateFictionDto = Omit<Fiction, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateFictionDto = Partial<CreateFictionDto>;
-
-export type FictionDTO = Omit<Fiction, "createdAt" | "updatedAt"> & {
-  createdAt: string;
-  updatedAt: string;
-};

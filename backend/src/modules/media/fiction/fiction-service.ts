@@ -1,6 +1,7 @@
-import { MediaService } from "../../../common/media/media-service.js";
-import { FictionRepository } from "./fiction-repo.js";
-import { Fiction } from "./fiction-schema.js";
+import { MediaService } from '../../../common/media/media-service.js';
+
+import { FictionRepository } from './fiction-repo.js';
+import type { Fiction } from './fiction-schema.js';
 
 export class FictionService extends MediaService<Fiction> {
   constructor() {
@@ -8,11 +9,10 @@ export class FictionService extends MediaService<Fiction> {
   }
 
   // Mark as completed
-  async completeSeries(id: string, score: number = 7) {
-    // Logic: Set status to Completed and score to the provided value
-    return await this.update(id, {
+  completeSeries(id: string, score: number = 7) {
+    return this.update(id, {
       userStats: {
-        status: "Completed",
+        status: 'Completed',
         score,
       },
     });

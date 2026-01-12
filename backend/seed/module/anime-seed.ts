@@ -1,13 +1,13 @@
 // backend/seed/module/anime-seed.ts
-import { seedCollectionWithSchema } from "../seed-helper.js";
-import { AnimeSchema } from "../../src/modules/media/anime/anime-schema.js";
+import { seedCollectionWithSchema } from '../seed-helper.js';
+import { AnimeSchema } from '../../src/modules/media/anime/anime-schema.js';
 
 export async function seedAnime() {
-  console.log("📦 Seeding Anime...");
+  console.log('📦 Seeding Anime...');
 
   const count = await seedCollectionWithSchema({
-    collectionName: "anime",
-    dataFile: "../data/anime.json",
+    collectionName: 'anime',
+    dataFile: '../data/anime.json',
     schema: AnimeSchema,
     defaults: {
       releaseStats: {
@@ -16,7 +16,7 @@ export async function seedAnime() {
       },
       userStats: {
         score: 5,
-        status: "Planned",
+        status: 'Planned',
       },
     },
   });

@@ -30,9 +30,11 @@ build/
 
 # Backend
 .env
-env.ts
 serviceAccountKey.json
 
 # Frontend
 .env
 .gemini
+
+# Misc
+DashboardViewDropped.vue

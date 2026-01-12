@@ -1,6 +1,7 @@
-import { MediaService } from "../../../common/media/media-service.js";
-import { GameRepository } from "./game-repo.js";
-import { Games } from "./game-schema.js";
+import { MediaService } from '../../../common/media/media-service.js';
+
+import { GameRepository } from './game-repo.js';
+import type { Games } from './game-schema.js';
 
 export class GamesService extends MediaService<Games> {
   constructor() {
@@ -8,12 +9,11 @@ export class GamesService extends MediaService<Games> {
   }
 
   // Mark as Game completed
-  async completeGame(id: string, score: number = 7) {
-    // Logic: Set completedAt to now, score to 7
-    return await this.update(id, {
+  completeGame(id: string, score: number = 7) {
+    return this.update(id, {
       userStats: {
-        score: score,
-        status: "Completed",
+        score,
+        status: 'Completed',
       },
     });
   }

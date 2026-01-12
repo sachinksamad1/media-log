@@ -1,19 +1,19 @@
-import { MediaMapper } from "../../../common/media/media-mapper.js";
-import { Games } from "./game-schema.js";
-import { GameDTO } from "./game-dto.js";
-import { formatTimestamp } from "../../../common/utils/date-utils.js";
+import { MediaMapper } from '../../../common/media/media-mapper.js';
+
+import type { GameDTO } from './game-dto.js';
+import type { Games } from './game-schema.js';
 
 export class GamesMapper extends MediaMapper<Games, GameDTO> {
-  toDto(entity: Games): GameDTO {
+  protected mapSpecializedFields(entity: Games): Partial<GameDTO> {
     return {
-      id: entity.id!,
-      title: entity.title,
-      category: entity.category,
-      publicationInfo: entity.publicationInfo,
-      playthroughs: entity.playthroughs,
-      userStats: entity.userStats,
-      createdAt: formatTimestamp(entity.createdAt),
-      updatedAt: formatTimestamp(entity.updatedAt),
+      genres: entity.genres,
+      platforms: entity.platforms,
+      developers: entity.developers,
+      publishers: entity.publishers,
+      playthroughs: entity.playthroughs.map((p) => ({
+        ...p,
+        achievementsUnlocked: p.achievementsUnlocked ?? 0,
+      })),
     };
   }
 }

@@ -1,10 +1,16 @@
-import { Anime } from "./anime-schema.js";
+import type { MediaDTO } from '../../../common/media/media-dto.js';
 
-export type CreateAnimeDto = Omit<Anime, "id" | "createdAt" | "updatedAt">;
+import type { Anime } from './anime-schema.js';
 
+export interface AnimeDTO extends MediaDTO {
+  genre: string[];
+  origin: string;
+  language: string;
+  releaseStats?: {
+    totalSeasons: number;
+    isCompleted: boolean;
+  };
+}
+
+export type CreateAnimeDto = Omit<Anime, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateAnimeDto = Partial<CreateAnimeDto>;
-
-export type AnimeDTO = Omit<Anime, "createdAt" | "updatedAt"> & {
-  createdAt: string;
-  updatedAt: string;
-};

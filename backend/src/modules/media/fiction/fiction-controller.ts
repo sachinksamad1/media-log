@@ -1,8 +1,10 @@
-import { Request, Response } from "express";
-import { MediaController } from "../../../common/media/media-controller.js";
-import { FictionService } from "./fiction-service.js";
-import { catchAsync } from "../../../common/utils/catch-async.js";
-import { FictionMapper } from "./fiction-mapper.js";
+import type { Request, Response } from 'express';
+
+import { MediaController } from '../../../common/media/media-controller.js';
+import { catchAsync } from '../../../common/utils/catch-async.js';
+
+import { FictionMapper } from './fiction-mapper.js';
+import { FictionService } from './fiction-service.js';
 
 export class FictionController extends MediaController {
   private service = new FictionService();
@@ -14,7 +16,7 @@ export class FictionController extends MediaController {
     this.sendCreated(
       res,
       this.mapper.toDto(result),
-      "Fiction added to library"
+      'Fiction added to library',
     );
   });
 
@@ -23,13 +25,13 @@ export class FictionController extends MediaController {
     const { limit, lastDocId } = req.query;
     const result = await this.service.getAll(
       Number(limit) || 10,
-      lastDocId as string
+      lastDocId as string,
     );
 
     // Map each item in the data array to its DTO version
     const mappedData = this.mapper.toDtoList(result.data);
 
-    this.sendSuccess(res, mappedData, "Fiction Library fetched", {
+    this.sendSuccess(res, mappedData, 'Fiction Library fetched', {
       nextCursor: result.nextCursor,
     });
   });
@@ -37,7 +39,7 @@ export class FictionController extends MediaController {
   // Get Fiction by id
   getById = catchAsync(async (req: Request, res: Response) => {
     const result = await this.service.getById(req.params.id as string);
-    this.sendSuccess(res, this.mapper.toDto(result), "Fiction fetched");
+    this.sendSuccess(res, this.mapper.toDto(result), 'Fiction fetched');
   });
 
   // Mark as Completed
@@ -46,12 +48,12 @@ export class FictionController extends MediaController {
       req.body.score !== undefined ? Number(req.body.score) : undefined;
     const result = await this.service.completeSeries(
       req.params.id as string,
-      score
+      score,
     );
     this.sendSuccess(
       res,
       this.mapper.toDto(result),
-      "Fiction marked as complete"
+      'Fiction marked as complete',
     );
   });
 
@@ -69,6 +71,6 @@ export class FictionController extends MediaController {
   update = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const result = await this.service.update(id, req.body);
-    this.sendSuccess(res, this.mapper.toDto(result), "Fiction updated");
+    this.sendSuccess(res, this.mapper.toDto(result), 'Fiction updated');
   });
 }

@@ -1,38 +1,56 @@
-import { Request, Response, NextFunction } from "express";
-import { ZodError } from "zod";
-import { AppError } from "./app-error.js";
+import type { Request, Response, NextFunction } from 'express';
+import { MulterError } from 'multer';
+import { ZodError } from 'zod';
 
-export const errorHandler = (
-  err: any,
-  req: Request,
+import { AppError } from '../errors/app-error.js';
+import { ResponseUtil } from '../utils/api-response.js';
+
+export const globalErrorHandler = (
+  err: unknown,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction,
 ) => {
-  let statusCode = err.statusCode || 500;
-  let message = err.message || "Internal Server Error";
-  let errors: any[] = [];
+  let statusCode = 500;
+  let message = 'Internal Server Error';
+  let stack: string | undefined;
 
-  // Handle Zod Validation Errors
-  if (err instanceof ZodError) {
+  // Domain errors (your own)
+  if (err instanceof AppError) {
+    statusCode = err.statusCode;
+    message = err.message;
+  }
+
+  // Zod validation errors
+  else if (isZodError(err)) {
     statusCode = 400;
-    message = "Validation Failed";
-    errors = err.issues.map((e) => ({
-      path: e.path.join("."),
-      message: e.message,
-    }));
+    message = 'Validation Failed';
   }
 
-  // Handle Firestore / Database Errors (Optional)
-  if (err.code === "unavailable") {
-    statusCode = 503;
-    message = "Database is currently offline";
+  // Multer file size error
+  else if (isMulterLimitError(err)) {
+    statusCode = 413;
+    message = 'File too large. Max limit is 5MB.';
   }
 
-  // Standardized Response Format for Angular/Flutter
-  res.status(statusCode).json({
-    success: false,
-    message,
-    errors: errors.length > 0 ? errors : undefined,
-    stack: process.env.NODE_ENV === "development" ? err.stack : undefined, // Hide stack in production
-  });
+  // Fallback for native JS errors
+  else if (err instanceof Error) {
+    message = err.message;
+  }
+
+  if (process.env.NODE_ENV === 'development' && err instanceof Error) {
+    stack = err.stack;
+    // eslint-disable-next-line no-console
+    console.error(err);
+  }
+
+  ResponseUtil.error(res, statusCode, message, stack);
+};
+
+const isZodError = (err: unknown): err is ZodError => {
+  return err instanceof ZodError;
+};
+
+const isMulterLimitError = (err: unknown): err is MulterError => {
+  return err instanceof MulterError && err.code === 'LIMIT_FILE_SIZE';
 };

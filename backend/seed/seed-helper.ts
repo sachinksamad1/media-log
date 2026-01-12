@@ -1,8 +1,8 @@
-import * as fs from "fs";
-import * as path from "path";
-import { fileURLToPath } from "url";
-import { ZodType } from "zod";
-import { db } from "../src/config/firebase";
+import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { ZodType } from 'zod';
+import { db } from '../src/config/firebase';
 
 // ESM-compatible __dirname replacement
 const __filename = fileURLToPath(import.meta.url);
@@ -21,13 +21,13 @@ export async function seedCollectionWithSchema<T>({
   schema,
   defaults = {},
 }: SeedOptions<T>): Promise<number> {
-  const dataPath = path.join(__dirname, "data", dataFile);
+  const dataPath = path.join(__dirname, 'data', dataFile);
 
   if (!fs.existsSync(dataPath)) {
     throw new Error(`❌ Data file not found: ${dataPath}`);
   }
 
-  const rawData = JSON.parse(fs.readFileSync(dataPath, "utf8"));
+  const rawData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
   const batch = db.batch();
   const collectionRef = db.collection(collectionName);
 
@@ -42,7 +42,7 @@ export async function seedCollectionWithSchema<T>({
     if (!parsed.success) {
       console.error(`❌ Validation failed at index ${index}`);
       parsed.error.issues.forEach((issue) => {
-        console.error(`[${issue.path.join(".")}] ${issue.message}`);
+        console.error(`[${issue.path.join('.')}] ${issue.message}`);
       });
       throw new Error(`Seed validation failed for ${collectionName}`);
     }

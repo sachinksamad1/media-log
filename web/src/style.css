@@ -1,2 +1,265 @@
+/* =========================================================
+   1. FONT IMPORTS
+========================================================= */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+/* =========================================================
+   2. BASE THEME VARIABLES
+========================================================= */
 @import "tailwindcss";
-@plugin "daisyui";
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    --card-hover: 220 14% 96%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 0 72% 60%;
+
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 220 14% 90%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 24 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 14% 96%;
+    --ring: 0 72% 51%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(0 72% 51%) 0%, hsl(24 100% 50%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(220 14% 98%) 100%);
+    --gradient-overlay: linear-gradient(180deg, transparent 0%, hsl(0 0% 98% / 0.95) 100%);
+
+    --shadow-glow: 0 0 40px hsl(0 72% 51% / 0.2);
+    --shadow-card: 0 8px 32px hsl(220 14% 70% / 0.15);
+    --shadow-card-hover: 0 16px 48px hsl(220 14% 70% / 0.25);
+
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* Status colors */
+    --status-ongoing: 142 76% 36%;
+    --status-planned: 217 91% 50%;
+    --status-completed: 280 65% 50%;
+
+    /* Category colors */
+    --category-anime: 340 82% 52%;
+    --category-manga: 24 100% 50%;
+    --category-novel: 142 76% 36%;
+    --category-lightnovel: 280 65% 50%;
+    --category-nonfiction: 217 91% 50%;
+    --category-movie: 45 100% 45%;
+    --category-game: 187 100% 42%;
+
+    /* Sidebar colors */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 47% 30%;
+    --sidebar-primary: 0 72% 51%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 0 72% 51%;
+
+    /* Theme toggle icons */
+    --sun-scale: 1;
+    --sun-rotate: 0deg;
+    --moon-scale: 0;
+    --moon-rotate: 90deg;
+  }
+
+  .dark {
+    --background: 222 47% 6%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 9%;
+    --card-foreground: 210 40% 98%;
+    --card-hover: 222 47% 12%;
+
+    --popover: 222 47% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 0 72% 51%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 0 72% 60%;
+
+    --secondary: 222 47% 15%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 222 30% 18%;
+    --muted-foreground: 215 20% 55%;
+
+    --accent: 24 100% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 222 30% 18%;
+    --input: 222 30% 15%;
+    --ring: 0 72% 51%;
+
+    /* Custom tokens */
+    --gradient-primary: linear-gradient(135deg, hsl(0 72% 51%) 0%, hsl(24 100% 50%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(222 47% 11%) 0%, hsl(222 47% 7%) 100%);
+    --gradient-overlay: linear-gradient(180deg, transparent 0%, hsl(222 47% 6% / 0.95) 100%);
+
+    --shadow-glow: 0 0 40px hsl(0 72% 51% / 0.3);
+    --shadow-card: 0 8px 32px hsl(222 47% 3% / 0.5);
+    --shadow-card-hover: 0 16px 48px hsl(222 47% 3% / 0.7);
+
+    /* Status colors */
+    --status-ongoing: 142 76% 45%;
+    --status-planned: 217 91% 60%;
+    --status-completed: 280 65% 60%;
+
+    /* Category colors */
+    --category-anime: 340 82% 52%;
+    --category-manga: 24 100% 50%;
+    --category-novel: 142 76% 45%;
+    --category-lightnovel: 280 65% 60%;
+    --category-nonfiction: 217 91% 60%;
+    --category-movie: 45 100% 50%;
+    --category-game: 187 100% 42%;
+
+    /* Sidebar colors */
+    --sidebar-background: 222 47% 5%;
+    --sidebar-foreground: 210 40% 85%;
+    --sidebar-primary: 0 72% 51%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 47% 12%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 222 30% 15%;
+    --sidebar-ring: 0 72% 51%;
+
+    /* Theme toggle icons */
+    --sun-scale: 0;
+    --sun-rotate: -90deg;
+    --moon-scale: 1;
+    --moon-rotate: 0deg;
+  }
+
+  body {
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: "Inter", system-ui, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+  }
+}
+
+/* =========================================================
+   3. TAILWIND-STYLE UTILITIES (No Config)
+========================================================= */
+@layer utilities {
+  .bg-background {
+    background-color: hsl(var(--background));
+  }
+
+  .text-foreground {
+    color: hsl(var(--foreground));
+  }
+
+  .bg-card {
+    background-color: hsl(var(--card));
+  }
+
+  .border-border {
+    border-color: hsl(var(--border));
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-card {
+    background: var(--gradient-card);
+  }
+
+  .gradient-overlay {
+    background: var(--gradient-overlay);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .shadow-card-hover {
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .transition-fast {
+    transition: all var(--transition-fast);
+  }
+
+  .transition-smooth {
+    transition: all var(--transition-smooth);
+  }
+
+  .transition-spring {
+    transition: all var(--transition-spring);
+  }
+
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .sun-icon {
+    transform: rotate(var(--sun-rotate)) scale(var(--sun-scale));
+  }
+
+  .moon-icon {
+    transform: rotate(var(--moon-rotate)) scale(var(--moon-scale));
+  }
+
+  /* View mode buttons */
+.view-btn {
+  background-color: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--border));
+  transition: all var(--transition-fast);
+}
+
+.view-btn:hover {
+  background-color: hsl(var(--card-hover));
+}
+
+.view-btn-active {
+  background: var(--gradient-primary);
+  color: hsl(var(--primary-foreground));
+  box-shadow: var(--shadow-glow);
+  border-color: transparent;
+}
+
+}

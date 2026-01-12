@@ -1,24 +1,17 @@
-import { MediaRepository } from "../../../common/media/media-repository.js";
-import { Anime } from "./anime-schema.js";
+import { MediaRepository } from '../../../common/media/media-repository.js';
+import type { SearchableRepository } from '../../../common/search/search-types.js';
 
-export class AnimeRepository extends MediaRepository<Anime> {
+import type { Anime } from './anime-schema.js';
+
+export class AnimeRepository
+  extends MediaRepository<Anime>
+  implements SearchableRepository<Anime & { id: string }>
+{
   constructor() {
-    super("anime"); // Defines the Firestore collection name
-  }
-  // Add custom queries here if needed (e.g., findByDirector)
-
-  // Find anime by title
-  async findAnimeByTitle(title: string) {
-    return this.collection.where("title", "==", title).get();
+    super('anime');
   }
 
-  // Find anime by genre
-  async findAnimeByGenre(genre: string) {
-    return this.collection.where("genre", "==", genre).get();
-  }
-
-  // Find anime by year
-  async findAnimeByYear(year: number) {
-    return this.collection.where("year", "==", year).get();
+  getMediaType(): string {
+    return 'anime';
   }
 }

@@ -1,52 +1,30 @@
-import { z } from "zod";
+import { z } from 'zod';
 
-export const LightNovelSchema = z.object({
-  // Basic Info
-  id: z.string().optional(), // Auto-entry handled by Firestore/DB
-  title: z.string().min(1, "Title is required"),
+import { MediaSchema } from '../../../common/media/media-schema.js';
 
-  // Categorization
+export const LightNovelSchema = MediaSchema.extend({
   author: z.string().optional(),
   illustrator: z.string().optional(),
-  origin: z.string().default("Japan"), // e.g., Japan, South Korea, China
+  origin: z.string().default('Japan'),
   genres: z.array(z.string()).optional(),
-  type: z.enum(["Series", "Standalone"]).optional().default("Series"),
+  type: z.enum(['Series', 'Standalone']).optional().default('Series'),
   format: z
-    .enum(["Web Novel", "Light Novel", "Physical", "Digital"])
-    .optional().default("Light Novel"),
-
-  // Release and Reading Status
+    .enum(['Web Novel', 'Light Novel', 'Physical', 'Digital'])
+    .optional()
+    .default('Light Novel'),
   releaseStats: z.object({
     releaseStatus: z
-      .enum(["Ongoing", "Completed", "Hiatus", "Cancelled"])
-      .default("Ongoing"),
-    chapters: z.number().int().min(1).default(1),
+      .enum(['Ongoing', 'Completed', 'Hiatus', 'Cancelled'])
+      .default('Ongoing'),
     volumes: z.number().int().min(1).default(1),
   }),
-
-  readingStats: z.object({
-    currentReadingChapter: z.number().int().min(0),
-    currentReadingVolume: z.number().int().min(0),
-  }).default({
-    currentReadingChapter: 0,
-    currentReadingVolume: 0,
-  }),
-
-  // User Stats
-  userStats: z.object({
-    score: z.number().min(0).max(10),
-    status: z.enum(["Planned", "Ongoing", "Completed", "Dropped"]),
-  }).default({
-    score: 5,
-    status: "Planned",
-  }),
-
-  // Poster & Image
-  imageUrl: z.url().optional(),
-
-  // Audit Info(Automated)
-  createdAt: z.date().default(() => new Date()),
-  updatedAt: z.date().default(() => new Date()),
+  readingStats: z
+    .object({
+      currentReadingVolume: z.number().int().min(0),
+    })
+    .default({
+      currentReadingVolume: 0,
+    }),
 });
 
 export type LightNovel = z.infer<typeof LightNovelSchema>;

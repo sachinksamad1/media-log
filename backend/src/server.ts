@@ -1,22 +1,46 @@
-import app from "./app.js";
-import "./config/env.js";
-import { checkFirestoreConnection } from "./config/firestore-status.js";
+import app from './app.js';
+import { validateEnv } from './config/env-validator.js';
+import { checkFirestoreConnection } from './config/firestore-status.js';
 
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT ?? 3000);
 
 async function startServer() {
-  console.log("Checking Firestore connection...");
+  validateEnv();
 
+  console.log('Initializing services...');
   const isConnected = await checkFirestoreConnection();
 
   if (!isConnected) {
-    console.error("Server startup aborted due to Firestore connection failure.");
-    process.exit(1);
+    throw new Error('Firestore connection failure.');
   }
 
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  const server = app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+  });
+
+  const shutdown = (signal: string) => {
+    console.log(`Received ${signal}. Shutting down...`);
+    server.close(() => {
+      console.log('HTTP server closed.');
+      process.exitCode = 0;
+    });
+  };
+
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
+
+  process.on('unhandledRejection', (reason) => {
+    console.error('Unhandled Rejection:', reason);
+    shutdown('unhandledRejection');
+  });
+
+  process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+    shutdown('uncaughtException');
   });
 }
 
-startServer();
+void startServer().catch((error) => {
+  console.error('Startup failure:', error);
+  process.exitCode = 1;
+});
