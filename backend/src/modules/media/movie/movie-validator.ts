@@ -6,6 +6,7 @@ import { MovieSchema } from './movie-schema.js';
 export const createMovieValidator = z.object({
   body: MovieSchema.omit({
     id: true,
+    uid: true,
     createdAt: true,
     updatedAt: true,
   }),
@@ -16,7 +17,7 @@ export const updateMovieValidator = z.object({
   params: z.object({
     id: z.string().min(1, 'ID parameter is required'),
   }),
-  body: MovieSchema.partial(), // Makes all fields optional for partial updates
+  body: MovieSchema.omit({ uid: true }).partial(), // Makes all fields optional for partial updates
 });
 
 // 3. Validation for GET/DELETE by ID

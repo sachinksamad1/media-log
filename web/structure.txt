@@ -1,0 +1,129 @@
+Folder PATH listing for volume Data
+Volume serial number is E8E1-1311
+D:.
+�   .env
+�   .gitignore
+�   index.html
+�   package-lock.json
+�   package.json
+�   README.md
+�   structure.txt
+�   tsconfig.app.json
+�   tsconfig.json
+�   tsconfig.node.json
+�   vite.config.ts
+�   
++---.vscode
+�       
++---node_modules
+�           
++---public
+�       vite.svg
+�       
++---src
+    �   App.vue
+    �   main.ts
+    �   style.css
+    �   vite-env.d.ts
+    �   
+    +---assets
+    �   �   vue.svg
+    �   �   
+    �   +---fonts
+    �   +---icons
+    �   +---images
+    +---common
+    �   +---components
+    �   �   +---feedback
+    �   �   �       EmptyState.vue
+    �   �   �       ErrorState.vue
+    �   �   �       LoadingSkeleton.vue
+    �   �   �       
+    �   �   +---layout
+    �   �   �       AppHeader.vue
+    �   �   �       AppShell.vue
+    �   �   �       AppSidebar.vue
+    �   �   �       
+    �   �   +---ui
+    �   �           Badge.vue
+    �   �           Button.vue
+    �   �           LazyImage.vue
+    �   �           MediaCard.vue
+    �   �           RatingStars.vue
+    �   �           StatsCard.vue
+    �   �           ThemeToggle.vue
+    �   �           
+    �   +---composables
+    �   �       useApi.ts
+    �   �       useDebounce.ts
+    �   �       useLayout.ts
+    �   �       useLibraryStats.ts
+    �   �       useMediaStats.ts
+    �   �       usePagination.ts
+    �   �       useTheme.ts
+    �   �       
+    �   +---types
+    �   �       api.ts
+    �   �       dashboard.ts
+    �   �       media.ts
+    �   �       pagination.ts
+    �   �       stats.ts
+    �   �       user.ts
+    �   �       
+    �   +---utils
+    �           constraints.ts
+    �           formatters.ts
+    �           tailwind-merge.ts
+    �           validators.ts
+    �           
+    +---core
+    �   +---auth
+    �   +---router
+    �   �       guards.ts
+    �   �       index.ts
+    �   �       routes.ts
+    �   �       
+    �   +---stores
+    �           auth.store.ts
+    �           preference.store.ts
+    �           user.store.ts
+    �           
+    +---modules
+    �   +---anime
+    �   �   �   AnimeView.vue
+    �   �   �   routes.ts
+    �   �   �   types.ts
+    �   �   �   
+    �   �   +---components
+    �   �   �       AnimeCategoryView.vue
+    �   �   �       AnimeList.vue
+    �   �   �       
+    �   �   +---services
+    �   �   �       anime.service.ts
+    �   �   �       
+    �   �   +---stores
+    �   �           animeStore.ts
+    �   �           
+    �   +---dashboard
+    �   �   �   DashboardView.vue
+    �   �   �   DashboardViewDropped.vue
+    �   �   �   
+    �   �   +---store
+    �   �           dashboard.store.ts
+    �   �           
+    �   +---manga
+    �       �   MangaView.vue
+    �       �   routes.ts
+    �       �   types.ts
+    �       �   
+    �       +---components
+    �       �       MangaList.vue
+    �       �       
+    �       +---services
+    �               manga.service.ts
+    �               
+    +---services
+            analytics.service.ts
+            http.ts
+            stats.service.ts
+            

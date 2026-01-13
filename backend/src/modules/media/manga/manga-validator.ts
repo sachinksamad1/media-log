@@ -6,6 +6,7 @@ import { MangaSchema } from './manga-schema.js';
 export const createMangaValidator = z.object({
   body: MangaSchema.omit({
     id: true,
+    uid: true,
     createdAt: true,
     updatedAt: true,
   }),
@@ -16,7 +17,7 @@ export const updateMangaValidator = z.object({
   params: z.object({
     id: z.string().min(1, 'ID parameter is required'),
   }),
-  body: MangaSchema.partial(), // Makes all fields optional for partial updates
+  body: MangaSchema.omit({ uid: true }).partial(), // Makes all fields optional for partial updates
 });
 
 // 3. Validation for GET/DELETE by ID

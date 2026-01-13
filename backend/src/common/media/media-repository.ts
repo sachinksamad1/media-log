@@ -128,8 +128,23 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     await docRef.delete();
   }
 
-  async getAll(limit = 10, lastDocId?: string) {
-    let query = this.collection.orderBy('createdAt', 'desc').limit(limit);
+  async getAll(limit = 10, lastDocId?: string, status?: string) {
+    // Start with the collection (which is a Query)
+    let query: FirebaseFirestore.Query = this.collection;
+
+    // Apply Filter FIRST
+    if (status && status !== 'All') {
+      query = query.where('userStats.status', '==', status);
+      // NOTE: We generally avoid orderBy('createdAt') here to prevent "Missing Index" errors
+      // unless a composite index (status + createdAt) exists in Firestore.
+      // If you have created the index, you can uncomment the next line:
+      // query = query.orderBy('createdAt', 'desc');
+    } else {
+      // Default ordering for "All"
+      query = query.orderBy('createdAt', 'desc');
+    }
+
+    query = query.limit(limit);
 
     if (lastDocId) {
       const last = await this.collection.doc(lastDocId).get();

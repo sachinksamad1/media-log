@@ -1,7 +1,9 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import { ZodType } from 'zod';
+
+import type { ZodType } from 'zod';
+
 import { db } from '../src/config/firebase';
 
 // ESM-compatible __dirname replacement

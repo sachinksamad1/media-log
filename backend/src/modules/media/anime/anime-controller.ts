@@ -39,7 +39,8 @@ export class AnimeController extends MediaController {
   getAll = catchAsync(async (req: Request, res: Response) => {
     const limit = parseInt(req.query.limit as string) || 20;
     const cursor = req.query.cursor as string;
-    const result = await this.service.getAll(limit, cursor);
+    const status = req.query.status as string;
+    const result = await this.service.getAll(limit, cursor, status);
     const mappedData = this.mapper.toDtoList(result.data);
 
     // Using the utility for a consistent JSON structure

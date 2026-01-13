@@ -27,6 +27,6 @@
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": ["src/**/*", "scripts/fix-search-index.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

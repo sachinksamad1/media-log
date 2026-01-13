@@ -12,6 +12,7 @@ export const UserStatusEnum = z.enum([
 
 export const MediaSchema = z.object({
   id: z.string().optional(),
+  uid: z.string().min(1, 'User ID is required'),
   title: z.string().min(1, 'Title is required'),
 
   // Shared User Stats

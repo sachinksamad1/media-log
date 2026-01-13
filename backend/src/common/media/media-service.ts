@@ -9,8 +9,8 @@ export abstract class MediaService<T extends { id?: string }> {
     this.repository = repository;
   }
 
-  async getAll(limit: number, lastDocId?: string) {
-    return this.repository.getAll(limit, lastDocId);
+  async getAll(limit: number, lastDocId?: string, status?: string) {
+    return this.repository.getAll(limit, lastDocId, status);
   }
 
   async getById(id: string) {

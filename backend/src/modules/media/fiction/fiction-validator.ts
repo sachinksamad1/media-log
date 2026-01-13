@@ -6,6 +6,7 @@ import { FictionSchema } from './fiction-schema.js';
 export const createFictionValidator = z.object({
   body: FictionSchema.omit({
     id: true,
+    uid: true,
     createdAt: true,
     updatedAt: true,
   }),
@@ -16,7 +17,7 @@ export const updateFictionValidator = z.object({
   params: z.object({
     id: z.string().min(1, 'ID parameter is required'),
   }),
-  body: FictionSchema.partial(), // Makes all fields optional for partial updates
+  body: FictionSchema.omit({ uid: true }).partial(), // Makes all fields optional for partial updates
 });
 
 // 3. Validation for GET/DELETE by ID
