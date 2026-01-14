@@ -15,12 +15,12 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     this.collection = db.collection(collectionName);
   }
 
-  create(data: T) {
-    return this.createWithImage(data);
+  create(data: T, userId: string): Promise<T> {
+    return this.createWithImage(data, userId);
   }
 
-  update(id: string, data: Partial<T>) {
-    return this.updateWithImage(id, data);
+  update(id: string, data: Partial<T>, userId: string): Promise<T> {
+    return this.updateWithImage(id, data, userId);
   }
 
   // Helper to generate keywords for partial search
@@ -28,11 +28,7 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     const words = title.toLowerCase().split(/\s+/);
     const keywords = new Set<string>();
 
-    // Add full title for prefix search backup
-    // keywords.add(title.toLowerCase());
-
     words.forEach((word) => {
-      // Generate all prefixes for each word
       let current = '';
       for (const char of word) {
         current += char;
@@ -43,7 +39,11 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     return Array.from(keywords);
   }
 
-  async createWithImage(data: T, imageFile?: Express.Multer.File): Promise<T> {
+  async createWithImage(
+    data: T,
+    userId: string,
+    imageFile?: Express.Multer.File,
+  ): Promise<T> {
     let imageUrl = data.imageUrl;
 
     if (imageFile) {
@@ -55,6 +55,7 @@ export abstract class MediaRepository<T extends BaseMediaType> {
 
     const payload: any = {
       ...data,
+      userId, // Associate with user
       imageUrl,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -74,6 +75,7 @@ export abstract class MediaRepository<T extends BaseMediaType> {
   async updateWithImage(
     id: string,
     data: Partial<T>,
+    userId: string,
     imageFile?: Express.Multer.File,
   ): Promise<T> {
     const docRef = this.collection.doc(id);
@@ -83,7 +85,12 @@ export abstract class MediaRepository<T extends BaseMediaType> {
       throw new AppError(`${this.collectionName} item not found`, 404);
     }
 
-    const oldData = existing.data() as T;
+    const oldData = existing.data() as T & { userId?: string };
+
+    // Check ownership
+    if (oldData.userId && oldData.userId !== userId) {
+      throw new AppError('Unauthorized access to this resource', 403);
+    }
 
     const updateData: any = {
       ...data,
@@ -113,13 +120,18 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     return { ...(updated.data() as T), id: updated.id };
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string, userId: string): Promise<void> {
     const docRef = this.collection.doc(id);
     const doc = await docRef.get();
 
     if (!doc.exists) return;
 
-    const data = doc.data() as T;
+    const data = doc.data() as T & { userId?: string };
+
+    // Check ownership
+    if (data.userId && data.userId !== userId) {
+      throw new AppError('Unauthorized access to this resource', 403);
+    }
 
     if (data.imageUrl) {
       await StorageHelper.deleteMediaImage(data.imageUrl);
@@ -128,21 +140,26 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     await docRef.delete();
   }
 
-  async getAll(limit = 10, lastDocId?: string, status?: string) {
-    // Start with the collection (which is a Query)
+  async getAll(
+    userId: string,
+    limit = 10,
+    lastDocId?: string,
+    status?: string,
+  ) {
     let query: FirebaseFirestore.Query = this.collection;
 
-    // Apply Filter FIRST
+    // Filter by userId
+    query = query.where('userId', '==', userId);
+
     if (status && status !== 'All') {
       query = query.where('userStats.status', '==', status);
-      // NOTE: We generally avoid orderBy('createdAt') here to prevent "Missing Index" errors
-      // unless a composite index (status + createdAt) exists in Firestore.
-      // If you have created the index, you can uncomment the next line:
-      // query = query.orderBy('createdAt', 'desc');
-    } else {
-      // Default ordering for "All"
-      query = query.orderBy('createdAt', 'desc');
     }
+
+    // Default ordering for "All"
+    // query = query.orderBy('createdAt', 'desc'); // Requires composite index: userId + createdAt
+
+    // Fallback: No sort (or client-side sort if needed)
+    // NOTE: Without this, pagination might not give the absolutely "latest" items globally, but just arbitrary chunks.
 
     query = query.limit(limit);
 
@@ -152,57 +169,81 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     }
 
     const snapshot = await query.get();
-    const data = snapshot.docs.map((d) => ({ ...(d.data() as T), id: d.id }));
+    const data = snapshot.docs.map((d) => ({
+      ...(d.data() as T),
+      id: d.id,
+    }));
     const lastVisible = snapshot.docs.at(-1);
 
     return { data, nextCursor: lastVisible?.id ?? null };
   }
 
-  async getById(id: string): Promise<T | null> {
+  async getById(id: string, userId: string): Promise<T | null> {
     const doc = await this.collection.doc(id).get();
-    return doc.exists ? { ...(doc.data() as T), id: doc.id } : null;
+    if (!doc.exists) return null;
+
+    const data = doc.data() as T & { userId?: string };
+
+    // Check ownership
+    // If migration from non-user-specific data, data.userId might be undefined.
+    // If strict mode, we might want to return null if userId doesn't match.
+    // Assuming strict ownership:
+    if (data.userId && data.userId !== userId) {
+      throw new AppError('Unauthorized access to this resource', 403);
+    }
+
+    return { ...data, id: doc.id };
   }
 
   async searchByTitle(
     query: string,
+    userId: string,
     limitCount = 5,
   ): Promise<(T & { id: string })[]> {
     const term = query.toLowerCase();
 
-    // If the query is a single word (no spaces), use the keywords array for flexible partial matching
-    // allowing "Torun" to find "Torunka"
-    if (!term.includes(' ')) {
-      const keywordSnapshot = await this.collection
-        .where('searchKeywords', 'array-contains', term)
-        .limit(limitCount)
-        .get();
+    // Note: Firestore compound queries with range filters on different fields are tricky.
+    // searching by title (range) AND userId (equality) requires a composite index.
+    // user should create index: userId Asc, titleLower Asc
 
-      return keywordSnapshot.docs.map((d) => ({
+    let firestoreQuery = this.collection.where('userId', '==', userId);
+
+    if (!term.includes(' ')) {
+      firestoreQuery = firestoreQuery
+        .where('searchKeywords', 'array-contains', term)
+        .limit(limitCount);
+
+      const snapshot = await firestoreQuery.get();
+      return snapshot.docs.map((d) => ({
         ...(d.data() as T),
         id: d.id,
       })) as (T & { id: string })[];
     }
 
-    // Fallback to titleLower range query for multi-word phrases "Days at"
-    const snapshot = await this.collection
+    // Range query on titleLower
+    firestoreQuery = firestoreQuery
       .where('titleLower', '>=', term)
       .where('titleLower', '<=', term + '\uf8ff')
-      .limit(limitCount)
-      .get();
+      .limit(limitCount);
 
+    const snapshot = await firestoreQuery.get();
     return snapshot.docs.map((d) => ({
       ...(d.data() as T),
       id: d.id,
     })) as (T & { id: string })[];
   }
 
-  async getCount(): Promise<number> {
-    const snapshot = await this.collection.count().get();
+  async getCount(userId: string): Promise<number> {
+    const snapshot = await this.collection
+      .where('userId', '==', userId)
+      .count()
+      .get();
     return snapshot.data().count;
   }
 
-  async getCountByStatus(status: MediaStatus): Promise<number> {
+  async getCountByStatus(status: MediaStatus, userId: string): Promise<number> {
     const snapshot = await this.collection
+      .where('userId', '==', userId)
       .where('userStats.status', '==', status)
       .count()
       .get();

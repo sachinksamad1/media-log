@@ -14,7 +14,8 @@ export class DashboardController {
     next: NextFunction,
   ) => {
     try {
-      const summary = await this.dashboardService.getLibrarySummary();
+      const userId = req.user!.uid;
+      const summary = await this.dashboardService.getLibrarySummary(userId);
 
       res.status(200).json({
         success: true,

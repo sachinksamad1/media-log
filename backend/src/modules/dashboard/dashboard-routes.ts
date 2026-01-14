@@ -1,6 +1,7 @@
 // src/dashboard/dashboard.routes.ts
 import { Router } from 'express';
 
+import { protect } from '../../common/middlewares/auth-middleware.js';
 import { repositories } from '../../repositories.js'; // wherever you build your MediaRepository map
 
 import { DashboardController } from './dashboard-controller.js';
@@ -10,6 +11,8 @@ const router = Router();
 
 const dashboardService = new DashboardService(repositories);
 const dashboardController = new DashboardController(dashboardService);
+
+router.use(protect);
 
 router.get('/library-summary', dashboardController.getLibrarySummary);
 

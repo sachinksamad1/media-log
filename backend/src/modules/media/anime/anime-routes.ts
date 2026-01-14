@@ -1,5 +1,6 @@
 import { Router } from 'express';
 
+import { protect } from '../../../common/middlewares/auth-middleware.js';
 import { validate } from '../../../common/validators/validate-request.js';
 import { upload } from '../../../config/firestorage.js';
 
@@ -12,6 +13,9 @@ import {
 
 const router = Router();
 const controller = new AnimeController();
+
+// Apply authentication middleware to all routes
+router.use(protect);
 
 router
   .route('/')

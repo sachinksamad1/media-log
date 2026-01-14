@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { AnimeService } from '@/modules/media/anime/api/anime.service'
+import { AnimeService } from '@/modules/media/anime/api/animeService'
 import type { Anime } from '@/modules/media/anime/types/types'
 import AnimeDetailModal from '@/modules/media/anime/components/AnimeDetailModal.vue'
 import AddNewAnimeModal from '@/modules/media/anime/components/AddNewAnimeModal.vue'

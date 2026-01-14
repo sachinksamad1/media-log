@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, reactive } from 'vue'
-import { AnimeService } from '@/modules/media/anime/api/anime.service'
+import { AnimeService } from '@/modules/media/anime/api/animeService'
 import type { Anime } from '@/modules/media/anime/types/types'
 
 const props = defineProps<{

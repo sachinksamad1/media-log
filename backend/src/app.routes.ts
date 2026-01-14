@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-
+import { protect } from './common/middlewares/auth-middleware.js';
 import searchRoutes from './common/search/search-routes.js';
 import dashboardRoutes from './modules/dashboard/dashboard-routes.js';
 import animeRoutes from './modules/media/anime/anime-routes.js';
@@ -18,7 +18,8 @@ const router = Router();
 
 // Health Routes
 router.use('/health', healthRoutes);
-
+// Auth Routes
+router.use('/auth', protect);
 // Dashboard Routes
 router.use('/dashboard', dashboardRoutes);
 // Search Routes

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { AnimeService } from '../api/anime.service'
+import { AnimeService } from '../api/animeService'
 import type { Anime } from '../types/types'
 
 // ----------------------------------------------------

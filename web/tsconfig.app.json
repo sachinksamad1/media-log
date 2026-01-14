@@ -11,7 +11,7 @@
       "@modules/*": ["src/modules/*"],
       "@common/*": ["src/common/*"],
       "@core/*": ["src/core/*"],
-      "@api/*": ["src/api/*"]
+      "@api/*": ["src/common/api/*"]
     },
 
     /* Linting */

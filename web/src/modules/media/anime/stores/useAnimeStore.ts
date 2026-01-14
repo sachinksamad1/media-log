@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import type { Anime } from "@/modules/media/anime/types/types";
-import { AnimeService } from "@/modules/media/anime/api/anime.service";
+import { AnimeService } from "@/modules/media/anime/api/animeService";
 
 interface AnimeState {
   items: Anime[];

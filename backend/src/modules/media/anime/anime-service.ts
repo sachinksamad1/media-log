@@ -15,21 +15,30 @@ export class AnimeService extends MediaService<z.infer<typeof AnimeSchema>> {
     this.repository = repo;
   }
 
-  async create(data: z.infer<typeof AnimeSchema>, file?: Express.Multer.File) {
-    return this.repository.createWithImage(data, file);
+  async create(
+    data: z.infer<typeof AnimeSchema>,
+    userId: string,
+    file?: Express.Multer.File,
+  ) {
+    return this.repository.createWithImage(data, userId, file);
   }
   async update(
     id: string,
     data: Partial<z.infer<typeof AnimeSchema>>,
+    userId: string,
     file?: Express.Multer.File,
   ) {
-    return this.repository.updateWithImage(id, data, file);
+    return this.repository.updateWithImage(id, data, userId, file);
   }
 
-  async completeSeries(id: string, score: number = 7) {
-    const anime = await this.getById(id);
-    return this.update(id, {
-      userStats: { ...anime.userStats, status: 'Completed', score },
-    });
+  async completeSeries(id: string, userId: string, score: number = 7) {
+    const anime = await this.getById(id, userId);
+    return this.update(
+      id,
+      {
+        userStats: { ...anime.userStats, status: 'Completed', score },
+      },
+      userId,
+    );
   }
 }

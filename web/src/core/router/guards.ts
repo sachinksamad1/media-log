@@ -1,7 +1,7 @@
-import { useAuthStore } from '@/stores/auth.store';
-import type { NavigationGuardNext, RouteLocationNormalized } from 'vue-router';
+import { useAuthStore } from "@/core/stores/useAuthStore";
+import type { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
 
-export function authGuard(
+export default function authGuard(
   to: RouteLocationNormalized,
   _from: RouteLocationNormalized,
   next: NavigationGuardNext
@@ -9,11 +9,11 @@ export function authGuard(
   const auth = useAuthStore();
 
   if (to.meta.requiresAuth && !auth.isAuthenticated) {
-    return next('/login');
+    return next("/auth");
   }
 
   if (to.meta.guestOnly && auth.isAuthenticated) {
-    return next('/');
+    return next("/");
   }
 
   next();

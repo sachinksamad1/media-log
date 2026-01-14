@@ -14,24 +14,26 @@ export class AnimeController extends MediaController {
   create = catchAsync(async (req: Request, res: Response) => {
     // 1. Multer puts the file here
     const file = req.file;
+    const userId = req.user!.uid;
 
     // 2. req.body contains text fields. If sending a JSON string in one field, parse it.
     // Otherwise, use req.body directly.
     const data =
       typeof req.body.data === 'string' ? JSON.parse(req.body.data) : req.body;
 
-    const result = await this.service.create(data, file);
+    const result = await this.service.create(data, userId, file);
     this.sendCreated(res, this.mapper.toDto(result), 'Anime added with image');
   });
 
   update = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
+    const userId = req.user!.uid;
     const file = req.file; // New image file if provided
 
     const data =
       typeof req.body.data === 'string' ? JSON.parse(req.body.data) : req.body;
 
-    const result = await this.service.update(id, data, file);
+    const result = await this.service.update(id, data, userId, file);
     this.sendSuccess(res, this.mapper.toDto(result), 'Anime updated');
   });
 
@@ -40,7 +42,9 @@ export class AnimeController extends MediaController {
     const limit = parseInt(req.query.limit as string) || 20;
     const cursor = req.query.cursor as string;
     const status = req.query.status as string;
-    const result = await this.service.getAll(limit, cursor, status);
+    const userId = req.user!.uid;
+
+    const result = await this.service.getAll(userId, limit, cursor, status);
     const mappedData = this.mapper.toDtoList(result.data);
 
     // Using the utility for a consistent JSON structure
@@ -52,7 +56,8 @@ export class AnimeController extends MediaController {
 
   // Get anime by id
   getById = catchAsync(async (req: Request, res: Response) => {
-    const result = await this.service.getById(req.params.id as string);
+    const userId = req.user!.uid;
+    const result = await this.service.getById(req.params.id as string, userId);
     this.sendSuccess(res, this.mapper.toDto(result), 'Anime fetched');
   });
 
@@ -60,8 +65,11 @@ export class AnimeController extends MediaController {
   complete = catchAsync(async (req: Request, res: Response) => {
     const score =
       req.body.score !== undefined ? Number(req.body.score) : undefined;
+    const userId = req.user!.uid;
+
     const result = await this.service.completeSeries(
       req.params.id as string,
+      userId,
       score,
     );
     this.sendSuccess(
@@ -74,8 +82,9 @@ export class AnimeController extends MediaController {
   // Delete anime
   delete = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
+    const userId = req.user!.uid;
 
-    await this.service.delete(id);
+    await this.service.delete(id, userId);
 
     // Return a consistent success message
     this.sendSuccess(res, null, `Entry with ID ${id} deleted successfully`);
