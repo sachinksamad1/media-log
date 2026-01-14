@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, reactive } from 'vue'
-import { AnimeService } from '../api/anime.service'
-import type { Anime } from '../types/types'
+import { AnimeService } from '@/modules/media/anime/api/anime.service'
+import type { Anime } from '@/modules/media/anime/types/types'
 
 const props = defineProps<{
   anime: Anime | null
@@ -11,14 +11,18 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'close'): void
   (e: 'update', updatedAnime: Anime): void
+  (e: 'delete', id: string): void
 }>()
 
 const isEditing = ref(false)
 const saving = ref(false)
+const selectedFile = ref<File | null>(null)
+const previewUrl = ref<string | null>(null)
 
 // Local Mutable State
 const form = reactive<{
   title: string
+  imageUrl: string
   status: string
   score: number
   totalSeasons: number
@@ -26,6 +30,7 @@ const form = reactive<{
   genre: string
 }>({
   title: '',
+  imageUrl: '',
   status: '',
   score: 0,
   totalSeasons: 0,
@@ -34,19 +39,38 @@ const form = reactive<{
 })
 
 // Sync props to form when opened
+function syncForm(data: Anime) {
+  selectedFile.value = null
+  previewUrl.value = null
+  
+  form.title = data.title
+  form.status = data.userStats?.status ?? ''
+  form.score = data.userStats?.score ?? 0
+  form.totalSeasons = data.releaseStats?.totalSeasons ?? 0
+  form.isReleaseCompleted = data.releaseStats?.isCompleted ?? false
+  form.genre = data.genre ? data.genre.join(', ') : ''
+}
+
 watch(() => props.anime, (newVal) => {
   if (newVal) {
-    form.title = newVal.title
-    form.status = newVal.userStats.status
-    form.score = newVal.userStats.score
-    form.totalSeasons = newVal.releaseStats.totalSeasons
-    form.isReleaseCompleted = newVal.releaseStats.isCompleted
-    form.genre = newVal.genre.join(', ')
-    
-    // Default to view mode when opening a new item
+    syncForm(newVal)
     isEditing.value = false 
   }
 }, { immediate: true })
+
+function cancelEdit() {
+  if (props.anime) syncForm(props.anime)
+  isEditing.value = false
+}
+
+function handleFileSelect(event: Event) {
+  const input = event.target as HTMLInputElement
+  if (input.files && input.files[0]) {
+    const file = input.files[0]
+    selectedFile.value = file
+    previewUrl.value = URL.createObjectURL(file)
+  }
+}
 
 async function handleSave() {
   if (!props.anime) return
@@ -55,7 +79,7 @@ async function handleSave() {
   try {
     const payload: Partial<Anime> = {
       title: form.title,
-      // We reconstruct the nested objects merging with existing to avoid data loss if we didn't map everything
+      // userStats and releaseStats logic...
       userStats: {
         ...props.anime.userStats,
         status: form.status,
@@ -69,7 +93,17 @@ async function handleSave() {
       genre: form.genre.split(',').map(s => s.trim()).filter(s => s)
     }
 
-    const updated = await AnimeService.update(props.anime.id, payload)
+    let updateData: Partial<Anime> | FormData = payload
+    
+    // If file selected, use FormData
+    if (selectedFile.value) {
+      const fd = new FormData()
+      fd.append('imageUrl', selectedFile.value)
+      fd.append('data', JSON.stringify(payload))
+      updateData = fd
+    }
+
+    const updated = await AnimeService.update(props.anime.id, updateData)
     emit('update', updated) // Notify parent to update list
     isEditing.value = false
   } catch (err) {
@@ -77,6 +111,26 @@ async function handleSave() {
     alert('Failed to save changes')
   } finally {
     saving.value = false
+  }
+}
+
+const isDeleting = ref(false)
+
+async function handleDelete() {
+  if (!props.anime) return
+  
+  if (!confirm('Are you sure you want to delete this anime? This action cannot be undone.')) {
+    return
+  }
+  
+  isDeleting.value = true
+  try {
+    await AnimeService.delete(props.anime.id)
+    emit('delete', props.anime.id)
+  } catch (err) {
+    console.error('Failed to delete', err)
+    alert('Failed to delete anime')
+    isDeleting.value = false
   }
 }
 </script>
@@ -93,8 +147,8 @@ async function handleSave() {
         <!-- Header Image & Close -->
         <div class="relative h-48 sm:h-64 shrink-0 overflow-hidden bg-muted">
            <img 
-             v-if="anime?.imageUrl" 
-             :src="anime.imageUrl" 
+             v-if="previewUrl || anime?.imageUrl" 
+             :src="previewUrl || anime?.imageUrl" 
              class="w-full h-full object-cover"
            />
            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
@@ -178,6 +232,17 @@ async function handleSave() {
                />
              </div>
 
+             <div class="space-y-2">
+               <label class="text-sm font-medium">Poster Image</label>
+               <input 
+                 type="file"
+                 accept="image/*"
+                 @change="handleFileSelect"
+                 class="w-full px-3 py-2 rounded-md bg-background border border-input file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+               />
+               <p class="text-xs text-muted-foreground">Max 5MB. Supports JPG, PNG, WEBP.</p>
+             </div>
+
              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                
                <div class="space-y-2">
@@ -251,17 +316,24 @@ async function handleSave() {
              </button>
           </div>
           <div v-else class="flex gap-3">
-            <button 
-               @click="isEditing = false"
+             <button 
+               @click="cancelEdit"
                class="px-4 py-2 rounded-lg border border-input hover:bg-accent hover:text-accent-foreground transition-colors"
-               :disabled="saving"
+               :disabled="saving || isDeleting"
              >
                Cancel
              </button>
              <button 
+                @click="handleDelete"
+                class="px-4 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-colors"
+                :disabled="saving || isDeleting"
+              >
+                {{ isDeleting ? 'Deleting...' : 'Delete' }}
+              </button>
+             <button 
                @click="handleSave"
                class="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center gap-2"
-               :disabled="saving"
+               :disabled="saving || isDeleting"
              >
                <span v-if="saving" class="animate-spin">⟳</span>
                {{ saving ? 'Saving...' : 'Save Changes' }}

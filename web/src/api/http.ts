@@ -3,7 +3,7 @@ import axios from 'axios';
 const httpClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    // 'Content-Type': 'application/json', // Let axios set this automatically
   },
 });
 

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { AnimeService } from '../api/anime.service'
-import type { Anime } from '../types/types'
-import AnimeDetailModal from './AnimeDetailModal.vue'
+import { AnimeService } from '@/modules/media/anime/api/anime.service'
+import type { Anime } from '@/modules/media/anime/types/types'
+import AnimeDetailModal from '@/modules/media/anime/components/AnimeDetailModal.vue'
+import AddNewAnimeModal from '@/modules/media/anime/components/AddNewAnimeModal.vue'
 
 // ----------------------------------------------------
 // STATE
@@ -17,6 +18,7 @@ const selectedFilter = ref('All')
 // Modal State
 const selectedAnime = ref<Anime | null>(null)
 const isModalOpen = ref(false)
+const isAddModalOpen = ref(false)
 
 // Config
 const LIMIT = 24
@@ -45,6 +47,17 @@ function handleUpdate(updated: Anime) {
     library.value[index] = updated
   }
   selectedAnime.value = updated
+}
+
+function handleCreate(newAnime: Anime) {
+  library.value.unshift(newAnime)
+  isAddModalOpen.value = false
+}
+
+function handleDelete(deletedId: string) {
+  library.value = library.value.filter(a => a.id !== deletedId)
+  isModalOpen.value = false
+  selectedAnime.value = null
 }
 
 // ----------------------------------------------------
@@ -90,7 +103,15 @@ onMounted(() => {
 
       <!-- HEADER / FILTERS -->
       <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
-        <h3 class="text-xl font-semibold">My Library</h3>
+        <div class="flex items-center gap-4">
+          <h3 class="text-xl font-semibold">My Library</h3>
+          <button 
+            @click="isAddModalOpen = true"
+            class="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity flex items-center gap-1"
+          >
+            <span>+</span> Add Anime
+          </button>
+        </div>
         
         <div class="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
           <button 
@@ -187,6 +208,13 @@ onMounted(() => {
       :is-open="isModalOpen"
       @close="isModalOpen = false"
       @update="handleUpdate"
+      @delete="handleDelete"
+    />
+
+    <AddNewAnimeModal
+      :is-open="isAddModalOpen"
+      @close="isAddModalOpen = false"
+      @created="handleCreate"
     />
   </div>
 </template>

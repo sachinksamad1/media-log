@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import type { Anime } from "../types/types";
-import { AnimeService } from "../api/anime.service";
+import type { Anime } from "@/modules/media/anime/types/types";
+import { AnimeService } from "@/modules/media/anime/api/anime.service";
 
 interface AnimeState {
   items: Anime[];
@@ -24,7 +24,8 @@ export const useAnimeStore = defineStore("anime", {
     async fetchAll() {
       this.loading = true;
       try {
-        this.items = await AnimeService.getAll();
+        const response = await AnimeService.getAll();
+        this.items = response.data;
       } catch (err) {
         this.error = "Failed to load anime";
       } finally {
