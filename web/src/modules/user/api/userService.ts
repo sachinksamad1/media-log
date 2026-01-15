@@ -51,5 +51,9 @@ export const userService = {
       },
     });
     return UserMapper.toDto(response.data.data);
+  },
+
+  async recoverUsername(email: string): Promise<void> {
+    await http.post('/users/recover/username', { email });
   }
 };

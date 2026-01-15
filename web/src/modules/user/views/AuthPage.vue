@@ -41,7 +41,9 @@ const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
 
 /* Tabs */
-const activeTab = ref<"signin" | "signup">("signin")
+const activeTab = ref<"signin" | "signup" | "recovery">("signin")
+const recoveryType = ref<"password" | "username">("password")
+const recoveryForm = ref({ email: "" })
 
 /* Loading */
 const isLoading = ref(false)
@@ -179,6 +181,44 @@ async function handleGoogleSignIn() {
     isGoogleLoading.value = false
   }
 }
+
+async function handleRecovery() {
+  try {
+    emailSchema.parse(recoveryForm.value.email)
+  } catch (e: any) {
+    toast({
+      title: "Invalid email",
+      description: e.issues?.[0]?.message || "Please enter a valid email",
+      variant: "destructive",
+    })
+    return
+  }
+
+  isLoading.value = true
+  try {
+    if (recoveryType.value === "password") {
+      await authStore.resetPassword(recoveryForm.value.email)
+      toast({
+        title: "Email sent",
+        description: "Check your email for password reset instructions.",
+      })
+    } else {
+      await authStore.recoverUsername(recoveryForm.value.email)
+      toast({
+        title: "Email sent",
+        description: "If an account exists, the username has been sent.",
+      })
+    }
+  } catch (error: any) {
+    toast({
+      title: "Recovery failed",
+      description: error.message,
+      variant: "destructive",
+    })
+  } finally {
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -201,7 +241,7 @@ async function handleGoogleSignIn() {
 
         <CardContent>
           <Tabs v-model="activeTab" class="w-full">
-            <TabsList class="grid grid-cols-2 mb-6">
+            <TabsList v-if="activeTab !== 'recovery'" class="grid grid-cols-2 mb-6">
               <TabsTrigger value="signin">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
@@ -211,6 +251,15 @@ async function handleGoogleSignIn() {
               <form @submit.prevent="handleSignIn" class="space-y-4">
                 <Input v-model="signInForm.email" placeholder="Email" />
                 <Input v-model="signInForm.password" type="password" placeholder="Password" />
+
+                <div class="flex justify-between text-xs text-muted-foreground">
+                  <a href="#" @click.prevent="activeTab = 'recovery'; recoveryType = 'password'" class="hover:underline hover:text-primary">
+                    Forgot Password?
+                  </a>
+                  <a href="#" @click.prevent="activeTab = 'recovery'; recoveryType = 'username'" class="hover:underline hover:text-primary">
+                    Forgot Username?
+                  </a>
+                </div>
 
                 <Button class="w-full" :disabled="isLoading">
                   <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
@@ -232,6 +281,48 @@ async function handleGoogleSignIn() {
                   Sign Up
                 </Button>
               </form>
+            </TabsContent>
+
+            <!-- RECOVERY -->
+            <TabsContent value="recovery">
+              <div class="mb-6 text-center">
+                <h3 class="text-sm font-medium mb-4">
+                  Recover {{ recoveryType === 'password' ? 'Password' : 'Username' }}
+                </h3>
+                <div class="flex gap-2 justify-center mb-4">
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    size="sm"
+                    :class="recoveryType === 'password' ? 'bg-primary/10 border-primary text-primary' : ''"
+                    @click="recoveryType = 'password'">
+                    Password
+                  </Button>
+                  <Button 
+                    type="button" 
+                    variant="outline"
+                    size="sm" 
+                    :class="recoveryType === 'username' ? 'bg-primary/10 border-primary text-primary' : ''"
+                    @click="recoveryType = 'username'">
+                    Username
+                  </Button>
+                </div>
+              </div>
+
+              <form @submit.prevent="handleRecovery" class="space-y-4">
+                <Input v-model="recoveryForm.email" placeholder="Enter your email" />
+                
+                <Button class="w-full" :disabled="isLoading">
+                  <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
+                  Send {{ recoveryType === 'password' ? 'Reset Link' : 'My Username' }}
+                </Button>
+              </form>
+
+              <div class="mt-4 text-center">
+                <Button variant="link" size="sm" @click="activeTab = 'signin'">
+                  Back to Sign In
+                </Button>
+              </div>
             </TabsContent>
           </Tabs>
 

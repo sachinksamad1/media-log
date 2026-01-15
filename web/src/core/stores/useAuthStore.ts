@@ -65,5 +65,11 @@ export const useAuthStore = defineStore("auth", {
       this.user = null;
       this.profile = null;
     },
+    async resetPassword(email: string) {
+      await authService.resetPassword(email);
+    },
+    async recoverUsername(email: string) {
+      await userService.recoverUsername(email);
+    },
   },
 });

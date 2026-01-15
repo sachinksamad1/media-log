@@ -146,6 +146,31 @@ export class UsersController {
       res.status(400).json({ success: false, error: message });
     }
   }
+  /**
+   * Recover username.
+   */
+  async recoverUsername(req: Request, res: Response): Promise<void> {
+    try {
+      const { email } = req.body;
+
+      if (!email) {
+        res.status(400).json({ success: false, error: 'Email is required' });
+        return;
+      }
+
+      await usersService.recoverUsername(email);
+      res.status(200).json({
+        success: true,
+        message:
+          'If an account exists, the username has been sent to your email.',
+      });
+    } catch (error) {
+      console.error('Error recovering username:', error);
+      const message =
+        error instanceof Error ? error.message : 'Recovery failed';
+      res.status(400).json({ success: false, error: message });
+    }
+  }
 }
 
 export const usersController = new UsersController();

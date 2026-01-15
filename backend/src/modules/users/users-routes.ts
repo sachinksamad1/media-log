@@ -13,6 +13,7 @@ const upload = multer({
 
 // Public routes
 router.post('/signup', usersController.register);
+router.post('/recover/username', usersController.recoverUsername);
 
 // Protect all user routes with Firebase Auth
 router.use(protect);
