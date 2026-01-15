@@ -29,6 +29,7 @@ import {
 
 const emailSchema = z.string().email("Please enter a valid email address")
 const passwordSchema = z.string().min(6, "Password must be at least 6 characters")
+const usernameSchema = z.string().min(3, "Username must be at least 3 characters").max(25, "Username must be at most 25 characters")
 
 /* -----------------------------
    State
@@ -53,6 +54,7 @@ const signInForm = ref({
 })
 
 const signUpForm = ref({
+  username: "",
   email: "",
   password: "",
   confirmPassword: "",
@@ -73,7 +75,7 @@ watch(user, (newUser) => {
 /* Clear form when switching tabs */
 watch(activeTab, () => {
   signInForm.value = { email: "", password: "" }
-  signUpForm.value = { email: "", password: "", confirmPassword: "" }
+  signUpForm.value = { username: "", email: "", password: "", confirmPassword: "" }
 })
 
 /* -----------------------------
@@ -84,6 +86,9 @@ function validateInputs(isSignUp: boolean) {
   const form = isSignUp ? signUpForm.value : signInForm.value
 
   try {
+    if (isSignUp) {
+      usernameSchema.parse(signUpForm.value.username)
+    }
     emailSchema.parse(form.email)
     passwordSchema.parse(form.password)
   } catch (e: any) {
@@ -141,7 +146,8 @@ async function handleSignUp() {
   try {
     await authStore.register(
       signUpForm.value.email.trim(),
-      signUpForm.value.password
+      signUpForm.value.password,
+      signUpForm.value.username.trim()
     )
 
     toast({
@@ -216,6 +222,7 @@ async function handleGoogleSignIn() {
             <!-- SIGN UP -->
             <TabsContent value="signup">
               <form @submit.prevent="handleSignUp" class="space-y-4">
+                <Input v-model="signUpForm.username" placeholder="Username" />
                 <Input v-model="signUpForm.email" placeholder="Email" />
                 <Input v-model="signUpForm.password" type="password" placeholder="Password" />
                 <Input v-model="signUpForm.confirmPassword" type="password" placeholder="Confirm Password" />

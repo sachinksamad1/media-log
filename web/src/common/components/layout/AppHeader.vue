@@ -18,16 +18,20 @@ onClickOutside(profileDropdownRef, () => {
 })
 
 const userInitials = computed(() => {
-  const displayName = authStore.user?.displayName || authStore.user?.email || 'User'
+  const displayName = authStore.profile?.displayName || authStore.user?.displayName || authStore.user?.email || 'User'
   return displayName.substring(0, 2).toUpperCase()
 })
 
 const userDisplayName = computed(() => {
-  return authStore.user?.displayName || 'User'
+  return authStore.profile?.displayName || authStore.user?.displayName || 'User'
 })
 
 const userEmail = computed(() => {
-  return authStore.user?.email || ''
+  return authStore.profile?.email || authStore.user?.email || ''
+})
+
+const userAvatar = computed(() => {
+  return authStore.profile?.avatarImg || authStore.user?.photoURL
 })
 
 const handleLogout = async () => {
@@ -105,10 +109,10 @@ const handleLogout = async () => {
             class="text-muted-foreground hover:text-foreground hover:bg-secondary p-2 rounded-md outline-none"
           >
             <div 
-              v-if="authStore.user?.photoURL"
+              v-if="userAvatar"
               class="w-8 h-8 rounded-full overflow-hidden border border-border"
             >
-              <img :src="authStore.user.photoURL" alt="User" class="w-full h-full object-cover" />
+              <img :src="userAvatar" alt="User" class="w-full h-full object-cover" />
             </div>
             <div 
               v-else
@@ -133,14 +137,14 @@ const handleLogout = async () => {
             <div class="p-1">
               <button 
                 class="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground rounded-lg hover:bg-secondary transition-colors"
-                @click="isProfileOpen = false"
+                @click="() => { isProfileOpen = false; router.push('/profile') }"
               >
                 <User class="w-4 h-4 text-muted-foreground" />
                 Profile
               </button>
               <button 
                 class="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground rounded-lg hover:bg-secondary transition-colors"
-                @click="isProfileOpen = false"
+                @click="() => { isProfileOpen = false; router.push('/settings') }"
               >
                 <Settings class="w-4 h-4 text-muted-foreground" />
                 Settings
