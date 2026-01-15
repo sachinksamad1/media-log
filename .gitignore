@@ -40,3 +40,54 @@ serviceAccountKey.json
 DashboardViewDropped.vue
 /notes
 /web/docs
+
+# Mobile
+# Miscellaneous
+*.class
+*.lock
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Visual Studio Code related
+.classpath
+.project
+.settings/
+.vscode/*
+
+# Caching of compiled code
+.ccls-cache/
+.dart_tool/
+.packages
+
+# Generated files
+/ios/Flutter/App.framework/
+/ios/Flutter/App.podspec
+/ios/Flutter/Flutter.framework/
+/ios/Flutter/Flutter.podspec
+/ios/Flutter/flutter_assets/
+/ios/Pods/
+/android/.gradle/
+/android/local.properties
+/android/app/build/
+/build/
+
+# IDE-generated files (e.g. by Android Studio, VS Code)
+# and files specific to your local machine (e.g. secrets)
+# Consider using a global ignore file for these
+# e.g. secrets.json
+# e.g. key.properties (for Android signing)
+
+# Do not ignore pubspec.lock, as it ensures consistent package versions across environments
+!pubspec.lock

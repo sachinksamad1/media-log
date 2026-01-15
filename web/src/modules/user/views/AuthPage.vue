@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia"
 import { useAuthStore } from "@/core/stores/useAuthStore"
 import { z } from "zod"
 
-import { Mail, Lock, Chrome, Loader2, BookOpen } from "lucide-vue-next"
+import { Mail, Lock, Chrome, Loader2 } from "lucide-vue-next"
 import { useToast } from "@/common/components/ui/toast/use-toast"
 import {
   Card,
@@ -179,10 +179,12 @@ async function handleGoogleSignIn() {
   <div class="min-h-screen flex items-center justify-center bg-background p-4">
     <div class="w-full max-w-md">
       <div class="flex items-center justify-center gap-3 mb-8">
-        <div class="p-2 rounded-xl bg-primary/10">
-          <BookOpen class="h-8 w-8 text-primary" />
+        <div class="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
+          <span class="font-bold text-sm">M</span>
         </div>
-        <h1 class="text-2xl font-bold">MediaTracker</h1>
+        <h1 class="text-xl font-display font-bold text-foreground hidden sm:block">
+          Media<span class="text-gradient">Log</span>
+        </h1>
       </div>
 
       <Card>
