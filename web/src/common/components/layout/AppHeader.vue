@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { Search, Bell, User, Menu, LogOut, Settings } from "lucide-vue-next"
 import { onClickOutside } from '@vueuse/core'
 import ThemeToggle from "../ui/ThemeToggle.vue"
@@ -9,9 +9,30 @@ import { useAuthStore } from '@/core/stores/useAuthStore'
 
 const { toggleSidebar } = useLayout()
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 const isProfileOpen = ref(false)
 const profileDropdownRef = ref(null)
+
+const searchQuery = ref('')
+
+const handleSearch = () => {
+  if (searchQuery.value.trim()) {
+    router.push({ 
+      path: '/search', 
+      query: { q: searchQuery.value } 
+    })
+  }
+}
+
+// Sync search input with URL query
+watch(() => route.query.q, (newQuery: any) => {
+  if (typeof newQuery === 'string') {
+    searchQuery.value = newQuery
+  } else {
+    searchQuery.value = ''
+  }
+}, { immediate: true })
 
 onClickOutside(profileDropdownRef, () => {
   isProfileOpen.value = false
@@ -77,6 +98,8 @@ const handleLogout = async () => {
             class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
           />
           <input
+            v-model="searchQuery"
+            @keydown.enter="handleSearch"
             type="search"
             placeholder="Search your library..."
             class="w-full pl-10 bg-secondary/50 border border-border rounded-md px-3 py-2
