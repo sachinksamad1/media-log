@@ -7,6 +7,7 @@ const PORT = Number(process.env.PORT ?? 3000);
 async function startServer() {
   validateEnv();
 
+  // eslint-disable-next-line no-console
   console.log('Initializing services...');
   const isConnected = await checkFirestoreConnection();
 
@@ -15,12 +16,15 @@ async function startServer() {
   }
 
   const server = app.listen(PORT, () => {
+    // eslint-disable-next-line no-console
     console.log(`Server running at http://localhost:${PORT}`);
   });
 
   const shutdown = (signal: string) => {
+    // eslint-disable-next-line no-console
     console.log(`Received ${signal}. Shutting down...`);
     server.close(() => {
+      // eslint-disable-next-line no-console
       console.log('HTTP server closed.');
       process.exitCode = 0;
     });
@@ -30,17 +34,20 @@ async function startServer() {
   process.on('SIGINT', shutdown);
 
   process.on('unhandledRejection', (reason) => {
+    // eslint-disable-next-line no-console
     console.error('Unhandled Rejection:', reason);
     shutdown('unhandledRejection');
   });
 
   process.on('uncaughtException', (error) => {
+    // eslint-disable-next-line no-console
     console.error('Uncaught Exception:', error);
     shutdown('uncaughtException');
   });
 }
 
 void startServer().catch((error) => {
+  // eslint-disable-next-line no-console
   console.error('Startup failure:', error);
   process.exitCode = 1;
 });

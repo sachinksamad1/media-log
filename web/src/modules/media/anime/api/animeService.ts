@@ -29,4 +29,15 @@ export const AnimeService = {
   async delete(id: string): Promise<void> {
     return http.delete(`/anime/${id}`);
   },
+
+  async search(query: string): Promise<Anime[]> {
+    const params = new URLSearchParams();
+    params.append("query", query);
+    params.append("type", "anime");
+
+    const response = await http.get<{ data: Anime[] }>(
+      `/search?${params.toString()}`
+    );
+    return response.data.data;
+  },
 };

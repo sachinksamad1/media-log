@@ -14,6 +14,10 @@ export interface SearchableMedia {
 
 export interface SearchableRepository<T extends SearchableMedia> {
   readonly collectionName: string;
-  searchByTitle(query: string): Promise<T[]>;
+  searchByTitle(
+    query: string,
+    userId: string,
+    limitCount?: number,
+  ): Promise<T[]>;
   getMediaType(): string;
 }

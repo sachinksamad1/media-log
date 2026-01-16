@@ -17,5 +17,6 @@ export const validateEnv = (): void => {
     throw new Error(`❌ MISSING ENVIRONMENT VARIABLES:\n${missingList}`);
   }
 
+  // eslint-disable-next-line no-console
   console.log('✅ Environment variables validated successfully.');
 };

@@ -156,11 +156,6 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     }
 
     // Default ordering for "All"
-    // query = query.orderBy('createdAt', 'desc'); // Requires composite index: userId + createdAt
-
-    // Fallback: No sort (or client-side sort if needed)
-    // NOTE: Without this, pagination might not give the absolutely "latest" items globally, but just arbitrary chunks.
-
     query = query.limit(limit);
 
     if (lastDocId) {
@@ -185,9 +180,6 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     const data = doc.data() as T & { userId?: string };
 
     // Check ownership
-    // If migration from non-user-specific data, data.userId might be undefined.
-    // If strict mode, we might want to return null if userId doesn't match.
-    // Assuming strict ownership:
     if (data.userId && data.userId !== userId) {
       throw new AppError('Unauthorized access to this resource', 403);
     }
@@ -195,16 +187,15 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     return { ...data, id: doc.id };
   }
 
+  /*
+  * Search by title
+  */
   async searchByTitle(
     query: string,
     userId: string,
     limitCount = 5,
   ): Promise<(T & { id: string })[]> {
     const term = query.toLowerCase();
-
-    // Note: Firestore compound queries with range filters on different fields are tricky.
-    // searching by title (range) AND userId (equality) requires a composite index.
-    // user should create index: userId Asc, titleLower Asc
 
     let firestoreQuery = this.collection.where('userId', '==', userId);
 

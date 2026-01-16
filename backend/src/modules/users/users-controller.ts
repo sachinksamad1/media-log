@@ -31,6 +31,7 @@ export class UsersController {
       const user = await usersService.syncUser(uid, email, userData);
       res.status(200).json({ success: true, data: UserMapper.toDto(user) });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error syncing user:', error);
       const message =
         error instanceof Error ? error.message : 'Failed to sync user';
@@ -57,6 +58,7 @@ export class UsersController {
       }
       res.status(200).json({ success: true, data: UserMapper.toDto(user) });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error fetching user profile:', error);
       const message = error instanceof Error ? error.message : 'Unknown error';
       res.status(500).json({ success: false, error: message });
@@ -76,6 +78,7 @@ export class UsersController {
       const updated = await usersService.updateUser(req.user.uid, req.body);
       res.status(200).json({ success: true, data: UserMapper.toDto(updated) });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error updating user profile:', error);
       const message = error instanceof Error ? error.message : 'Unknown error';
       res.status(500).json({ success: false, error: message });
@@ -110,6 +113,7 @@ export class UsersController {
         .status(200)
         .json({ success: true, data: UserMapper.toDto(updatedUser) });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error uploading avatar:', error);
       const message = error instanceof Error ? error.message : 'Upload failed';
       res.status(500).json({ success: false, error: message });
@@ -139,6 +143,7 @@ export class UsersController {
       });
       res.status(201).json({ success: true, data: UserMapper.toDto(newUser) });
     } catch (error: unknown) {
+      // eslint-disable-next-line no-console
       console.error('Error registering user:', error);
       // Firebase Admin Auth errors usually have a code/message
       const message =
@@ -165,6 +170,7 @@ export class UsersController {
           'If an account exists, the username has been sent to your email.',
       });
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Error recovering username:', error);
       const message =
         error instanceof Error ? error.message : 'Recovery failed';

@@ -5,6 +5,8 @@ import type { Anime } from '@/modules/media/anime/types/types'
 import AnimeDetailModal from '@/modules/media/anime/components/AnimeDetailModal.vue'
 import AddNewAnimeModal from '@/modules/media/anime/components/AddNewAnimeModal.vue'
 import AnimeCard from '@/modules/media/anime/components/AnimeCard.vue'
+import { watchDebounced } from '@vueuse/core'
+import { Search } from 'lucide-vue-next'
 
 // ----------------------------------------------------
 // STATE
@@ -15,6 +17,8 @@ const error = ref<string | null>(null)
 const nextCursor = ref<string | null>(null)
 const hasMore = ref(true)
 const selectedFilter = ref('All')
+const searchQuery = ref('')
+const isSearching = ref(false)
 
 // Modal State
 const selectedAnime = ref<Anime | null>(null)
@@ -90,6 +94,33 @@ async function fetchAnime(isLoadMore = false) {
   }
 }
 
+// Search Logic
+watchDebounced(searchQuery, async (q) => {
+  if (!q || q.trim() === '') {
+    if (isSearching.value) {
+        isSearching.value = false
+        // Reset to normal list
+        nextCursor.value = null
+        hasMore.value = true
+        fetchAnime()
+    }
+    return
+  }
+  
+  isSearching.value = true
+  loading.value = true
+  try {
+     const results = await AnimeService.search(q)
+     library.value = results
+     hasMore.value = false // Search endpoint doesn't support cursor pagination yet
+  } catch (err) {
+    error.value = 'Failed to search'
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}, { debounce: 500 })
+
 // Initial Load
 onMounted(() => {
   fetchAnime()
@@ -110,6 +141,16 @@ onMounted(() => {
           >
             <span>+</span> Add Anime
           </button>
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="relative w-full sm:max-w-xs order-last sm:order-none mt-4 sm:mt-0">
+          <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input 
+            v-model="searchQuery" 
+            class="w-full pl-9 pr-4 py-2 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm" 
+            placeholder="Search anime..." 
+          />
         </div>
         
         <div class="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">

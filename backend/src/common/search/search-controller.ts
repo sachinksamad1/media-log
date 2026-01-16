@@ -13,11 +13,16 @@ export const globalSearch = async (req: Request, res: Response) => {
   }
 
   const searchService = new GlobalSearchService();
+  const userId = req.user!.uid;
 
   try {
     // If a type is provided, we'll tell the service to filter
     // If 'type' is undefined, it performs a global search
-    const results = await searchService.search(query as string, type as string);
+    const results = await searchService.search(
+      query as string,
+      userId,
+      type as string,
+    );
 
     return ResponseUtil.send(
       res,

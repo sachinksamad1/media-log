@@ -28,25 +28,36 @@ export class GlobalSearchService {
 
   private formatDate(date: Date | { toDate: () => Date } | string | number | null | undefined): string {
     if (!date) return new Date().toISOString();
+    
     // Handle Firestore Timestamp
-    if (typeof (date as any).toDate === 'function') {
-      return (date as any).toDate().toISOString();
+    if (typeof date === 'object' && 'toDate' in date && typeof (date as { toDate: () => Date }).toDate === 'function') {
+      return (date as { toDate: () => Date }).toDate().toISOString();
     }
+    
     // Handle native Date
-    if (typeof (date as any).toISOString === 'function') {
-      return (date as any).toISOString();
+    if (date instanceof Date) {
+      return date.toISOString();
     }
+
     // Handle string or number
-    return new Date(date as any).toISOString();
+    if (typeof date === 'string' || typeof date === 'number') {
+      return new Date(date).toISOString();
+    }
+
+    return new Date().toISOString();
   }
 
-  async search(query: string, type?: string): Promise<GlobalSearchResponse[]> {
+  async search(
+    query: string,
+    userId: string,
+    type?: string,
+  ): Promise<GlobalSearchResponse[]> {
     // Single-type search
     if (type) {
       const repo = this.repositories[type.toLowerCase()];
       if (!repo) return [];
 
-      const results = await repo.searchByTitle(query);
+      const results = await repo.searchByTitle(query, userId);
       return results.map((r) => ({
         id: r.id,
         title: r.title,
@@ -62,8 +73,8 @@ export class GlobalSearchService {
     }
 
     // Global search
-    const searches = Object.values(this.repositories).map(async repo => {
-      const results = await repo.searchByTitle(query);
+    const searches = Object.values(this.repositories).map(async (repo) => {
+      const results = await repo.searchByTitle(query, userId);
       return results.map((r) => ({
         id: r.id,
         title: r.title,

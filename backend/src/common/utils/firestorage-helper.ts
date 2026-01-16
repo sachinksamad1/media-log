@@ -1,5 +1,4 @@
-import path from 'path';
-
+import sharp from 'sharp';
 import { v4 as uuidv4 } from 'uuid';
 
 import { storage } from '../../config/firebase.js';
@@ -14,14 +13,18 @@ export class StorageHelper {
     file: Express.Multer.File,
     folder: string,
   ): Promise<string> {
-    // 1. Generate unique path: anime/uuid.jpg
-    const extension = path.extname(file.originalname);
-    const fileName = `${folder}/${uuidv4()}${extension}`;
+    // 1. Convert image to WebP using Sharp
+    const webpBuffer = await sharp(file.buffer)
+      .webp({ quality: 80 })
+      .toBuffer();
+
+    // 2. Generate unique path: anime/uuid.webp
+    const fileName = `${folder}/${uuidv4()}.webp`;
     const blob = this.bucket.file(fileName);
 
-    // 2. Stream the buffer to FireStorage
-    await blob.save(file.buffer, {
-      contentType: file.mimetype,
+    // 3. Stream the buffer to FireStorage
+    await blob.save(webpBuffer, {
+      contentType: 'image/webp',
       public: true, // Generate public URL for frontend use
     });
 
@@ -42,6 +45,7 @@ export class StorageHelper {
         await file.delete();
       }
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error('Failed to delete image from storage:', error);
       // We don't throw here to ensure the DB record is still deleted
     }

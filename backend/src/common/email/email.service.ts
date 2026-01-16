@@ -22,6 +22,7 @@ class EmailService {
       this.transporter = nodemailer.createTransport({
         jsonTransport: true,
       });
+      // eslint-disable-next-line no-console
       console.log(
         'EmailService: SMTP not configured, using JSON transport (logging to console).',
       );
@@ -44,13 +45,20 @@ class EmailService {
     });
 
     if (process.env.SMTP_HOST) {
+      // eslint-disable-next-line no-console
       console.log('Message sent: %s', info.messageId);
     } else {
+      // eslint-disable-next-line no-console
       console.log('------------------------------------------');
+      // eslint-disable-next-line no-console
       console.log('MOCK EMAIL SENT:');
+      // eslint-disable-next-line no-console
       console.log('To:', to);
+      // eslint-disable-next-line no-console
       console.log('Subject:', subject);
+      // eslint-disable-next-line no-console
       console.log('Content:', text);
+      // eslint-disable-next-line no-console
       console.log('------------------------------------------');
     }
   }
