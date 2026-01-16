@@ -31,12 +31,21 @@ export class AnimeService extends MediaService<z.infer<typeof AnimeSchema>> {
     return this.repository.updateWithImage(id, data, userId, file);
   }
 
-  async completeSeries(id: string, userId: string, score: number = 7) {
+  async completeSeries(id: string, userId: string, score?: number) {
     const anime = await this.getById(id, userId);
+
+    // Use provided score, or existing score, or default to 0
+    const finalScore =
+      score !== undefined ? score : anime.userStats?.score || 0;
+
     return this.update(
       id,
       {
-        userStats: { ...anime.userStats, status: 'Completed', score },
+        userStats: {
+          ...(anime.userStats || {}),
+          status: 'Completed',
+          score: finalScore,
+        },
       },
       userId,
     );

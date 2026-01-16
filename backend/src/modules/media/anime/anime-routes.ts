@@ -9,6 +9,7 @@ import {
   createAnimeValidator,
   updateAnimeValidator,
   animeIdValidator,
+  completeAnimeValidator,
 } from './anime-validator.js';
 
 const router = Router();
@@ -27,6 +28,12 @@ router
     controller.create,
   )
   .get(controller.getAll);
+
+router.patch(
+  '/:id/complete',
+  (req, res, next) => validate(completeAnimeValidator)(req, res, next),
+  controller.complete,
+);
 
 router
   .route('/:id')

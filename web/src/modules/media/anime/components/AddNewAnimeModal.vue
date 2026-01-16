@@ -2,6 +2,7 @@
 import { ref, reactive } from 'vue'
 import { AnimeService } from '@/modules/media/anime/api/animeService'
 import type { Anime } from '@/modules/media/anime/types/types'
+import { useToast } from '@/common/components/ui/toast/use-toast'
 
 const props = defineProps<{
   isOpen: boolean
@@ -11,6 +12,8 @@ const emit = defineEmits<{
   (e: 'close'): void
   (e: 'created', newAnime: Anime): void
 }>()
+
+const { toast } = useToast()
 
 const saving = ref(false)
 const selectedFile = ref<File | null>(null)
@@ -60,7 +63,11 @@ function close() {
 
 async function handleSave() {
   if (!form.title) {
-    alert('Title is required')
+    toast({
+      title: 'Validation Error',
+      description: 'Title is required',
+      variant: 'destructive',
+    })
     return
   }
 
@@ -93,11 +100,19 @@ async function handleSave() {
     }
 
     const created = await AnimeService.create(createData)
+    toast({
+      title: 'Success',
+      description: 'Anime added to your library',
+    })
     emit('created', created)
     close()
   } catch (err) {
     console.error('Failed to create', err)
-    alert('Failed to add anime')
+    toast({
+      title: 'Error',
+      description: 'Failed to add anime',
+      variant: 'destructive',
+    })
   } finally {
     saving.value = false
   }

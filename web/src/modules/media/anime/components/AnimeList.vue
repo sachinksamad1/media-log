@@ -41,21 +41,19 @@ function openDetails(anime: Anime) {
 }
 
 function handleUpdate(updated: Anime) {
-  // Update the item in the local list
-  const index = library.value.findIndex(a => a.id === updated.id)
-  if (index !== -1) {
-    library.value[index] = updated
-  }
+  // Reload the list to ensure data consistency
+  fetchAnime()
   selectedAnime.value = updated
 }
 
-function handleCreate(newAnime: Anime) {
-  library.value.unshift(newAnime)
+function handleCreate() {
+  // Reload list to include new item in correct order/filter
+  fetchAnime()
   isAddModalOpen.value = false
 }
 
-function handleDelete(deletedId: string) {
-  library.value = library.value.filter(a => a.id !== deletedId)
+function handleDelete() {
+  fetchAnime()
   isModalOpen.value = false
   selectedAnime.value = null
 }
@@ -218,7 +216,3 @@ onMounted(() => {
     />
   </div>
 </template>
-
-<style scoped>
-/* Add any view-specific extra styles here */
-</style>

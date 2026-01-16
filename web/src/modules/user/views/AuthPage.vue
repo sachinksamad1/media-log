@@ -228,7 +228,7 @@ async function handleRecovery() {
         <div class="w-8 h-8 rounded-lg gradient-primary flex items-center justify-center">
           <span class="font-bold text-sm">M</span>
         </div>
-        <h1 class="text-xl font-display font-bold text-foreground hidden sm:block">
+        <h1 class="text-2xl font-display font-bold text-foreground hidden sm:block">
           Media<span class="text-gradient">Log</span>
         </h1>
       </div>

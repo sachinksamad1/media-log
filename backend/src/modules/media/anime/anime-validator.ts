@@ -26,3 +26,13 @@ export const animeIdValidator = z.object({
     id: z.string().min(1),
   }),
 });
+
+// 4. Validation for COMPLETE (PATCH)
+export const completeAnimeValidator = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+  body: z.object({
+    score: z.number().min(0).max(10).optional(),
+  }),
+});

@@ -2,6 +2,8 @@
 import { ref, watch, reactive } from 'vue'
 import { AnimeService } from '@/modules/media/anime/api/animeService'
 import type { Anime } from '@/modules/media/anime/types/types'
+import { Check, RotateCcw } from 'lucide-vue-next'
+import { useToast } from '@/common/components/ui/toast/use-toast'
 
 const props = defineProps<{
   anime: Anime | null
@@ -13,6 +15,8 @@ const emit = defineEmits<{
   (e: 'update', updatedAnime: Anime): void
   (e: 'delete', id: string): void
 }>()
+
+const { toast } = useToast()
 
 const isEditing = ref(false)
 const saving = ref(false)
@@ -72,6 +76,40 @@ function handleFileSelect(event: Event) {
   }
 }
 
+async function toggleStatus() {
+  if (!props.anime) return
+  
+  const newStatus = form.status === 'Completed' ? 'Ongoing' : 'Completed'
+  saving.value = true
+  
+  try {
+    const payload = {
+      userStats: {
+        ...(props.anime.userStats || {}),
+        status: newStatus
+      }
+    }
+
+    const updated = await AnimeService.update(props.anime.id, payload)
+    
+    toast({
+      title: 'Status Updated',
+      description: `Anime marked as ${newStatus}`,
+    })
+    
+    emit('update', updated)
+  } catch (err) {
+    console.error('Failed to toggle status', err)
+    toast({
+      title: 'Error',
+      description: 'Failed to update status',
+      variant: 'destructive',
+    })
+  } finally {
+    saving.value = false
+  }
+}
+
 async function handleSave() {
   if (!props.anime) return
   
@@ -104,11 +142,21 @@ async function handleSave() {
     }
 
     const updated = await AnimeService.update(props.anime.id, updateData)
+    
+    toast({
+      title: 'Success',
+      description: 'Anime details updated',
+    })
+    
     emit('update', updated) // Notify parent to update list
     isEditing.value = false
   } catch (err) {
     console.error('Failed to update', err)
-    alert('Failed to save changes')
+    toast({
+      title: 'Error',
+      description: 'Failed to save changes',
+      variant: 'destructive',
+    })
   } finally {
     saving.value = false
   }
@@ -126,10 +174,18 @@ async function handleDelete() {
   isDeleting.value = true
   try {
     await AnimeService.delete(props.anime.id)
+    toast({
+      title: 'Deleted',
+      description: 'Anime removed from library',
+    })
     emit('delete', props.anime.id)
   } catch (err) {
     console.error('Failed to delete', err)
-    alert('Failed to delete anime')
+    toast({
+      title: 'Error',
+      description: 'Failed to delete anime',
+      variant: 'destructive',
+    })
     isDeleting.value = false
   }
 }
@@ -307,7 +363,25 @@ async function handleDelete() {
 
         <!-- Footer Actions -->
         <div class="p-4 border-t border-border bg-secondary/10 flex justify-end gap-3">
-          <div v-if="!isEditing">
+          <div v-if="!isEditing" class="flex gap-3">
+             <button 
+               v-if="form.status !== 'Completed'"
+               @click="toggleStatus"
+               class="px-5 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-colors flex items-center gap-2"
+               :disabled="saving"
+             >
+               <Check class="w-4 h-4" />
+               <span>Mark Complete</span>
+             </button>
+             <button 
+               v-else
+               @click="toggleStatus"
+               class="px-5 py-2 rounded-lg border border-green-200 text-green-700 hover:bg-green-50 transition-colors flex items-center gap-2"
+               :disabled="saving"
+             >
+               <RotateCcw class="w-4 h-4" />
+               <span>Mark Ongoing</span>
+             </button>
              <button 
                @click="isEditing = true"
                class="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
