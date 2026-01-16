@@ -4,6 +4,7 @@ import { AnimeService } from '@/modules/media/anime/api/animeService'
 import type { Anime } from '@/modules/media/anime/types/types'
 import AnimeDetailModal from '@/modules/media/anime/components/AnimeDetailModal.vue'
 import AddNewAnimeModal from '@/modules/media/anime/components/AddNewAnimeModal.vue'
+import AnimeCard from '@/modules/media/anime/components/AnimeCard.vue'
 
 // ----------------------------------------------------
 // STATE
@@ -142,50 +143,12 @@ onMounted(() => {
 
       <!-- GRID -->
       <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
-        <div
+        <AnimeCard
           v-for="anime in library"
           :key="anime.id"
+          :anime="anime"
           @click="openDetails(anime)"
-          class="group bg-card border border-border rounded-xl overflow-hidden shadow-card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-        >
-          <!-- Image Container -->
-          <div class="relative w-full h-[260px] overflow-hidden">
-            <img 
-              :src="anime.imageUrl" 
-              class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              loading="lazy"
-            />
-            <!-- Overlay Info -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
-               <span class="text-white font-medium truncate">{{ anime.title }}</span>
-               <span class="text-xs text-white/80">Click to view details</span>
-            </div>
-            
-            <!-- Status Badge -->
-            <div class="absolute top-2 right-2 px-2 py-1 rounded text-xs font-bold shadow-sm"
-              :class="{
-                'bg-green-500 text-white': anime.userStats.status === 'Completed',
-                'bg-blue-500 text-white': anime.userStats.status === 'Planned',
-                'bg-amber-500 text-white': anime.userStats.status === 'Ongoing',
-                'bg-gray-500 text-white': !['Completed', 'Planned', 'Ongoing'].includes(anime.userStats.status)
-              }"
-            >
-              {{ anime.userStats.status }}
-            </div>
-          </div>
-
-          <!-- Content -->
-          <div class="p-4">
-            <h4 class="font-semibold text-base line-clamp-1 mb-1" :title="anime.title">{{ anime.title }}</h4>
-            <div class="flex items-center justify-between text-sm text-muted-foreground">
-              <span>{{ anime.releaseStats?.totalSeasons || 0 }} Season{{ (anime.releaseStats?.totalSeasons || 0) !== 1 ? 's' : '' }}</span>
-              <div class="flex items-center gap-1 text-accent">
-                <span>⭐</span>
-                <span>{{ anime.userStats.score }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        />
       </div>
 
       <!-- LOAD MORE -->
