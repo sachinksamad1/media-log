@@ -1,5 +1,5 @@
-import http from "@/common/api/http";
-import type { AnimeResponse, Anime } from "@/modules/media/anime/types/types";
+import http from "@common/api/http";
+import type { AnimeResponse, Anime } from "@modules/media/anime/types/types";
 
 export const AnimeService = {
   async getAll(

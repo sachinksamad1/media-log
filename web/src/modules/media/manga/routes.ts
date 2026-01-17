@@ -1,7 +1,7 @@
 export default [
   {
-    path: '/manga',
-    component: () => import('./components/MangaList.vue'),
-    // meta: { requiresAuth: false },
+    path: "/manga",
+    component: () => import("./views/MangaView.vue"),
+    meta: { requiresAuth: true },
   },
 ];

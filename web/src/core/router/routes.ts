@@ -44,11 +44,12 @@ const routes: RouteRecordRaw[] = [
     path: "/login",
     redirect: "/auth",
   },
-  // {
-  //   path: '/manga',
-  //   name: 'manga',
-  //   component: () => import('@/modules/media/manga/views/MangaDetailView.vue'),
-  // },
+  {
+    path: '/manga',
+    name: 'manga',
+    component: () => import('@/modules/media/manga/views/MangaView.vue'),
+    meta: { requiresAuth: true },
+  },
   // // ... add other routes for games, movies, etc.
 ];
 

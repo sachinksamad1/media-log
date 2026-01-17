@@ -1,15 +1,15 @@
 import { defineStore } from "pinia";
-import type { Anime } from "@modules/media/anime/types/types";
-import { AnimeService } from "@modules/media/anime/api/animeService";
+import type { Manga } from "@/modules/media/manga/types/types";
+import { MangaService } from "@/modules/media/manga/api/manga.service";
 
-interface AnimeState {
-  items: Anime[];
+interface MangaState {
+  items: Manga[];
   loading: boolean;
   error: string | null;
 }
 
-export const useAnimeStore = defineStore("anime", {
-  state: (): AnimeState => ({
+export const useMangaStore = defineStore("manga", {
+  state: (): MangaState => ({
     items: [],
     loading: false,
     error: null,
@@ -24,22 +24,22 @@ export const useAnimeStore = defineStore("anime", {
     async fetchAll() {
       this.loading = true;
       try {
-        const response = await AnimeService.getAll();
+        const response = await MangaService.getAll();
         this.items = response.data;
       } catch (err) {
-        this.error = "Failed to load anime";
+        this.error = "Failed to load manga";
       } finally {
         this.loading = false;
       }
     },
 
-    async add(payload: Partial<Anime>) {
-      const created = await AnimeService.create(payload);
+    async add(payload: Partial<Manga>) {
+      const created = await MangaService.create(payload);
       this.items.unshift(created);
     },
 
-    async update(id: string, payload: Partial<Anime>) {
-      const updated = await AnimeService.update(id, payload);
+    async update(id: string, payload: Partial<Manga>) {
+      const updated = await MangaService.update(id, payload);
       this.items = this.items.map((i) => (i.id === id ? updated : i));
     },
   },

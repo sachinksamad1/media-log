@@ -1,72 +1,239 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { MangaService } from '../services/manga.service';
-import type { Manga } from '../types';
-import MediaCard from '../../../components/ui/MediaCard.vue';
+import { ref, onMounted, watch } from 'vue'
+import { MangaService } from '@modules/media/manga/api/manga.service'
+import { useAuthStore } from '@/core/stores/useAuthStore'
+import type { Manga } from '@modules/media/manga/types/types'
+import MangaDetailModal from '@modules/media/manga/components/MangaDetailModal.vue'
+import AddNewMangaModal from '@modules/media/manga/components/AddNewMangaModal.vue'
+import MangaCard from '@modules/media/manga/components/MangaCard.vue'
+import { watchDebounced } from '@vueuse/core'
+import { Search } from 'lucide-vue-next'
 
-const mangas = ref<Manga[]>([]);
-const loading = ref(true);
-const error = ref<string | null>(null);
+// ----------------------------------------------------
+// STATE
+// ----------------------------------------------------
+const library = ref<Manga[]>([])
+const loading = ref(false)
+const error = ref<string | null>(null)
+const nextCursor = ref<string | null>(null)
+const hasMore = ref(true)
+const selectedFilter = ref('All')
+const searchQuery = ref('')
+const isSearching = ref(false)
 
-async function fetchMangas() {
-  loading.value = true;
-  error.value = null;
+// Modal State
+const selectedManga = ref<Manga | null>(null)
+const isModalOpen = ref(false)
+const isAddModalOpen = ref(false)
+
+// Config
+const LIMIT = 24
+
+// ----------------------------------------------------
+// ACTIONS
+// ----------------------------------------------------
+function setFilter(filter: string) {
+  if (selectedFilter.value === filter) return
+  selectedFilter.value = filter
+  // Reset pagination
+  nextCursor.value = null
+  hasMore.value = true
+  fetchManga()
+}
+
+function openDetails(manga: Manga) {
+  selectedManga.value = manga
+  isModalOpen.value = true
+}
+
+function handleUpdate(updated: Manga) {
+  // Reload the list to ensure data consistency
+  fetchManga()
+  selectedManga.value = updated
+}
+
+function handleCreate() {
+  // Reload list to include new item in correct order/filter
+  fetchManga()
+  isAddModalOpen.value = false
+}
+
+function handleDelete() {
+  fetchManga()
+  isModalOpen.value = false
+  selectedManga.value = null
+}
+
+// ----------------------------------------------------
+// FETCH
+// ----------------------------------------------------
+async function fetchManga(isLoadMore = false) {
+  if (loading.value || (!hasMore.value && isLoadMore)) return
+
   try {
-    mangas.value = await MangaService.getAll();
+    loading.value = true
+    const cursor = isLoadMore ? nextCursor.value || undefined : undefined
+    
+    // Pass selectedFilter
+    const response = await MangaService.getAll(LIMIT, cursor, selectedFilter.value)
+    
+    if (isLoadMore) {
+      library.value.push(...response.data)
+    } else {
+      library.value = response.data
+    }
+
+    // Update Pagination State
+    nextCursor.value = response.meta?.nextCursor || null
+    hasMore.value = !!nextCursor.value
+
   } catch (err) {
-    error.value = 'Failed to load anime library';
-    console.error(err);
+    error.value = 'Failed to load library'
+    console.error(err)
   } finally {
-    loading.value = false;
+    loading.value = false
   }
 }
 
+// Search Logic
+watchDebounced(searchQuery, async (q) => {
+  if (!q || q.trim() === '') {
+    if (isSearching.value) {
+        isSearching.value = false
+        // Reset to normal list
+        nextCursor.value = null
+        hasMore.value = true
+        fetchManga()
+    }
+    return
+  }
+  
+  isSearching.value = true
+  loading.value = true
+  try {
+     const results = await MangaService.search(q)
+     library.value = results
+     hasMore.value = false 
+  } catch (err) {
+    error.value = 'Failed to search'
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}, { debounce: 500 })
+
+const authStore = useAuthStore()
+
+// Initial Load
 onMounted(() => {
-  fetchMangas();
-});
+  if (authStore.isInitialLoading) {
+    const unwatch = watch(
+      () => authStore.isInitialLoading,
+      (loading) => {
+        if (!loading) {
+          fetchManga()
+          unwatch()
+        }
+      }
+    )
+  } else {
+    fetchManga()
+  }
+})
 </script>
 
 <template>
-  <div class="space-y-6">
-    <div class="flex items-center justify-between">
-      <h1 class="text-3xl font-display font-bold text-foreground">Manga Library</h1>
-      <span class="text-muted-foreground">{{ mangas.length }} items</span>
-    </div>
+  <div class="min-h-screen bg-background text-foreground w-full">
+    <div class="mx-auto w-full max-w-7xl px-2 lg:px-4 py-2">
 
-    <!-- Error State -->
-    <div v-if="error" class="bg-destructive/10 text-destructive p-4 rounded-lg flex items-center gap-3">
-      <span>{{ error }}</span>
-      <button @click="fetchMangas" class="text-sm underline hover:no-underline">Retry</button>
-    </div>
+      <!-- HEADER / FILTERS -->
+      <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+        <div class="flex items-center gap-4">
+          <h3 class="text-xl font-semibold">My Manga Library</h3>
+          <button 
+            @click="isAddModalOpen = true"
+            class="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity flex items-center gap-1"
+          >
+            <span>+</span> Add Manga
+          </button>
+        </div>
 
-    <!-- Loading State -->
-    <div v-if="loading" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-      <div v-for="i in 10" :key="i" class="space-y-3">
-        <div class="aspect-[2/3] bg-secondary/50 rounded-lg animate-pulse" />
-        <div class="h-4 w-3/4 bg-secondary/50 rounded animate-pulse" />
-        <div class="h-3 w-1/2 bg-secondary/30 rounded animate-pulse" />
+        <!-- SEARCH BAR -->
+        <div class="relative w-full sm:max-w-xs order-last sm:order-none mt-4 sm:mt-0">
+          <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input 
+            v-model="searchQuery" 
+            class="w-full pl-9 pr-4 py-2 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm" 
+            placeholder="Search manga..." 
+          />
+        </div>
+        
+        <div class="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
+          <button 
+            v-for="filter in ['All', 'Completed', 'Planned', 'Ongoing']" 
+            :key="filter"
+            @click="setFilter(filter)"
+            class="px-4 py-1.5 rounded-md text-sm font-medium transition-all"
+            :class="selectedFilter === filter ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'"
+          >
+            {{ filter }}
+          </button>
+        </div>
       </div>
+
+      <!-- ERROR STATE -->
+      <div v-if="error" class="text-destructive text-center py-8">
+        {{ error }}
+        <button 
+          @click="fetchManga()" 
+          class="block mx-auto mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90"
+        >
+          Retry
+        </button>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div v-else-if="!loading && !authStore.isInitialLoading && library.length === 0" class="text-center py-12 text-muted">
+        No manga found in your library.
+      </div>
+
+      <!-- GRID -->
+      <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
+        <MangaCard
+          v-for="manga in library"
+          :key="manga.id"
+          :manga="manga"
+          @click="openDetails(manga)"
+        />
+      </div>
+
+      <!-- LOAD MORE -->
+      <div v-if="hasMore" class="mt-12 flex justify-center">
+        <button
+          @click="fetchManga(true)"
+          :disabled="loading"
+          class="px-8 py-3 bg-secondary text-secondary-foreground rounded-full font-medium shadow-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {{ loading ? 'Loading...' : 'Load More' }}
+        </button>
+      </div>
+
     </div>
 
-    <!-- Empty State -->
-    <div v-else-if="mangas.length === 0" class="text-center py-12">
-      <p class="text-muted-foreground">No manga found in your library.</p>
-    </div>
+    <!-- Modals -->
+    <MangaDetailModal 
+      v-if="selectedManga"
+      :manga="selectedManga"
+      :is-open="isModalOpen"
+      @close="isModalOpen = false"
+      @update="handleUpdate"
+      @delete="handleDelete"
+    />
 
-    <!-- Content Grid -->
-    <div v-else class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-      <MediaCard 
-        v-for="manga in mangas" 
-        :key="manga.id" 
-        :media="manga"
-      >
-        <template #meta>
-          <div class="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-            <span>{{ manga.chaptersRead }} / {{ manga.totalChapters || '?' }} CH</span>
-            <span>{{ manga.author }}</span>
-          </div>
-        </template>
-      </MediaCard>
-    </div>
+    <AddNewMangaModal
+      :is-open="isAddModalOpen"
+      @close="isAddModalOpen = false"
+      @created="handleCreate"
+    />
   </div>
 </template>
