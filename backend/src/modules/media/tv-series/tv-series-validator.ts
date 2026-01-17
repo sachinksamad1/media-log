@@ -1,6 +1,5 @@
+import { TvSeriesSchema } from '@modules/media/tv-series/tv-series-schema.js';
 import { z } from 'zod';
-
-import { TvSeriesSchema } from './tv-series-schema.js';
 
 // 1. Validation for CREATE (POST)
 export const createTvSeriesValidator = z.object({
@@ -24,5 +23,15 @@ export const updateTvSeriesValidator = z.object({
 export const tvSeriesIdValidator = z.object({
   params: z.object({
     id: z.string().min(1),
+  }),
+});
+
+// 4. Validation for COMPLETE (PATCH)
+export const completeTvSeriesValidator = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+  body: z.object({
+    score: z.number().min(0).max(10).optional(),
   }),
 });

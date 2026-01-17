@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { getHealth } from './health-contrtoller.js';
+import { getHealth } from '@/platform/health-contrtoller.js';
 
 const router = Router();
 router.get('/', getHealth);

@@ -1,6 +1,5 @@
-import type { MediaDTO } from '../../../common/media/media-dto.js';
-
-import type { Movie } from './movie-schema.js';
+import type { MediaDTO } from '@common/media/media-dto.js';
+import type { Movie } from '@modules/media/movie/movie-schema.js';
 
 /**
  * Response DTO: Sent to the client

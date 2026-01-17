@@ -1,11 +1,10 @@
-import type { MediaRepository } from '../../common/media/media-repository.js';
-import type { BaseMediaType } from '../../common/media/media-types.js';
-
+import type { MediaRepository } from '@common/media/media-repository.js';
+import type { BaseMediaType } from '@common/media/media-types.js';
 import type {
   LibraryStats,
   LibrarySummary,
   MediaStatus,
-} from './dashboard-types.js';
+} from '@modules/dashboard/dashboard-types.js';
 
 export class DashboardService {
   constructor(

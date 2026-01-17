@@ -1,8 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
 
-import { auth } from '../../config/firebase.js';
-import { ResponseUtil } from '../utils/api-response.js';
-import { catchAsync } from '../utils/catch-async.js';
+import { ResponseUtil } from '@/common/utils/api-response.js';
+import { catchAsync } from '@/common/utils/catch-async.js';
+import { auth } from '@/config/firebase.js';
 
 export const protect = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

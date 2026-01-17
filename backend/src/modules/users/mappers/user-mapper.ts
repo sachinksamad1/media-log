@@ -1,7 +1,6 @@
+import type { UserDto } from '@modules/users/dtos/user-dto.js';
+import type { User } from '@modules/users/users-schema.js';
 import type { Timestamp } from 'firebase-admin/firestore';
-
-import type { UserDto } from '../dtos/user-dto.js';
-import type { User } from '../users-schema.js';
 
 export class UserMapper {
   static toDto(user: User): UserDto {

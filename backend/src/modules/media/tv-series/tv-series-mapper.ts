@@ -1,7 +1,6 @@
-import { MediaMapper } from '../../../common/media/media-mapper.js';
-
-import type { TvSeriesDTO } from './tv-series-dto.js';
-import type { TvSeries } from './tv-series-schema.js';
+import { MediaMapper } from '@common/media/media-mapper.js';
+import type { TvSeriesDTO } from '@modules/media/tv-series/tv-series-dto.js';
+import type { TvSeries } from '@modules/media/tv-series/tv-series-schema.js';
 
 export class TvSeriesMapper extends MediaMapper<TvSeries, TvSeriesDTO> {
   protected mapSpecializedFields(entity: TvSeries): Partial<TvSeriesDTO> {

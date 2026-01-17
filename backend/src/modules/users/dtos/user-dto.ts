@@ -4,8 +4,8 @@ export interface UserDto {
   email: string;
   displayName?: string;
   avatarImg?: string;
-  preferences?: any;
-  privacy?: any;
+  preferences?: unknown;
+  privacy?: unknown;
   createdAt: string; // ISO String
   updatedAt: string; // ISO String
   joinedDate: string; // Human Readable

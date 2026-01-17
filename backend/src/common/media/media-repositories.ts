@@ -1,11 +1,11 @@
-import { AnimeRepository } from './modules/media/anime/anime-repo.js';
-import { FictionRepository } from './modules/media/fiction/fiction-repo.js';
-import { GameRepository } from './modules/media/game/game-repo.js';
-import { LightNovelRepository } from './modules/media/light-novel/light-novel-repo.js';
-import { MangaRepository } from './modules/media/manga/manga-repo.js';
-import { MovieRepository } from './modules/media/movie/movie-repo.js';
-import { NonFictionRepository } from './modules/media/non-fiction/non-fiction-repo.js';
-import { TvSeriesRepository } from './modules/media/tv-series/tv-series-repo.js';
+import { AnimeRepository } from '@/modules/media/anime/anime-repo.js';
+import { FictionRepository } from '@/modules/media/fiction/fiction-repo.js';
+import { GameRepository } from '@/modules/media/game/game-repo.js';
+import { LightNovelRepository } from '@/modules/media/light-novel/light-novel-repo.js';
+import { MangaRepository } from '@/modules/media/manga/manga-repo.js';
+import { MovieRepository } from '@/modules/media/movie/movie-repo.js';
+import { NonFictionRepository } from '@/modules/media/non-fiction/non-fiction-repo.js';
+import { TvSeriesRepository } from '@/modules/media/tv-series/tv-series-repo.js';
 
 export const animeRepository = new AnimeRepository();
 export const mangaRepository = new MangaRepository();

@@ -1,10 +1,13 @@
 import type { CollectionReference } from 'firebase-admin/firestore';
 
-import { db } from '../../config/firebase.js';
-import { AppError } from '../errors/app-error.js';
-import { StorageHelper } from '../utils/firestorage-helper.js';
-
 import type { MediaStatus, BaseMediaType } from './media-types.js';
+
+import { AppError } from '@/common/errors/app-error.js';
+import { StorageHelper } from '@/common/utils/firestorage-helper.js';
+import { db } from '@/config/firebase.js';
+
+
+
 
 export abstract class MediaRepository<T extends BaseMediaType> {
   public readonly collectionName: string;
@@ -53,7 +56,11 @@ export abstract class MediaRepository<T extends BaseMediaType> {
       );
     }
 
-    const payload: any = {
+    const payload: T & {
+      userId: string;
+      titleLower?: string;
+      searchKeywords?: string[];
+    } = {
       ...data,
       userId, // Associate with user
       imageUrl,
@@ -92,7 +99,10 @@ export abstract class MediaRepository<T extends BaseMediaType> {
       throw new AppError('Unauthorized access to this resource', 403);
     }
 
-    const updateData: any = {
+    const updateData: Partial<T> & {
+      titleLower?: string;
+      searchKeywords?: string[];
+    } = {
       ...data,
       updatedAt: new Date(),
     };

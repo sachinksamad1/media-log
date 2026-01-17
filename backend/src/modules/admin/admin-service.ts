@@ -1,5 +1,5 @@
-import { AppError } from '../../common/errors/app-error.js';
-import { db, storage } from '../../config/firebase.js';
+import { AppError } from '@/common/errors/app-error.js';
+import { db, storage } from '@/config/firebase.js';
 
 export interface CleanupResult {
   collection: string;
@@ -41,7 +41,7 @@ export class AdminService {
       );
 
       return { collection: collectionName, deleted, failed };
-    } catch (error) {
+    } catch {
       throw new AppError(
         `Cleanup failed for collection '${collectionName}'`,
         500,

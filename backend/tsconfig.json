@@ -18,9 +18,16 @@
     "rootDir": "./src",
     "outDir": "./dist",
 
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["*"]
+      "@media/*": ["src/modules/media/*"],
+      "@modules/*": ["src/modules/*"],
+      "@common/*": ["src/common/*"],
+      "@config/*": ["src/config/*"],
+      "@platform/*": ["src/platform/*"],
+      "@routes": ["src/*"],
+      "@app": ["src/*"],
+      "@/*": ["src/*"]
     }
   },
   "ts-node": {

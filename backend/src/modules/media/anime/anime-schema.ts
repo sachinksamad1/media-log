@@ -1,7 +1,5 @@
-// src/modules/media/anime/anime-schema.ts
+import { MediaSchema } from '@common/media/media-schema.js';
 import { z } from 'zod';
-
-import { MediaSchema } from '../../../common/media/media-schema.js';
 
 export const AnimeSchema = MediaSchema.extend({
   genre: z.array(z.string()).default([]),

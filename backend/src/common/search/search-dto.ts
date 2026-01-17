@@ -1,4 +1,4 @@
-import type { MediaDTO } from '../media/media-dto.js';
+import type { MediaDTO } from '@/common/media/media-dto.js';
 
 export interface GlobalSearchResponse extends MediaDTO {
   mediaType: string;

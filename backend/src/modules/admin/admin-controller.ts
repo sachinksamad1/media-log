@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 
-import { AdminService } from './admin-service.js';
+import { AdminService } from '@/modules/admin/admin-service.js';
 
 export class AdminController {
   private readonly adminService = new AdminService();

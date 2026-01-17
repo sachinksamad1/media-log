@@ -1,6 +1,5 @@
+import { MangaSchema } from '@modules/media/manga/manga-schema.js';
 import { z } from 'zod';
-
-import { MangaSchema } from './manga-schema.js';
 
 // 1. Validation for CREATE (POST)
 export const createMangaValidator = z.object({
@@ -24,5 +23,15 @@ export const updateMangaValidator = z.object({
 export const mangaIdValidator = z.object({
   params: z.object({
     id: z.string().min(1),
+  }),
+});
+
+// 4. Validation for COMPLETE (PATCH)
+export const completeMangaValidator = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+  body: z.object({
+    score: z.number().min(0).max(10).optional(),
   }),
 });

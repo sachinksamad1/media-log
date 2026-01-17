@@ -1,6 +1,5 @@
+import { FictionSchema } from '@modules/media/fiction/fiction-schema.js';
 import { z } from 'zod';
-
-import { FictionSchema } from './fiction-schema.js';
 
 // 1. Validation for CREATE (POST)
 export const createFictionValidator = z.object({
@@ -24,5 +23,15 @@ export const updateFictionValidator = z.object({
 export const fictionIdValidator = z.object({
   params: z.object({
     id: z.string().min(1),
+  }),
+});
+
+// 4. Validation for COMPLETE (PATCH)
+export const completeFictionValidator = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+  body: z.object({
+    score: z.number().min(0).max(10).optional(),
   }),
 });

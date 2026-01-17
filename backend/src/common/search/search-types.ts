@@ -1,4 +1,4 @@
-import type { MediaStatus } from '../media/media-types.js';
+import type { MediaStatus } from '@/common/media/media-types.js';
 
 export interface SearchableMedia {
   id: string;

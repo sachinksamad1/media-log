@@ -1,7 +1,7 @@
-import { AppError } from '../errors/app-error.js';
-
 import type { MediaRepository } from './media-repository.js';
 import type { BaseMediaType } from './media-types.js';
+
+import { AppError } from '@/common/errors/app-error.js';
 
 export abstract class MediaService<T extends BaseMediaType> {
   protected repository: MediaRepository<T>;

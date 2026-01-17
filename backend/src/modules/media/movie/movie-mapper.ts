@@ -1,7 +1,6 @@
-import { MediaMapper } from '../../../common/media/media-mapper.js';
-
-import type { MovieDTO } from './movie-dto.js';
-import type { Movie } from './movie-schema.js';
+import { MediaMapper } from '@common/media/media-mapper.js';
+import type { MovieDTO } from '@modules/media/movie/movie-dto.js';
+import type { Movie } from '@modules/media/movie/movie-schema.js';
 
 export class MovieMapper extends MediaMapper<Movie, MovieDTO> {
   protected mapSpecializedFields(entity: Movie): Partial<MovieDTO> {

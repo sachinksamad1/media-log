@@ -1,40 +1,54 @@
+import { MediaController } from '@common/media/media-controller.js';
+import { ResponseUtil } from '@common/utils/api-response.js';
+import { catchAsync } from '@common/utils/catch-async.js';
+import { GameMapper } from '@modules/media/game/game-mapper.js';
+import { GameService } from '@modules/media/game/game-service.js';
 import type { Request, Response } from 'express';
 
-import { MediaController } from '../../../common/media/media-controller.js';
-import { catchAsync } from '../../../common/utils/catch-async.js';
+export class GameController extends MediaController {
+  private service = new GameService();
+  private mapper = new GameMapper();
 
-import { GamesMapper } from './game-mapper.js';
-import { GamesService } from './game-service.js';
-
-export class GamesController extends MediaController {
-  private service = new GamesService();
-  private mapper = new GamesMapper();
-
-  // Create Fiction Entry
+  // Create game
   create = catchAsync(async (req: Request, res: Response) => {
-    const result = await this.service.create(req.body);
-    this.sendCreated(res, this.mapper.toDto(result), 'Game added to library');
+    const file = req.file;
+    const userId = req.user!.uid;
+    const data =
+      typeof req.body.data === 'string' ? JSON.parse(req.body.data) : req.body;
+    const result = await this.service.create(data, userId, file);
+    this.sendCreated(res, this.mapper.toDto(result), 'Game added with image');
   });
 
-  // Get all Fiction
+  // Update game
+  update = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const userId = req.user!.uid;
+    const file = req.file;
+    const data =
+      typeof req.body.data === 'string' ? JSON.parse(req.body.data) : req.body;
+
+    const result = await this.service.update(id, data, userId, file);
+    this.sendSuccess(res, this.mapper.toDto(result), 'Game updated');
+  });
+
+  // Get all games
   getAll = catchAsync(async (req: Request, res: Response) => {
-    const { limit, lastDocId } = req.query;
-    const result = await this.service.getAll(
-      Number(limit) || 10,
-      lastDocId as string,
-    );
-
-    // Map each item in the data array to its DTO version
+    const limit = parseInt(req.query.limit as string) || 20;
+    const cursor = req.query.cursor as string;
+    const status = req.query.status as string;
+    const userId = req.user!.uid;
+    const result = await this.service.getAll(userId, limit, cursor, status);
     const mappedData = this.mapper.toDtoList(result.data);
-
-    this.sendSuccess(res, mappedData, 'Library fetched', {
+    ResponseUtil.send(res, 200, mappedData, 'Game library fetched', {
       nextCursor: result.nextCursor,
+      count: mappedData.length,
     });
   });
 
-  // Get Games by id
+  // Get game by id
   getById = catchAsync(async (req: Request, res: Response) => {
-    const result = await this.service.getById(req.params.id as string);
+    const userId = req.user!.uid;
+    const result = await this.service.getById(req.params.id as string, userId);
     this.sendSuccess(res, this.mapper.toDto(result), 'Game fetched');
   });
 
@@ -42,27 +56,28 @@ export class GamesController extends MediaController {
   complete = catchAsync(async (req: Request, res: Response) => {
     const score =
       req.body.score !== undefined ? Number(req.body.score) : undefined;
-    const result = await this.service.completeGame(
+    const userId = req.user!.uid;
+
+    const result = await this.service.completeSeries(
       req.params.id as string,
+      userId,
       score,
     );
-    this.sendSuccess(res, this.mapper.toDto(result), 'Game marked as complete');
+    this.sendSuccess(
+      res,
+      this.mapper.toDto(result),
+      'Game marked as complete',
+    );
   });
 
-  // Delete Game Entry
+  // Delete game
   delete = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
+    const userId = req.user!.uid;
 
-    await this.service.delete(id);
+    await this.service.delete(id, userId);
 
     // Return a consistent success message
     this.sendSuccess(res, null, `Entry with ID ${id} deleted successfully`);
-  });
-
-  // Update Game
-  update = catchAsync(async (req: Request, res: Response) => {
-    const id = req.params.id as string;
-    const result = await this.service.update(id, req.body);
-    this.sendSuccess(res, this.mapper.toDto(result), 'Game updated');
   });
 }

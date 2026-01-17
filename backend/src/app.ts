@@ -1,3 +1,4 @@
+import { globalErrorHandler } from '@common/errors/error-handler.js';
 import cors from 'cors';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
@@ -5,7 +6,6 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import routes from './app.routes.js';
-import { globalErrorHandler } from './common/errors/error-handler.js';
 
 const app = express();
 

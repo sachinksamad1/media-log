@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express';
 
-import { ResponseUtil } from '../utils/api-response.js';
-
-import { GlobalSearchService } from './search-service.js';
+import { GlobalSearchService } from '@/common/search/search-service.js';
+import { ResponseUtil } from '@/common/utils/api-response.js';
 
 export const globalSearch = async (req: Request, res: Response) => {
   // Extract 'q' for the string and 'type' for the media category

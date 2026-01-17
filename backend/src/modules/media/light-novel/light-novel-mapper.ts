@@ -1,7 +1,6 @@
-import { MediaMapper } from '../../../common/media/media-mapper.js';
-
-import type { LightNovelDTO } from './light-novel-dto.js';
-import type { LightNovel } from './light-novel-schema.js';
+import { MediaMapper } from '@common/media/media-mapper.js';
+import type { LightNovelDTO } from '@modules/media/light-novel/light-novel-dto.js';
+import type { LightNovel } from '@modules/media/light-novel/light-novel-schema.js';
 
 export class LightNovelMapper extends MediaMapper<LightNovel, LightNovelDTO> {
   protected mapSpecializedFields(entity: LightNovel): Partial<LightNovelDTO> {

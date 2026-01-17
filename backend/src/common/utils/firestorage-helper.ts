@@ -1,7 +1,6 @@
+import { storage } from '@config/firebase.js';
 import sharp from 'sharp';
 import { v4 as uuidv4 } from 'uuid';
-
-import { storage } from '../../config/firebase.js';
 
 export class StorageHelper {
   private static bucket = storage.bucket();

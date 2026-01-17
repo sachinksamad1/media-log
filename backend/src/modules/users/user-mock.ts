@@ -1,4 +1,4 @@
-import { UserSchema, type User } from "./users-schema.js";
+import { UserSchema, type User } from '@modules/users/users-schema.js';
 
 /**
  * Generates a dummy user object that satisfies UserSchema.

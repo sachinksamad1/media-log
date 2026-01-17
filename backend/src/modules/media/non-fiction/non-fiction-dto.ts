@@ -1,6 +1,5 @@
-import type { MediaDTO } from '../../../common/media/media-dto.js';
-
-import type { NonFiction } from './non-fiction-schema.js';
+import type { MediaDTO } from '@common/media/media-dto.js';
+import type { NonFiction } from '@modules/media/non-fiction/non-fiction-schema.js';
 
 export interface NonFictionDTO extends MediaDTO {
   author?: string;

@@ -1,16 +1,14 @@
-import { Router } from 'express';
-
-import { protect } from '../../../common/middlewares/auth-middleware.js';
-import { validate } from '../../../common/validators/validate-request.js';
-import { upload } from '../../../config/firestorage.js';
-
-import { AnimeController } from './anime-controller.js';
+import { protect } from '@common/middlewares/auth-middleware.js';
+import { validate } from '@common/validators/validate-request.js';
+import { upload } from '@config/firestorage.js';
+import { AnimeController } from '@modules/media/anime/anime-controller.js';
 import {
-  createAnimeValidator,
-  updateAnimeValidator,
   animeIdValidator,
   completeAnimeValidator,
-} from './anime-validator.js';
+  createAnimeValidator,
+  updateAnimeValidator,
+} from '@modules/media/anime/anime-validator.js';
+import { Router } from 'express';
 
 const router = Router();
 const controller = new AnimeController();

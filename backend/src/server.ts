@@ -1,6 +1,7 @@
+import { validateEnv } from '@config/env-validator.js';
+import { checkFirestoreConnection } from '@config/firestore-status.js';
+
 import app from './app.js';
-import { validateEnv } from './config/env-validator.js';
-import { checkFirestoreConnection } from './config/firestore-status.js';
 
 const PORT = Number(process.env.PORT ?? 3000);
 

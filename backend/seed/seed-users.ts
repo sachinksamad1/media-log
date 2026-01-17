@@ -1,13 +1,13 @@
-import { db } from "../src/config/firebase.js";
-
 import admin from "firebase-admin";
 
-import { createMockUser } from "../src/modules/users/user-mock.js";
 import { UserSchema } from "../../../src/modules/users/user-schema.js";
+import { db } from "../src/config/firebase.js";
+import { createMockUser } from "../src/modules/users/user-mock.js";
 
 
 
 const seedDummyData = async () => {
+  // eslint-disable-next-line no-console
   console.log("🚀 Starting database seeding...");
 
   const userIds = ["user_alpha", "user_beta", "user_gamma"];
@@ -32,6 +32,7 @@ const seedDummyData = async () => {
         updatedAt: admin.firestore.FieldValue.serverTimestamp(),
       });
 
+      // eslint-disable-next-line no-console
       console.log(`✅ Seeded User Profile: ${dummyUser.username}`);
 
       // 3. Create dummy Anime for this specific user to check Ownership
@@ -43,14 +44,17 @@ const seedDummyData = async () => {
       });
 
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(`❌ Failed to seed ${id}:`, error);
     }
   }
 
+  // eslint-disable-next-line no-console
   console.log("⭐ Seeding completed successfully!");
 };
 
 seedDummyData().catch((error) => {
+  // eslint-disable-next-line no-console
   console.error("Seeding failed:", error);
   process.exitCode = 1;
 });

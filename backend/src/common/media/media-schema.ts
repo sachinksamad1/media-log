@@ -1,9 +1,8 @@
 import { z } from 'zod';
 
-// Shared Enums to keep status strings consistent across the app
 export const UserStatusEnum = z.enum([
   'Planned',
-  'Watching', // or "Reading"/"Playing" handled by mapper
+  'Watching',
   'Ongoing',
   'Completed',
   'Dropped',

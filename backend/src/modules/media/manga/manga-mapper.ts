@@ -1,7 +1,7 @@
-import { MediaMapper } from '../../../common/media/media-mapper.js';
+import { MediaMapper } from '@common/media/media-mapper.js';
 
-import type { MangaDTO } from './manga-dto.js';
-import type { Manga } from './manga-schema.js';
+import type { MangaDTO } from '@/modules/media/manga/manga-dto.js';
+import type { Manga } from '@/modules/media/manga/manga-schema.js';
 
 export class MangaMapper extends MediaMapper<Manga, MangaDTO> {
   protected mapSpecializedFields(entity: Manga): Partial<MangaDTO> {

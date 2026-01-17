@@ -1,6 +1,5 @@
-import type { MediaDTO } from '../../../common/media/media-dto.js';
-
-import type { TvSeries } from './tv-series-schema.js';
+import type { MediaDTO } from '@common/media/media-dto.js';
+import type { TvSeries } from '@modules/media/tv-series/tv-series-schema.js';
 
 export interface TvSeriesDTO extends MediaDTO {
   directors: string[];

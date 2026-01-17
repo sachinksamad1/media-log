@@ -1,6 +1,5 @@
-import type { MediaDTO } from '../../../common/media/media-dto.js';
-
-import type { LightNovel } from './light-novel-schema.js';
+import type { MediaDTO } from '@common/media/media-dto.js';
+import type { LightNovel } from '@modules/media/light-novel/light-novel-schema.js';
 
 export interface LightNovelDTO extends MediaDTO {
   author: string;

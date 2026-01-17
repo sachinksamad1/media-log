@@ -1,10 +1,8 @@
+import { MediaService } from '@common/media/media-service.js';
+import { AnimeRepository } from '@modules/media/anime/anime-repo.js';
+import type { AnimeSchema } from '@modules/media/anime/anime-schema.js';
 import type { z } from 'zod';
 import 'multer';
-
-import { MediaService } from '../../../common/media/media-service.js';
-
-import { AnimeRepository } from './anime-repo.js';
-import type { AnimeSchema } from './anime-schema.js';
 
 export class AnimeService extends MediaService<z.infer<typeof AnimeSchema>> {
   protected repository: AnimeRepository;

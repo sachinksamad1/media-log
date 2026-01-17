@@ -1,9 +1,8 @@
+import { GameSchema } from '@modules/media/game/game-schema.js';
 import { z } from 'zod';
 
-import { GameSchema } from './game-schema.js';
-
 // 1. Validation for CREATE (POST)
-export const createGamesValidator = z.object({
+export const createGameValidator = z.object({
   body: GameSchema.omit({
     id: true,
     uid: true,
@@ -13,7 +12,7 @@ export const createGamesValidator = z.object({
 });
 
 // 2. Validation for UPDATE (PATCH)
-export const updateGamesValidator = z.object({
+export const updateGameValidator = z.object({
   params: z.object({
     id: z.string().min(1, 'ID parameter is required'),
   }),
@@ -21,8 +20,18 @@ export const updateGamesValidator = z.object({
 });
 
 // 3. Validation for GET/DELETE by ID
-export const gamesIdValidator = z.object({
+export const gameIdValidator = z.object({
   params: z.object({
     id: z.string().min(1),
+  }),
+});
+
+// 4. Validation for COMPLETE (PATCH)
+export const completeGameValidator = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+  body: z.object({
+    score: z.number().min(0).max(10).optional(),
   }),
 });

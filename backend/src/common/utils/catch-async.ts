@@ -1,6 +1,8 @@
 import type { Request, Response, NextFunction } from 'express';
 
-export const catchAsync = (fn: Function) => {
+export const catchAsync = (
+  fn: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
+) => {
   return (req: Request, res: Response, next: NextFunction) => {
     fn(req, res, next).catch(next); // Passes error to Global Error Handler
   };

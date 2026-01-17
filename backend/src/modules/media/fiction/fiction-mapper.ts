@@ -1,7 +1,6 @@
-import { MediaMapper } from '../../../common/media/media-mapper.js';
-
-import type { FictionDTO } from './fiction-dto.js';
-import type { Fiction } from './fiction-schema.js';
+import { MediaMapper } from '@common/media/media-mapper.js';
+import type { FictionDTO } from '@modules/media/fiction/fiction-dto.js';
+import type { Fiction } from '@modules/media/fiction/fiction-schema.js';
 
 export class FictionMapper extends MediaMapper<Fiction, FictionDTO> {
   protected mapSpecializedFields(entity: Fiction): Partial<FictionDTO> {

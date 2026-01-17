@@ -1,6 +1,5 @@
-import type { MediaDTO } from '../../../common/media/media-dto.js';
-
-import type { Games } from './game-schema.js';
+import type { MediaDTO } from '@common/media/media-dto.js';
+import type { Games } from '@modules/media/game/game-schema.js';
 
 export interface GameDTO extends MediaDTO {
   genres: string[];

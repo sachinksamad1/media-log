@@ -1,7 +1,6 @@
-import { MediaMapper } from '../../../common/media/media-mapper.js';
-
-import type { NonFictionDTO } from './non-fiction-dto.js';
-import type { NonFiction } from './non-fiction-schema.js';
+import { MediaMapper } from '@common/media/media-mapper.js';
+import type { NonFictionDTO } from '@modules/media/non-fiction/non-fiction-dto.js';
+import type { NonFiction } from '@modules/media/non-fiction/non-fiction-schema.js';
 
 export class NonFictionMapper extends MediaMapper<NonFiction, NonFictionDTO> {
   protected mapSpecializedFields(entity: NonFiction): Partial<NonFictionDTO> {

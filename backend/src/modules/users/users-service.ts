@@ -1,8 +1,7 @@
-import { emailService } from '../../common/email/email.service.js';
-import { auth, db } from '../../config/firebase.js';
-
-import { UserSchema } from './users-schema.js';
-import type { User } from './users-schema.js';
+import { emailService } from '@common/email/email.service.js';
+import { auth, db } from '@config/firebase.js';
+import { UserSchema } from '@modules/users/users-schema.js';
+import type { User } from '@modules/users/users-schema.js';
 
 const USERS_COLLECTION = 'users';
 

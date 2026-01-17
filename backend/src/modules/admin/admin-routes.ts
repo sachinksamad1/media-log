@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { AdminController } from './admin-controller.js';
+import { AdminController } from '@/modules/admin/admin-controller.js';
 
 const router = Router();
 const controller = new AdminController();

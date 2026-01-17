@@ -1,13 +1,11 @@
-import { Router } from 'express';
-
-import { validate } from '../../../common/validators/validate-request.js';
-
-import { LightNovelController } from './light-novel-controller.js';
+import { validate } from '@common/validators/validate-request.js';
+import { LightNovelController } from '@modules/media/light-novel/light-novel-controller.js';
 import {
   createLightNovelValidator,
   updateLightNovelValidator,
   lightNovelIdValidator,
-} from './light-novel-validator.js';
+} from '@modules/media/light-novel/light-novel-validator.js';
+import { Router } from 'express';
 
 const router = Router();
 const controller = new LightNovelController();

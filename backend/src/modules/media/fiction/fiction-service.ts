@@ -1,20 +1,51 @@
-import { MediaService } from '../../../common/media/media-service.js';
+import { MediaService } from '@common/media/media-service.js';
+import { FictionRepository } from '@modules/media/fiction/fiction-repo.js';
+import type { FictionSchema } from '@modules/media/fiction/fiction-schema.js';
+import type { z } from 'zod';
+import 'multer';
 
-import { FictionRepository } from './fiction-repo.js';
-import type { Fiction } from './fiction-schema.js';
+export class FictionService extends MediaService<z.infer<typeof FictionSchema>> {
+  protected repository: FictionRepository;
 
-export class FictionService extends MediaService<Fiction> {
   constructor() {
-    super(new FictionRepository());
+    const repo = new FictionRepository();
+    super(repo);
+    this.repository = repo;
   }
 
-  // Mark as completed
-  completeSeries(id: string, score: number = 7) {
-    return this.update(id, {
-      userStats: {
-        status: 'Completed',
-        score,
+  async create(
+    data: z.infer<typeof FictionSchema>,
+    userId: string,
+    file?: Express.Multer.File,
+  ) {
+    return this.repository.createWithImage(data, userId, file);
+  }
+  async update(
+    id: string,
+    data: Partial<z.infer<typeof FictionSchema>>,
+    userId: string,
+    file?: Express.Multer.File,
+  ) {
+    return this.repository.updateWithImage(id, data, userId, file);
+  }
+
+  async completeSeries(id: string, userId: string, score?: number) {
+    const fiction = await this.getById(id, userId);
+
+    // Use provided score, or existing score, or default to 0
+    const finalScore =
+      score !== undefined ? score : fiction.userStats?.score || 0;
+
+    return this.update(
+      id,
+      {
+        userStats: {
+          ...(fiction.userStats || {}),
+          status: 'Completed',
+          score: finalScore,
+        },
       },
-    });
+      userId,
+    );
   }
 }

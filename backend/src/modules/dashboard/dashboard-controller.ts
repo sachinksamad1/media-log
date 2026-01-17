@@ -1,6 +1,5 @@
+import type { DashboardService } from '@modules/dashboard/dashboard-service.js';
 import type { Request, Response, NextFunction } from 'express';
-
-import type { DashboardService } from './dashboard-service.js';
 
 export class DashboardController {
   constructor(private dashboardService: DashboardService) {}

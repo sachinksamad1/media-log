@@ -1,6 +1,5 @@
+import { MovieSchema } from '@modules/media/movie/movie-schema.js';
 import { z } from 'zod';
-
-import { MovieSchema } from './movie-schema.js';
 
 // 1. Validation for CREATE (POST)
 export const createMovieValidator = z.object({
@@ -24,5 +23,15 @@ export const updateMovieValidator = z.object({
 export const movieIdValidator = z.object({
   params: z.object({
     id: z.string().min(1),
+  }),
+});
+
+// 4. Validation for COMPLETE (PATCH)
+export const completeMovieValidator = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+  body: z.object({
+    score: z.number().min(0).max(10).optional(),
   }),
 });

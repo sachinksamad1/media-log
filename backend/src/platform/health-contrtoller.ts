@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 
-import { checkHealth } from './health-service.js';
+import { checkHealth } from '@/platform/health-service.js';
 
 export async function getHealth(req: Request, res: Response) {
   try {

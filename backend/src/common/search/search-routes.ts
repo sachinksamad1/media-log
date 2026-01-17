@@ -1,9 +1,8 @@
 import { Router } from 'express';
 
-import { protect } from '../middlewares/auth-middleware.js';
-import { catchAsync } from '../utils/catch-async.js';
-
-import { globalSearch } from './search-controller.js';
+import { protect } from '@/common/middlewares/auth-middleware.js';
+import { globalSearch } from '@/common/search/search-controller.js';
+import { catchAsync } from '@/common/utils/catch-async.js';
 
 const router = Router();
 

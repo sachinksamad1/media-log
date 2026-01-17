@@ -1,6 +1,6 @@
-import type { MediaDTO } from '../../../common/media/media-dto.js';
+import type { MediaDTO } from '@common/media/media-dto.js';
+import type { Fiction } from '@modules/media/fiction/fiction-schema.js';
 
-import type { Fiction } from './fiction-schema.js';
 export interface FictionDTO extends MediaDTO {
   author?: string;
   genres: string[];

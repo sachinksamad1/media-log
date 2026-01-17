@@ -1,40 +1,61 @@
+import { MediaController } from '@common/media/media-controller.js';
+import { ResponseUtil } from '@common/utils/api-response.js';
+import { catchAsync } from '@common/utils/catch-async.js';
+import { MovieMapper } from '@modules/media/movie/movie-mapper.js';
+import { MovieService } from '@modules/media/movie/movie-service.js';
 import type { Request, Response } from 'express';
-
-import { MediaController } from '../../../common/media/media-controller.js';
-import { catchAsync } from '../../../common/utils/catch-async.js';
-
-import { MovieMapper } from './movie-mapper.js';
-import { MovieService } from './movie-service.js';
 
 export class MovieController extends MediaController {
   private service = new MovieService();
   private mapper = new MovieMapper();
 
-  // Create Fiction Entry
   create = catchAsync(async (req: Request, res: Response) => {
-    const result = await this.service.create(req.body);
-    this.sendCreated(res, this.mapper.toDto(result), 'Movie added to library');
+    // 1. Multer puts the file here
+    const file = req.file;
+    const userId = req.user!.uid;
+
+    // 2. req.body contains text fields. If sending a JSON string in one field, parse it.
+    // Otherwise, use req.body directly.
+    const data =
+      typeof req.body.data === 'string' ? JSON.parse(req.body.data) : req.body;
+
+    const result = await this.service.create(data, userId, file);
+    this.sendCreated(res, this.mapper.toDto(result), 'Movie added with image');
   });
 
-  // Get all Movies
-  getAll = catchAsync(async (req: Request, res: Response) => {
-    const { limit, lastDocId } = req.query;
-    const result = await this.service.getAll(
-      Number(limit) || 10,
-      lastDocId as string,
-    );
+  update = catchAsync(async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const userId = req.user!.uid;
+    const file = req.file; // New image file if provided
 
-    // Map each item in the data array to its DTO version
+    const data =
+      typeof req.body.data === 'string' ? JSON.parse(req.body.data) : req.body;
+
+    const result = await this.service.update(id, data, userId, file);
+    this.sendSuccess(res, this.mapper.toDto(result), 'Movie updated');
+  });
+
+  // Get all movies
+  getAll = catchAsync(async (req: Request, res: Response) => {
+    const limit = parseInt(req.query.limit as string) || 20;
+    const cursor = req.query.cursor as string;
+    const status = req.query.status as string;
+    const userId = req.user!.uid;
+
+    const result = await this.service.getAll(userId, limit, cursor, status);
     const mappedData = this.mapper.toDtoList(result.data);
 
-    this.sendSuccess(res, mappedData, 'Library fetched', {
+    // Using the utility for a consistent JSON structure
+    ResponseUtil.send(res, 200, mappedData, 'Movie library fetched', {
       nextCursor: result.nextCursor,
+      count: mappedData.length,
     });
   });
 
-  // Get Movie by id
+  // Get movie by id
   getById = catchAsync(async (req: Request, res: Response) => {
-    const result = await this.service.getById(req.params.id as string);
+    const userId = req.user!.uid;
+    const result = await this.service.getById(req.params.id as string, userId);
     this.sendSuccess(res, this.mapper.toDto(result), 'Movie fetched');
   });
 
@@ -42,7 +63,13 @@ export class MovieController extends MediaController {
   complete = catchAsync(async (req: Request, res: Response) => {
     const score =
       req.body.score !== undefined ? Number(req.body.score) : undefined;
-    const result = await this.service.complete(req.params.id as string, score);
+    const userId = req.user!.uid;
+
+    const result = await this.service.completeMovie(
+      req.params.id as string,
+      userId,
+      score,
+    );
     this.sendSuccess(
       res,
       this.mapper.toDto(result),
@@ -50,20 +77,14 @@ export class MovieController extends MediaController {
     );
   });
 
-  // Delete Movie Entry
+  // Delete movie
   delete = catchAsync(async (req: Request, res: Response) => {
     const id = req.params.id as string;
+    const userId = req.user!.uid;
 
-    await this.service.delete(id);
+    await this.service.delete(id, userId);
 
     // Return a consistent success message
     this.sendSuccess(res, null, `Entry with ID ${id} deleted successfully`);
-  });
-
-  // Update Movie
-  update = catchAsync(async (req: Request, res: Response) => {
-    const id = req.params.id as string;
-    const result = await this.service.update(id, req.body);
-    this.sendSuccess(res, this.mapper.toDto(result), 'Movie updated');
   });
 }

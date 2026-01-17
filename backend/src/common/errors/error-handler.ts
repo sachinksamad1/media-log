@@ -2,8 +2,8 @@ import type { Request, Response, NextFunction } from 'express';
 import { MulterError } from 'multer';
 import { ZodError } from 'zod';
 
-import { AppError } from '../errors/app-error.js';
-import { ResponseUtil } from '../utils/api-response.js';
+import { AppError } from '@/common/errors/app-error.js';
+import { ResponseUtil } from '@/common/utils/api-response.js';
 
 export const globalErrorHandler = (
   err: unknown,

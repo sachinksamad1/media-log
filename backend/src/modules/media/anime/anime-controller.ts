@@ -1,11 +1,9 @@
+import { MediaController } from '@common/media/media-controller.js';
+import { ResponseUtil } from '@common/utils/api-response.js';
+import { catchAsync } from '@common/utils/catch-async.js';
+import { AnimeMapper } from '@modules/media/anime/anime-mapper.js';
+import { AnimeService } from '@modules/media/anime/anime-service.js';
 import type { Request, Response } from 'express';
-
-import { MediaController } from '../../../common/media/media-controller.js';
-import { ResponseUtil } from '../../../common/utils/api-response.js';
-import { catchAsync } from '../../../common/utils/catch-async.js';
-
-import { AnimeMapper } from './anime-mapper.js';
-import { AnimeService } from './anime-service.js';
 
 export class AnimeController extends MediaController {
   private service = new AnimeService();

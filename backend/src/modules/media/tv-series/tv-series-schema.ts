@@ -1,6 +1,5 @@
+import { MediaSchema } from '@common/media/media-schema.js';
 import { z } from 'zod';
-
-import { MediaSchema } from '../../../common/media/media-schema.js';
 
 export const TvSeriesSchema = MediaSchema.extend({
   directors: z.array(z.string()).default([]),

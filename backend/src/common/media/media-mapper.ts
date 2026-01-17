@@ -1,8 +1,6 @@
+import type { MediaSchema } from '@common/media/media-schema.js';
+import { formatTimestamp } from '@common/utils/date-utils.js';
 import type { z } from 'zod';
-
-import { formatTimestamp } from '../utils/date-utils.js';
-
-import type { MediaSchema } from './media-schema.js';
 
 export abstract class MediaMapper<T extends z.infer<typeof MediaSchema>, DTO> {
   /**

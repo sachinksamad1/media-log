@@ -1,6 +1,6 @@
-import type { MediaDTO } from '../../../common/media/media-dto.js';
+import type { MediaDTO } from '@common/media/media-dto.js';
 
-import type { Manga } from './manga-schema.js';
+import type { Manga } from '@/modules/media/manga/manga-schema.js';
 
 export interface MangaDTO extends MediaDTO {
   author: string;

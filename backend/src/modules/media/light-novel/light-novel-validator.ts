@@ -1,6 +1,5 @@
+import { LightNovelSchema } from '@modules/media/light-novel/light-novel-schema.js';
 import { z } from 'zod';
-
-import { LightNovelSchema } from './light-novel-schema.js';
 
 // 1. Validation for CREATE (POST)
 export const createLightNovelValidator = z.object({
@@ -17,12 +16,22 @@ export const updateLightNovelValidator = z.object({
   params: z.object({
     id: z.string().min(1, 'ID parameter is required'),
   }),
-  body: LightNovelSchema.omit({ uid: true }).partial(), // Makes all fields optional for partial updates
+  body: LightNovelSchema.omit({ uid: true }).partial(),
 });
 
 // 3. Validation for GET/DELETE by ID
 export const lightNovelIdValidator = z.object({
   params: z.object({
     id: z.string().min(1),
+  }),
+});
+
+// 4. Validation for COMPLETE (PATCH)
+export const completeLightNovelValidator = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+  body: z.object({
+    score: z.number().min(0).max(10).optional(),
   }),
 });

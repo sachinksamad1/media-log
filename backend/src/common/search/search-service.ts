@@ -1,14 +1,13 @@
-import { AnimeRepository } from '../../modules/media/anime/anime-repo.js';
-import { FictionRepository } from '../../modules/media/fiction/fiction-repo.js';
-import { GameRepository } from '../../modules/media/game/game-repo.js';
-import { LightNovelRepository } from '../../modules/media/light-novel/light-novel-repo.js';
-import { MangaRepository } from '../../modules/media/manga/manga-repo.js';
-import { MovieRepository } from '../../modules/media/movie/movie-repo.js';
-import { NonFictionRepository } from '../../modules/media/non-fiction/non-fiction-repo.js';
-import { TvSeriesRepository } from '../../modules/media/tv-series/tv-series-repo.js';
-
-import type { GlobalSearchResponse } from './search-dto.js';
-import type { SearchableMedia, SearchableRepository } from './search-types.js';
+import type { GlobalSearchResponse } from '@/common/search/search-dto.js';
+import type { SearchableMedia, SearchableRepository } from '@/common/search/search-types.js';
+import { AnimeRepository } from '@/modules/media/anime/anime-repo.js';
+import { FictionRepository } from '@/modules/media/fiction/fiction-repo.js';
+import { GameRepository } from '@/modules/media/game/game-repo.js';
+import { LightNovelRepository } from '@/modules/media/light-novel/light-novel-repo.js';
+import { MangaRepository } from '@/modules/media/manga/manga-repo.js';
+import { MovieRepository } from '@/modules/media/movie/movie-repo.js';
+import { NonFictionRepository } from '@/modules/media/non-fiction/non-fiction-repo.js';
+import { TvSeriesRepository } from '@/modules/media/tv-series/tv-series-repo.js';
 
 export class GlobalSearchService {
   private repositories: Record<string, SearchableRepository<SearchableMedia>>;

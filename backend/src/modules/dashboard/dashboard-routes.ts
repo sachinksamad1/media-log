@@ -1,11 +1,8 @@
-// src/dashboard/dashboard.routes.ts
+import { repositories } from '@common/media/media-repositories.js';
+import { protect } from '@common/middlewares/auth-middleware.js';
+import { DashboardController } from '@modules/dashboard/dashboard-controller.js';
+import { DashboardService } from '@modules/dashboard/dashboard-service.js';
 import { Router } from 'express';
-
-import { protect } from '../../common/middlewares/auth-middleware.js';
-import { repositories } from '../../repositories.js'; // wherever you build your MediaRepository map
-
-import { DashboardController } from './dashboard-controller.js';
-import { DashboardService } from './dashboard-service.js';
 
 const router = Router();
 

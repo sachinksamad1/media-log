@@ -1,6 +1,5 @@
-import { MediaRepository } from '../../../common/media/media-repository.js';
-
-import type { Games } from './game-schema.js';
+import { MediaRepository } from '@common/media/media-repository.js';
+import type { Games } from '@modules/media/game/game-schema.js';
 
 export class GameRepository extends MediaRepository<Games> {
   constructor() {

@@ -1,8 +1,7 @@
+import { UserMapper } from '@modules/users/mappers/user-mapper.js';
+import { storageService } from '@modules/users/services/storage-service.js';
+import { usersService } from '@modules/users/users-service.js';
 import type { Request, Response } from 'express';
-
-import { UserMapper } from './mappers/user-mapper.js';
-import { storageService } from './services/storage-service.js';
-import { usersService } from './users-service.js';
 
 export class UsersController {
   /**

@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "description": "Media Log Backend",
   "main": "dist/server.js",
+  "packageManager": "pnpm@10.28.0",
   "scripts": {
     "seed": "tsx seed/seed.ts",
     "seed:users": "tsx seed/seed-users.ts",
     "start": "node dist/server.js",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "dev": "tsx watch src/server.ts",
-    "lint": "npx eslint src",
-    "lint:fix": "npx eslint src --fix",
-    "format": "npx prettier --write .",
-    "format:check": "npx prettier --check ."
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "typecheck": "tsc --noEmit",
+    "check": "pnpm lint && pnpm typecheck",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src"
   },
   "keywords": [
     "mediaLog",
@@ -36,11 +39,14 @@
     "@typescript-eslint/parser": "^8.52.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-node": "^0.3.9",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-n": "^17.23.1",
     "eslint-plugin-promise": "^7.2.1",
     "globals": "^17.0.0",
     "prettier": "^3.7.4",
+    "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.52.0"
@@ -57,6 +63,7 @@
     "multer": "^2.0.2",
     "nodemailer": "^7.0.12",
     "sharp": "^0.34.5",
+    "uuid": "^13.0.0",
     "zod": "^4.3.4"
   }
 }

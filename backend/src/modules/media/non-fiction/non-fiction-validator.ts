@@ -1,6 +1,5 @@
+import { NonFictionSchema } from '@modules/media/non-fiction/non-fiction-schema.js';
 import { z } from 'zod';
-
-import { NonFictionSchema } from './non-fiction-schema.js';
 
 // 1. Validation for CREATE (POST)
 export const createNonFictionValidator = z.object({
@@ -24,5 +23,15 @@ export const updateNonFictionValidator = z.object({
 export const nonFictionIdValidator = z.object({
   params: z.object({
     id: z.string().min(1),
+  }),
+});
+
+// 4. Validation for COMPLETE (PATCH)
+export const completeNonFictionValidator = z.object({
+  params: z.object({
+    id: z.string().min(1),
+  }),
+  body: z.object({
+    score: z.number().min(0).max(10).optional(),
   }),
 });

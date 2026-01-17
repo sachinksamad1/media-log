@@ -1,6 +1,5 @@
-import type { MediaDTO } from '../../../common/media/media-dto.js';
-
-import type { Anime } from './anime-schema.js';
+import type { MediaDTO } from '@common/media/media-dto.js';
+import type { Anime } from '@modules/media/anime/anime-schema.js';
 
 export interface AnimeDTO extends MediaDTO {
   genre: string[];

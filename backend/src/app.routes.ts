@@ -1,18 +1,17 @@
+import { protect } from '@common/middlewares/auth-middleware.js';
+import searchRoutes from '@common/search/search-routes.js';
+import dashboardRoutes from '@modules/dashboard/dashboard-routes.js';
+import animeRoutes from '@modules/media/anime/anime-routes.js';
+import fictionRoutes from '@modules/media/fiction/fiction-routes.js';
+import gamesRoutes from '@modules/media/game/game-routes.js';
+import lightNovelRoutes from '@modules/media/light-novel/light-novel-routes.js';
+import mangaRoutes from '@modules/media/manga/manga-routes.js';
+import moviesRoutes from '@modules/media/movie/movie-routes.js';
+import nonFictionRoutes from '@modules/media/non-fiction/non-fiction-routes.js';
+import tvSeriesRoutes from '@modules/media/tv-series/tv-series-routes.js';
+import usersRoutes from '@modules/users/users-routes.js';
+import healthRoutes from '@platform/health-routes.js';
 import { Router } from 'express';
-
-import { protect } from './common/middlewares/auth-middleware.js';
-import searchRoutes from './common/search/search-routes.js';
-import dashboardRoutes from './modules/dashboard/dashboard-routes.js';
-import animeRoutes from './modules/media/anime/anime-routes.js';
-import fictionRoutes from './modules/media/fiction/fiction-routes.js';
-import gamesRoutes from './modules/media/game/game-routes.js';
-import lightNovelRoutes from './modules/media/light-novel/light-novel-routes.js';
-import mangaRoutes from './modules/media/manga/manga-routes.js';
-import moviesRoutes from './modules/media/movie/movie-routes.js';
-import nonFictionRoutes from './modules/media/non-fiction/non-fiction-routes.js';
-import tvSeriesRoutes from './modules/media/tv-series/tv-series-routes.js';
-import usersRoutes from './modules/users/users-routes.js';
-import healthRoutes from './platform/health-routes.js';
 
 const router = Router();
 

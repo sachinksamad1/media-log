@@ -1,4 +1,3 @@
-
 import { db } from '../src/config/firebase.js';
 
 /* eslint-disable no-console */
@@ -11,13 +10,13 @@ const COLLECTIONS = [
   'light_novel',
   'tv_series',
   'fiction',
-  'non_fiction'
+  'non_fiction',
 ];
 
 // Helper to generate keywords (copied from MediaRepository)
 function generateSearchKeywords(title: string): string[] {
   if (!title) return [];
-  
+
   const words = title.toLowerCase().split(/\s+/);
   const keywords = new Set<string>();
 
@@ -58,7 +57,7 @@ async function migrateCollection(collectionName: string) {
 
       const updateData = {
         titleLower,
-        searchKeywords
+        searchKeywords,
       };
 
       batch.update(doc.ref, updateData);
@@ -69,14 +68,18 @@ async function migrateCollection(collectionName: string) {
         await batch.commit();
         batch = db.batch();
         operationCount = 0;
-        console.log(`Committed batch of ${batchSize} updates for ${collectionName}`);
+        console.log(
+          `Committed batch of ${batchSize} updates for ${collectionName}`,
+        );
       }
     }
   }
 
   if (operationCount > 0) {
     await batch.commit();
-    console.log(`Committed final batch of ${operationCount} updates for ${collectionName}`);
+    console.log(
+      `Committed final batch of ${operationCount} updates for ${collectionName}`,
+    );
   }
 
   console.log(`Finished ${collectionName}: Updated ${updatedCount} documents.`);
@@ -85,22 +88,19 @@ async function migrateCollection(collectionName: string) {
 async function runMigration() {
   try {
     console.log('Starting Search Index Migration...');
-    
+
     for (const name of COLLECTIONS) {
       await migrateCollection(name);
     }
 
     console.log('Migration completed successfully!');
-    // eslint-disable-next-line n/no-process-exit
-    process.exit(0);
   } catch (error) {
     console.error('Migration failed:', error);
-    // eslint-disable-next-line n/no-process-exit
-    process.exit(1);
+    throw error;
   }
 }
 
 runMigration().catch((err) => {
-    console.error('Unhandled error:', err);
-    process.exit(1);
+  console.error('Unhandled error:', err);
+  throw err;
 });

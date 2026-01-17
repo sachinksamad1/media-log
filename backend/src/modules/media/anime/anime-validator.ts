@@ -1,6 +1,5 @@
+import { AnimeSchema } from '@modules/media/anime/anime-schema.js';
 import { z } from 'zod';
-
-import { AnimeSchema } from './anime-schema.js';
 
 // 1. Validation for CREATE (POST)
 export const createAnimeValidator = z.object({

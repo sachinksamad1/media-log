@@ -1,6 +1,5 @@
+import { MediaSchema } from '@common/media/media-schema.js';
 import { z } from 'zod';
-
-import { MediaSchema } from '../../../common/media/media-schema.js';
 
 export const GameSchema = MediaSchema.extend({
   genres: z.array(z.string()).optional(),

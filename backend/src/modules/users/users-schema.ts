@@ -1,10 +1,10 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const PreferencesSchema = z.object({
-  theme: z.enum(["light", "dark", "system"]).default("system"),
-  accentColor: z.string().default("#3B82F6"), // Store hex codes for UI branding
-  language: z.string().default("en"),
-  defaultView: z.enum(["grid", "list", "compact"]).default("grid"),
+  theme: z.enum(['light', 'dark', 'system']).default('system'),
+  accentColor: z.string().default('#3B82F6'), // Store hex codes for UI branding
+  language: z.string().default('en'),
+  defaultView: z.enum(['grid', 'list', 'compact']).default('grid'),
   itemsPerPage: z.number().int().min(10).max(100).default(20),
 });
 

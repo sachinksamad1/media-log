@@ -1,9 +1,7 @@
+import { protect } from '@common/middlewares/auth-middleware.js';
+import { usersController } from '@modules/users/users-controller.js';
 import { Router } from 'express';
 import multer from 'multer';
-
-import { protect } from '../../common/middlewares/auth-middleware.js';
-
-import { usersController } from './users-controller.js';
 
 const router = Router();
 const upload = multer({
