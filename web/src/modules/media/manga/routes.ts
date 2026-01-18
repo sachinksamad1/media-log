@@ -1,7 +1,10 @@
-export default [
+import type { RouteRecordRaw } from "vue-router";
+
+export const mangaRoutes: RouteRecordRaw[] = [
   {
     path: "/manga",
-    component: () => import("./views/MangaView.vue"),
+    name: "manga",
+    component: () => import("@/modules/media/manga/views/MangaView.vue"),
     meta: { requiresAuth: true },
-  },
+  }
 ];

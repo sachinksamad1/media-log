@@ -1,0 +1,239 @@
+<script setup lang="ts">
+import { ref, onMounted, watch } from 'vue'
+import { TvSeriesService } from '@modules/media/tvSeries/api/tvSeriesService'
+import { useAuthStore } from '@core/stores/useAuthStore'
+import type { TvSeries } from '@modules/media/tvSeries/types/types'
+import TvSeriesDetailModal from '@modules/media/tvSeries/components/TvSeriesDetailModal.vue'
+import AddNewTvSeriesModal from '@modules/media/tvSeries/components/AddNewTvSeriesModal.vue'
+import TvSeriesCard from '@modules/media/tvSeries/components/TvSeriesCard.vue'
+import { watchDebounced } from '@vueuse/core'
+import { Search } from 'lucide-vue-next'
+
+// ----------------------------------------------------
+// STATE
+// ----------------------------------------------------
+const library = ref<TvSeries[]>([])
+const loading = ref(false)
+const error = ref<string | null>(null)
+const nextCursor = ref<string | null>(null)
+const hasMore = ref(true)
+const selectedFilter = ref('All')
+const searchQuery = ref('')
+const isSearching = ref(false)
+
+// Modal State
+const selectedShow = ref<TvSeries | null>(null)
+const isModalOpen = ref(false)
+const isAddModalOpen = ref(false)
+
+// Config
+const LIMIT = 24
+
+// ----------------------------------------------------
+// ACTIONS
+// ----------------------------------------------------
+function setFilter(filter: string) {
+  if (selectedFilter.value === filter) return
+  selectedFilter.value = filter
+  // Reset pagination
+  nextCursor.value = null
+  hasMore.value = true
+  fetchLibrary()
+}
+
+function openDetails(item: TvSeries) {
+  selectedShow.value = item
+  isModalOpen.value = true
+}
+
+function handleUpdate(updated: TvSeries) {
+  // Reload the list to ensure data consistency
+  fetchLibrary() // Or update local state optimize
+  selectedShow.value = updated
+}
+
+function handleCreate() {
+  // Reload list to include new item in correct order/filter
+  fetchLibrary()
+  isAddModalOpen.value = false
+}
+
+function handleDelete() {
+  fetchLibrary()
+  isModalOpen.value = false
+  selectedShow.value = null
+}
+
+// ----------------------------------------------------
+// FETCH
+// ----------------------------------------------------
+async function fetchLibrary(isLoadMore = false) {
+  if (loading.value || (!hasMore.value && isLoadMore)) return
+
+  try {
+    loading.value = true
+    const cursor = isLoadMore ? nextCursor.value || undefined : undefined
+    
+    // Pass selectedFilter
+    const response = await TvSeriesService.getAll(LIMIT, cursor, selectedFilter.value)
+    
+    if (isLoadMore) {
+      library.value.push(...response.data)
+    } else {
+      library.value = response.data
+    }
+
+    // Update Pagination State
+    nextCursor.value = response.meta?.nextCursor || null
+    hasMore.value = !!nextCursor.value
+
+  } catch (err) {
+    error.value = 'Failed to load library'
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}
+
+// Search Logic
+watchDebounced(searchQuery, async (q) => {
+  if (!q || q.trim() === '') {
+    if (isSearching.value) {
+        isSearching.value = false
+        // Reset to normal list
+        nextCursor.value = null
+        hasMore.value = true
+        fetchLibrary()
+    }
+    return
+  }
+  
+  isSearching.value = true
+  loading.value = true
+  try {
+     const results = await TvSeriesService.search(q)
+     library.value = results
+     hasMore.value = false 
+  } catch (err) {
+    error.value = 'Failed to search'
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}, { debounce: 500 })
+
+const authStore = useAuthStore()
+
+// Initial Load
+onMounted(() => {
+  if (authStore.isInitialLoading) {
+    const unwatch = watch(
+      () => authStore.isInitialLoading,
+      (loading) => {
+        if (!loading) {
+          fetchLibrary()
+          unwatch()
+        }
+      }
+    )
+  } else {
+    fetchLibrary()
+  }
+})
+</script>
+
+<template>
+  <div class="min-h-screen bg-background text-foreground w-full">
+    <div class="mx-auto w-full max-w-7xl px-2 lg:px-4 py-2">
+
+      <!-- HEADER / FILTERS -->
+      <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+        <div class="flex items-center gap-4">
+          <h3 class="text-xl font-semibold text-[hsl(var(--category-tvseries))]">My TV Series Library</h3>
+          <button 
+            @click="isAddModalOpen = true"
+            class="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity flex items-center gap-1"
+          >
+            <span>+</span> Add TV Series
+          </button>
+        </div>
+
+        <!-- SEARCH BAR -->
+        <div class="relative w-full sm:max-w-xs order-last sm:order-none mt-4 sm:mt-0">
+          <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <input 
+            v-model="searchQuery" 
+            class="w-full pl-9 pr-4 py-2 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm" 
+            placeholder="Search TV Series..." 
+          />
+        </div>
+        
+        <div class="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
+          <button 
+            v-for="filter in ['All', 'Watching', 'Completed', 'Plan to Watch']" 
+            :key="filter"
+            @click="setFilter(filter)"
+            class="px-4 py-1.5 rounded-md text-sm font-medium transition-all"
+            :class="selectedFilter === filter ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'"
+          >
+            {{ filter }}
+          </button>
+        </div>
+      </div>
+
+      <!-- ERROR STATE -->
+      <div v-if="error" class="text-destructive text-center py-8">
+        {{ error }}
+        <button 
+          @click="fetchLibrary()" 
+          class="block mx-auto mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90"
+        >
+          Retry
+        </button>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div v-else-if="!loading && !authStore.isInitialLoading && library.length === 0" class="text-center py-12 text-muted">
+        No TV Series found in your library.
+      </div>
+
+      <!-- GRID -->
+      <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
+        <TvSeriesCard
+          v-for="item in library"
+          :key="item.id"
+          :tvSeries="item"
+          @click="openDetails(item)"
+        />
+      </div>
+
+      <!-- LOAD MORE -->
+      <div v-if="hasMore" class="mt-12 flex justify-center">
+        <button
+          @click="fetchLibrary(true)"
+          :disabled="loading"
+          class="px-8 py-3 bg-secondary text-secondary-foreground rounded-full font-medium shadow-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          {{ loading ? 'Loading...' : 'Load More' }}
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Modals -->
+    <TvSeriesDetailModal 
+      v-if="selectedShow"
+      :tvSeries="selectedShow"
+      :isOpen="isModalOpen"
+      @close="isModalOpen = false"
+      @update="handleUpdate"
+      @delete="handleDelete"
+    />
+
+    <AddNewTvSeriesModal
+      :isOpen="isAddModalOpen"
+      @close="isAddModalOpen = false"
+      @created="handleCreate"
+    />
+  </div>
+</template>

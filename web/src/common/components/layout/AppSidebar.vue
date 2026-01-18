@@ -13,7 +13,8 @@ import {
   Settings,
   ChevronLeft,
   X,
-  Gamepad2
+  Gamepad2,
+  MonitorPlay
 } from "lucide-vue-next"
 
 const open = defineModel<boolean>('open')
@@ -42,10 +43,11 @@ const navigationItems = [
 const categoryItems = [
   { icon: Tv, label: "Anime", href: "/anime", color: "text-[hsl(var(--category-anime))]" },
   { icon: BookOpen, label: "Manga", href: "/manga", color: "text-[hsl(var(--category-manga))]" },
-  { icon: Book, label: "Novels", href: "/novel", color: "text-[hsl(var(--category-novel))]" },
-  { icon: BookText, label: "Light Novels", href: "/lightnovel", color: "text-[hsl(var(--category-lightnovel))]" },
-  { icon: GraduationCap, label: "Non-Fiction", href: "/nonfiction", color: "text-[hsl(var(--category-nonfiction))]" },
+  { icon: BookText, label: "Light Novels", href: "/light-novel", color: "text-[hsl(var(--category-lightnovel))]" },
+  { icon: Book, label: "Fiction", href: "/fiction", color: "text-[hsl(var(--category-fiction))]" },
+  { icon: GraduationCap, label: "Non-Fiction", href: "/non-fiction", color: "text-[hsl(var(--category-nonfiction))]" },
   { icon: Film, label: "Movies", href: "/movie", color: "text-[hsl(var(--category-movie))]" },
+  { icon: MonitorPlay, label: "TV Series", href: "/tv-series", color: "text-[hsl(var(--category-tvseries))]" },
   { icon: Gamepad2, label: "Games", href: "/game", color: "text-[hsl(var(--category-game))]" }
 ]
 

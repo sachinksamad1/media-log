@@ -134,7 +134,7 @@ onMounted(() => {
       <!-- HEADER / FILTERS -->
       <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
         <div class="flex items-center gap-4">
-          <h3 class="text-xl font-semibold">My Library</h3>
+          <h3 class="text-xl font-semibold text-[hsl(var(--category-anime))]">My Anime Library</h3>
           <button 
             @click="isAddModalOpen = true"
             class="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity flex items-center gap-1"

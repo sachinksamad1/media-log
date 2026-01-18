@@ -1,14 +1,10 @@
-export default [
+import type { RouteRecordRaw } from "vue-router";
+
+export const animeRoutes: RouteRecordRaw[] = [
   {
-    path: '/',
-    component: () => import('./views/AnimeView.vue'),
+    path: "/anime",
+    name: "anime",
+    component: () => import("@/modules/media/anime/views/AnimeView.vue"),
     meta: { requiresAuth: true },
-  },
-  {
-  path: '/anime/category',
-  name: 'anime-category',
-  component: () => import('./views/AnimeCategoryView.vue'),
-  meta: { requiresAuth: true },
-  props: true
-}
+  }
 ];

@@ -1,17 +1,19 @@
 import type { RouteRecordRaw } from "vue-router";
 import DashboardView from "@modules/dashboard/DashboardView.vue";
+import { animeRoutes } from "@modules/media/anime/routes";
+import { mangaRoutes } from "@modules/media/manga/routes";
+import { lightNovelRoutes } from "@modules/media/lightNovel/routes";
+import { fictionRoutes } from "@modules/media/fiction/routes";
+import { nonFictionRoutes } from "@modules/media/nonFiction/routes";
+import { gameRoutes } from "@modules/media/game/routes";
+import { movieRoutes } from "@modules/media/movie/routes";
+import { tvSeriesRoutes } from "@modules/media/tvSeries/routes";
 
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
     name: "dashboard",
     component: DashboardView,
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/anime",
-    name: "anime",
-    component: () => import("@/modules/media/anime/views/AnimeView.vue"),
     meta: { requiresAuth: true },
   },
   {
@@ -44,12 +46,14 @@ const routes: RouteRecordRaw[] = [
     path: "/login",
     redirect: "/auth",
   },
-  {
-    path: '/manga',
-    name: 'manga',
-    component: () => import('@/modules/media/manga/views/MangaView.vue'),
-    meta: { requiresAuth: true },
-  },
+  ...animeRoutes,
+  ...mangaRoutes,
+  ...lightNovelRoutes,
+  ...fictionRoutes,
+  ...nonFictionRoutes,
+  ...gameRoutes,
+  ...movieRoutes,
+  ...tvSeriesRoutes,
   // // ... add other routes for games, movies, etc.
 ];
 

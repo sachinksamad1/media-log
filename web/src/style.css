@@ -62,10 +62,11 @@
     /* Category colors */
     --category-anime: 340 82% 52%;
     --category-manga: 24 100% 50%;
-    --category-novel: 142 76% 36%;
-    --category-lightnovel: 280 65% 50%;
-    --category-nonfiction: 217 91% 50%;
-    --category-movie: 45 100% 45%;
+    --category-fiction: 142 76% 45%;
+    --category-lightnovel: 280 65% 60%;
+    --category-nonfiction: 217 91% 60%;
+    --category-movie: 45 100% 50%;
+    --category-tvseries: 263 70% 50%;
     --category-game: 187 100% 42%;
 
     /* Sidebar colors */
@@ -133,10 +134,11 @@
     /* Category colors */
     --category-anime: 340 82% 52%;
     --category-manga: 24 100% 50%;
-    --category-novel: 142 76% 45%;
+    --category-fiction: 142 76% 45%;
     --category-lightnovel: 280 65% 60%;
     --category-nonfiction: 217 91% 60%;
     --category-movie: 45 100% 50%;
+    --category-tvseries: 263 70% 50%;
     --category-game: 187 100% 42%;
 
     /* Sidebar colors */
