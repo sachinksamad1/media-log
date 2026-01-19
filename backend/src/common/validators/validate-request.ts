@@ -46,6 +46,9 @@ export const validate =
           message: e.message,
         }));
 
+        // 
+        console.error('Validation Warning:', JSON.stringify(details, null, 2));
+
         return next(
           new AppError(`Validation failed: ${JSON.stringify(details)}`, 400),
         );

@@ -1,6 +1,9 @@
 export interface AnimeReleaseStatsDto {
-  isCompleted: boolean
+  airingStarted?: string | null
+  airingEnded?: string | null
+  totalEpisodes: number
   totalSeasons: number
+  isCompleted: boolean
 }
 
 export interface AnimeUserStatsDto {
@@ -11,12 +14,12 @@ export interface AnimeUserStatsDto {
 export interface AnimeDto {
   id: string
   title: string
-  genre: string[]
+  genres: string[]
   origin: string
   language: string
-  releaseStats: AnimeReleaseStatsDto
-  userStats: AnimeUserStatsDto
-  imageUrl: string
+  releaseStats?: AnimeReleaseStatsDto
+  userStats?: AnimeUserStatsDto
+  imageUrl?: string
   createdAt: string
   updatedAt: string
 }

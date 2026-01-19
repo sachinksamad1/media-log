@@ -31,7 +31,8 @@ const form = reactive<{
   score: number
   totalSeasons: number
   totalEpisodes: number
-  airingYear: string
+  airingStarted: string
+  airingEnded: string
   isReleaseCompleted: boolean
   genre: string
 }>({
@@ -39,9 +40,10 @@ const form = reactive<{
   imageUrl: '',
   status: '',
   score: 0,
-  totalSeasons: 0,
-  totalEpisodes: 0,
-  airingYear: '',
+  totalSeasons: 1,
+  totalEpisodes: 1,
+  airingStarted: '',
+  airingEnded: '',
   isReleaseCompleted: false,
   genre: '',
 })
@@ -56,7 +58,8 @@ function syncForm(data: Anime) {
   form.score = data.userStats?.score ?? 0
   form.totalSeasons = data.releaseStats?.totalSeasons ?? 0
   form.totalEpisodes = data.releaseStats?.totalEpisodes ?? 0
-  form.airingYear = data.releaseStats?.airingYear ?? ''
+  form.airingStarted = data.releaseStats?.airingStarted ?? ''
+  form.airingEnded = data.releaseStats?.airingEnded ?? ''
   form.isReleaseCompleted = data.releaseStats?.isCompleted ?? false
   form.genre = data.genres ? data.genres.join(', ') : ''
 }
@@ -137,7 +140,8 @@ async function handleSave() {
         ...props.anime.releaseStats,
         totalSeasons: Number(form.totalSeasons),
         totalEpisodes: Number(form.totalEpisodes),
-        airingYear: form.airingYear,
+        airingStarted: form.airingStarted,
+        airingEnded: form.airingEnded,
         isCompleted: form.isReleaseCompleted,
       },
       genres: form.genre
@@ -299,11 +303,17 @@ async function handleDelete() {
               <div class="text-muted-foreground">Original Language</div>
               <div>{{ anime?.language || 'Japanese' }}</div>
 
-              <div class="text-muted-foreground">Airing Year</div>
-              <div>{{ form.airingYear }}</div>
+              <div class="text-muted-foreground">Airing Started</div>
+              <div>{{ form.airingStarted }}</div>
+
+              <div class="text-muted-foreground">Airing Ended</div>
+              <div>{{ form.airingEnded }}</div>
 
               <div class="text-muted-foreground">Added to Library</div>
               <div>{{ new Date(anime?.createdAt || '').toLocaleDateString() }}</div>
+
+              <div class="text-muted-foreground">Last Updated</div>
+              <div>{{ new Date(anime?.updatedAt || '').toLocaleDateString() }}</div>
             </div>
           </div>
 
@@ -377,9 +387,20 @@ async function handleDelete() {
               </div>
 
               <div class="space-y-2">
-                <label class="text-sm font-medium">Airing Year</label>
+                <label class="text-sm font-medium">Airing Started</label>
                 <input
-                  v-model="form.airingYear"
+                  v-model="form.airingStarted"
+                  type="text"
+                  placeholder="YYYY"
+                  maxlength="4"
+                  class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-medium">Airing Ended</label>
+                <input
+                  v-model="form.airingEnded"
                   type="text"
                   placeholder="YYYY"
                   maxlength="4"

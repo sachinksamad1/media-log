@@ -6,18 +6,21 @@ export const AnimeMapper = {
     return {
       id: dto.id,
       title: dto.title,
-      genre: dto.genre,
+      genres: dto.genres,
       origin: dto.origin,
       language: dto.language,
       releaseStats: {
-        isCompleted: dto.releaseStats.isCompleted,
-        totalSeasons: dto.releaseStats.totalSeasons,
+        airingStarted: dto.releaseStats?.airingStarted ?? '',
+        airingEnded: dto.releaseStats?.airingEnded ?? '',
+        totalEpisodes: dto.releaseStats?.totalEpisodes ?? 0,
+        totalSeasons: dto.releaseStats?.totalSeasons ?? 1,
+        isCompleted: dto.releaseStats?.isCompleted ?? false,
       },
       userStats: {
-        score: dto.userStats.score,
-        status: dto.userStats.status,
+        score: dto.userStats?.score ?? 0,
+        status: dto.userStats?.status ?? 'Planned',
       },
-      imageUrl: dto.imageUrl,
+      imageUrl: dto.imageUrl ?? '',
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
     }
@@ -27,12 +30,15 @@ export const AnimeMapper = {
     return {
       id: domain.id,
       title: domain.title,
-      genre: domain.genre,
+      genres: domain.genres,
       origin: domain.origin,
       language: domain.language,
       releaseStats: {
-        isCompleted: domain.releaseStats.isCompleted,
+        airingStarted: domain.releaseStats.airingStarted,
+        airingEnded: domain.releaseStats.airingEnded,
+        totalEpisodes: domain.releaseStats.totalEpisodes,
         totalSeasons: domain.releaseStats.totalSeasons,
+        isCompleted: domain.releaseStats.isCompleted,
       },
       userStats: {
         score: domain.userStats.score,

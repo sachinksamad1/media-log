@@ -3,7 +3,8 @@ import type { Anime } from '@modules/media/anime/anime-schema.js';
 
 export interface AnimeDTO extends MediaDTO {
   releaseStats?: {
-    airingYear: string;
+    airingStarted?: string | null;
+    airingEnded?: string | null;
     totalEpisodes: number;
     totalSeasons: number;
     isCompleted: boolean;

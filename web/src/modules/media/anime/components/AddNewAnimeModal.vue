@@ -26,18 +26,20 @@ const form = reactive<{
   score: number
   totalSeasons: number
   totalEpisodes: number
-  airingYear: string
+  airingStarted: string
+  airingEnded: string
   isReleaseCompleted: boolean
-  genre: string
+  genres: string
 }>({
   title: '',
   status: 'Planned',
   score: 0,
-  totalSeasons: 0,
-  totalEpisodes: 0,
-  airingYear: '',
+  totalSeasons: 1,
+  totalEpisodes: 1,
+  airingStarted: '',
+  airingEnded: '',
   isReleaseCompleted: false,
-  genre: '',
+  genres: '',
 })
 
 function handleFileSelect(event: Event) {
@@ -53,11 +55,12 @@ function resetForm() {
   form.title = ''
   form.status = 'Planned'
   form.score = 0
-  form.totalSeasons = 0
-  form.totalEpisodes = 0
-  form.airingYear = ''
+  form.totalSeasons = 1
+  form.totalEpisodes = 1
+  form.airingStarted = ''
+  form.airingEnded = ''
   form.isReleaseCompleted = false
-  form.genre = ''
+  form.genres = ''
   selectedFile.value = null
   previewUrl.value = null
 }
@@ -76,6 +79,33 @@ async function handleSave() {
     })
     return
   }
+  
+  if (form.score < 0 || form.score > 10) {
+    toast({
+      title: 'Validation Error',
+      description: 'Score must be between 0 and 10',
+      variant: 'destructive',
+    })
+    return
+  }
+  
+  const yearRegex = /^\d{4}$/
+  if (form.airingStarted && !yearRegex.test(form.airingStarted)) {
+      toast({
+      title: 'Validation Error',
+      description: 'Airing Started must be a 4-digit year',
+      variant: 'destructive',
+    })
+    return
+  }
+  if (form.airingEnded && !yearRegex.test(form.airingEnded)) {
+      toast({
+      title: 'Validation Error',
+      description: 'Airing Ended must be a 4-digit year',
+      variant: 'destructive',
+    })
+    return
+  }
 
   saving.value = true
   try {
@@ -88,10 +118,11 @@ async function handleSave() {
       releaseStats: {
         totalSeasons: Number(form.totalSeasons),
         totalEpisodes: Number(form.totalEpisodes),
-        airingYear: form.airingYear || '2000', // Default or required?
+        airingStarted: form.airingStarted,
+        airingEnded: form.airingEnded,
         isCompleted: form.isReleaseCompleted,
       },
-      genres: form.genre
+      genres: form.genres
         .split(',')
         .map((s) => s.trim())
         .filter((s) => s),
@@ -158,10 +189,7 @@ async function handleSave() {
             <img :src="previewUrl" class="w-full h-full object-cover" />
             <button
               class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
-              @click="
-                selectedFile = null
-                previewUrl = null
-              "
+              @click="selectedFile = null; previewUrl = null"
             >
               ✕
             </button>
@@ -236,9 +264,17 @@ async function handleSave() {
             </div>
 
             <div class="space-y-2">
-              <label class="text-sm font-medium">Airing Year</label>
+              <label class="text-sm font-medium">Airing Started</label>
               <input
-                v-model="form.airingYear"
+                v-model="form.airingStarted"
+                type="text"
+                placeholder="YYYY"
+                maxlength="4"
+                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              />
+              <label class="text-sm font-medium">Airing Ended</label>
+              <input
+                v-model="form.airingEnded"
                 type="text"
                 placeholder="YYYY"
                 maxlength="4"
@@ -262,7 +298,7 @@ async function handleSave() {
           <div class="space-y-2">
             <label class="text-sm font-medium">Genres (comma separated)</label>
             <input
-              v-model="form.genre"
+              v-model="form.genres"
               placeholder="Action, Adventure, Fantasy"
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
             />

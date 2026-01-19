@@ -7,7 +7,7 @@ const { toggle } = useTheme()
 
 <template>
   <button
-    class="relative w-9 h-9 flex items-center justify-center rounded-md bg-card border border-border hover:bg-primary/10 transition"
+    class="relative w-9 h-9 flex items-center justify-center rounded-md"
     @click="toggle"
   >
     <Sun class="absolute h-5 w-5 transition-all sun-icon" />

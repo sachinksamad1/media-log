@@ -1,7 +1,7 @@
 // Release Stats
-// Release Stats
 export interface ReleaseStats {
-  airingYear: string
+  airingStarted: string
+  airingEnded: string
   totalEpisodes: number
   totalSeasons: number
   isCompleted: boolean
