@@ -1,37 +1,43 @@
 export interface TvSeriesUserStats {
-    score: number;
-    status: 'Completed' | 'Plan to Watch' | 'Watching' | 'Dropped' | 'On Hold' | string;
-    watchedEpisodes: number;
-    rewatchCount?: number;
+  score: number
+  status: 'Planned' | 'Watching' | 'Completed' | 'Dropped' | 'On-Hold' | string
+  watchedEpisodes?: number
+  rewatchCount?: number
+}
+
+export interface TvSeriesStats {
+  airingYear: string
+  currentSeason: number
+  totalSeasons: number
+  totalEpisodes?: number
+  isCompleted: boolean
 }
 
 export interface TvSeries {
-    id: string;
-    title: string;
-    director: string;
-    producer: string;
-    studio: string;
-    network: string;
-    cast: string[];
-    genres: string[];
-    releaseDate?: string;
-    endDate?: string;
-    episodes?: number;
-    language: string;
-    country: string;
-    userStats: TvSeriesUserStats;
-    imageUrl: string;
-    createdAt?: string;
-    updatedAt?: string;
+  id: string
+  title: string
+  directors: string[]
+  writers: string[]
+  cast: string[]
+  genres: string[]
+  tvSeriesStats: TvSeriesStats
+  language: string
+  origin?: string
+  userStats: TvSeriesUserStats
+  imageUrl: string
+  network?: string
+  studio?: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface TvSeriesResponse {
-  success: boolean;
-  message: string;
-  data: TvSeries[];
+  success: boolean
+  message: string
+  data: TvSeries[]
   meta?: {
-    totalItems?: number;
-    nextCursor?: string | null;
-    count?: number;
-  };
+    totalItems?: number
+    nextCursor?: string | null
+    count?: number
+  }
 }

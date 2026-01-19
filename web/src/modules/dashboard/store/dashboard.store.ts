@@ -1,10 +1,10 @@
-import { defineStore } from 'pinia';
-import { AnalyticsService } from '@/services/analytics.service';
-import { DashboardStats } from "../../../common/types/dashboard";
+import { defineStore } from 'pinia'
+import { AnalyticsService } from '@/services/analytics.service'
+import { DashboardStats } from '../../../common/types/dashboard'
 
 interface DashboardState {
-  stats: DashboardStats | null;
-  loading: boolean;
+  stats: DashboardStats | null
+  loading: boolean
 }
 
 export const useDashboardStore = defineStore('dashboard', {
@@ -15,12 +15,12 @@ export const useDashboardStore = defineStore('dashboard', {
 
   actions: {
     async fetchStats() {
-      this.loading = true;
+      this.loading = true
       try {
-        this.stats = await AnalyticsService.getDashboardStats();
+        this.stats = await AnalyticsService.getDashboardStats()
       } finally {
-        this.loading = false;
+        this.loading = false
       }
     },
   },
-});
+})

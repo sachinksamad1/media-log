@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { Search, Bell, User, Menu, LogOut, Settings } from "lucide-vue-next"
+import { useRouter, useRoute, type LocationQueryValue } from 'vue-router'
+import { Search, Bell, User, Menu, LogOut, Settings } from 'lucide-vue-next'
 import { onClickOutside } from '@vueuse/core'
-import ThemeToggle from "../ui/ThemeToggle.vue"
-import { useLayout } from "../../composables/useLayout"
+import ThemeToggle from '../ui/ThemeToggle.vue'
+import { useLayout } from '../../composables/useLayout'
 import { useAuthStore } from '@/core/stores/useAuthStore'
 
 const { toggleSidebar } = useLayout()
@@ -18,28 +18,33 @@ const searchQuery = ref('')
 
 const handleSearch = () => {
   if (searchQuery.value.trim()) {
-    router.push({ 
-      path: '/search', 
-      query: { q: searchQuery.value } 
+    router.push({
+      path: '/search',
+      query: { q: searchQuery.value },
     })
   }
 }
 
 // Sync search input with URL query
-watch(() => route.query.q, (newQuery: any) => {
-  if (typeof newQuery === 'string') {
-    searchQuery.value = newQuery
-  } else {
-    searchQuery.value = ''
-  }
-}, { immediate: true })
+watch(
+  () => route.query.q,
+  (newQuery: LocationQueryValue | LocationQueryValue[] | undefined) => {
+    if (typeof newQuery === 'string') {
+      searchQuery.value = newQuery
+    } else {
+      searchQuery.value = ''
+    }
+  },
+  { immediate: true }
+)
 
 onClickOutside(profileDropdownRef, () => {
   isProfileOpen.value = false
 })
 
 const userInitials = computed(() => {
-  const displayName = authStore.profile?.displayName || authStore.user?.displayName || authStore.user?.email || 'User'
+  const displayName =
+    authStore.profile?.displayName || authStore.user?.displayName || authStore.user?.email || 'User'
   return displayName.substring(0, 2).toUpperCase()
 })
 
@@ -70,7 +75,6 @@ const handleLogout = async () => {
     class="fixed top-0 left-0 right-0 z-50 h-16 bg-background backdrop-blur-xl border-b border-border"
   >
     <div class="flex items-center justify-between h-full px-4 lg:px-6">
-
       <!-- Left section -->
       <div class="flex items-center gap-4">
         <button
@@ -94,16 +98,13 @@ const handleLogout = async () => {
       <div class="flex-1 max-w-md mx-4 hidden md:block">
         <div class="relative">
           <!-- Search Icon -->
-          <Search
-            class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"
-          />
+          <Search class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <input
             v-model="searchQuery"
-            @keydown.enter="handleSearch"
             type="search"
             placeholder="Search your library..."
-            class="w-full pl-10 bg-secondary/50 border border-border rounded-md px-3 py-2
-                   focus:bg-secondary focus:border-primary/50 transition-all outline-none"
+            class="w-full pl-10 bg-secondary/50 border border-border rounded-md px-3 py-2 focus:bg-secondary focus:border-primary/50 transition-all outline-none"
+            @keydown.enter="handleSearch"
           />
         </div>
       </div>
@@ -121,23 +122,25 @@ const handleLogout = async () => {
         <ThemeToggle />
 
         <!-- Notifications -->
-        <button class="text-muted-foreground hover:text-foreground hover:bg-secondary p-2 rounded-md">
+        <button
+          class="text-muted-foreground hover:text-foreground hover:bg-secondary p-2 rounded-md"
+        >
           <Bell class="h-5 w-5" />
         </button>
 
         <!-- User Profile -->
-        <div class="relative" ref="profileDropdownRef">
-          <button 
-            @click="isProfileOpen = !isProfileOpen"
+        <div ref="profileDropdownRef" class="relative">
+          <button
             class="text-muted-foreground hover:text-foreground hover:bg-secondary p-2 rounded-md outline-none"
+            @click="isProfileOpen = !isProfileOpen"
           >
-            <div 
+            <div
               v-if="userAvatar"
               class="w-8 h-8 rounded-full overflow-hidden border border-border"
             >
               <img :src="userAvatar" alt="User" class="w-full h-full object-cover" />
             </div>
-            <div 
+            <div
               v-else
               class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-primary-foreground font-medium text-xs shadow-lg shadow-primary/20"
             >
@@ -146,7 +149,7 @@ const handleLogout = async () => {
           </button>
 
           <!-- Dropdown Menu -->
-          <div 
+          <div
             v-if="isProfileOpen"
             class="absolute right-0 mt-2 w-56 rounded-xl border border-border bg-card shadow-2xl animate-in fade-in zoom-in-95 duration-200 z-50 overflow-hidden"
           >
@@ -158,16 +161,26 @@ const handleLogout = async () => {
 
             <!-- Menu Items -->
             <div class="p-1">
-              <button 
+              <button
                 class="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground rounded-lg hover:bg-secondary transition-colors"
-                @click="() => { isProfileOpen = false; router.push('/profile') }"
+                @click="
+                  () => {
+                    isProfileOpen = false
+                    router.push('/profile')
+                  }
+                "
               >
                 <User class="w-4 h-4 text-muted-foreground" />
                 Profile
               </button>
-              <button 
+              <button
                 class="w-full flex items-center gap-2 px-3 py-2 text-sm text-foreground rounded-lg hover:bg-secondary transition-colors"
-                @click="() => { isProfileOpen = false; router.push('/settings') }"
+                @click="
+                  () => {
+                    isProfileOpen = false
+                    router.push('/settings')
+                  }
+                "
               >
                 <Settings class="w-4 h-4 text-muted-foreground" />
                 Settings
@@ -177,9 +190,9 @@ const handleLogout = async () => {
             <div class="h-px bg-border mx-1"></div>
 
             <div class="p-1">
-              <button 
-                @click="handleLogout"
+              <button
                 class="w-full flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                @click="handleLogout"
               >
                 <LogOut class="w-4 h-4" />
                 Log out

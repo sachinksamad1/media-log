@@ -8,4 +8,4 @@ import TvSeriesList from '@modules/media/tvSeries/components/TvSeriesList.vue'
       <TvSeriesList />
     </div>
   </div>
-</template> 
+</template>

@@ -26,9 +26,11 @@ const form = reactive<{
   illustrator: string
   status: string
   score: number
-  volumePublished: number
-  chapterPublished: number
+  volumesPublished: number
+  chaptersPublished: number
   releaseStatus: string
+  readingChapter: number
+  readingVolume: number
   genre: string
   type: string
   format: string
@@ -38,12 +40,14 @@ const form = reactive<{
   illustrator: '',
   status: 'Planned',
   score: 0,
-  volumePublished: 0,
-  chapterPublished: 0,
+  volumesPublished: 0,
+  chaptersPublished: 0,
   releaseStatus: 'Ongoing',
+  readingChapter: 0,
+  readingVolume: 0,
   genre: '',
   type: 'Manga',
-  format: 'Digital'
+  format: 'Digital',
 })
 
 function handleFileSelect(event: Event) {
@@ -61,9 +65,11 @@ function resetForm() {
   form.illustrator = ''
   form.status = 'Planned'
   form.score = 0
-  form.volumePublished = 0
-  form.chapterPublished = 0
+  form.volumesPublished = 0
+  form.chaptersPublished = 0
   form.releaseStatus = 'Ongoing'
+  form.readingChapter = 0
+  form.readingVolume = 0
   form.genre = ''
   form.type = 'Manga'
   form.format = 'Digital'
@@ -96,20 +102,27 @@ async function handleSave() {
       format: form.format,
       userStats: {
         status: form.status,
-        score: Number(form.score)
+        score: Number(form.score),
       },
       releaseStats: {
-        volumePublished: Number(form.volumePublished),
-        chapterPublished: Number(form.chapterPublished),
-        releaseStatus: form.releaseStatus
+        volumesPublished: Number(form.volumesPublished),
+        chaptersPublished: Number(form.chaptersPublished),
+        releaseStatus: form.releaseStatus,
       },
-      genres: form.genre.split(',').map(s => s.trim()).filter(s => s),
+      readingStats: {
+        currentReadingChapter: Number(form.readingChapter || 0),
+        currentReadingVolume: Number(form.readingVolume || 0),
+      },
+      genres: form.genre
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s),
       // origin default
       origin: 'Japan',
     }
 
     let createData: Partial<Manga> | FormData = payload
-    
+
     // If file selected, use FormData
     if (selectedFile.value) {
       const fd = new FormData()
@@ -145,14 +158,15 @@ async function handleSave() {
       <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" @click="close"></div>
 
       <!-- Modal Content -->
-      <div class="relative bg-card text-card-foreground w-full max-w-2xl rounded-xl shadow-2xl border border-border flex flex-col max-h-[90vh] overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-        
+      <div
+        class="relative bg-card text-card-foreground w-full max-w-2xl rounded-xl shadow-2xl border border-border flex flex-col max-h-[90vh] overflow-hidden animate-in fade-in zoom-in-95 duration-200"
+      >
         <!-- Header -->
         <div class="flex items-center justify-between p-6 border-b border-border bg-secondary/10">
           <h2 class="text-xl font-bold">Add New Manga</h2>
-          <button 
-            @click="close"
+          <button
             class="text-muted-foreground hover:text-foreground transition-colors"
+            @click="close"
           >
             ✕
           </button>
@@ -160,19 +174,23 @@ async function handleSave() {
 
         <!-- Scrollable Body -->
         <div class="flex-1 overflow-y-auto p-6 space-y-4">
-          
           <!-- Image Preview -->
           <div v-if="previewUrl" class="w-full h-48 rounded-lg overflow-hidden relative mb-4">
-             <img :src="previewUrl" class="w-full h-full object-cover" />
-             <button 
-               @click="selectedFile = null; previewUrl = null"
-               class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
-             >✕</button>
+            <img :src="previewUrl" class="w-full h-full object-cover" />
+            <button
+              class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
+              @click="
+                selectedFile = null
+                previewUrl = null
+              "
+            >
+              ✕
+            </button>
           </div>
 
           <div class="space-y-2">
             <label class="text-sm font-medium">Title <span class="text-destructive">*</span></label>
-            <input 
+            <input
               v-model="form.title"
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               placeholder="Enter manga title"
@@ -181,17 +199,17 @@ async function handleSave() {
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-             <div class="space-y-2">
+            <div class="space-y-2">
               <label class="text-sm font-medium">Author</label>
-              <input 
+              <input
                 v-model="form.author"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
                 placeholder="Author name"
               />
             </div>
-             <div class="space-y-2">
+            <div class="space-y-2">
               <label class="text-sm font-medium">Illustrator</label>
-              <input 
+              <input
                 v-model="form.illustrator"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
                 placeholder="Illustrator name"
@@ -201,11 +219,11 @@ async function handleSave() {
 
           <div class="space-y-2">
             <label class="text-sm font-medium">Poster Image</label>
-            <input 
+            <input
               type="file"
               accept="image/*"
-              @change="handleFileSelect"
               class="w-full px-3 py-2 rounded-md bg-background border border-input file:mr-4 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
+              @change="handleFileSelect"
             />
           </div>
 
@@ -213,7 +231,7 @@ async function handleSave() {
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="space-y-2">
               <label class="text-sm font-medium">Type</label>
-              <select 
+              <select
                 v-model="form.type"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               >
@@ -224,9 +242,9 @@ async function handleSave() {
                 <option value="Doujinshi">Doujinshi</option>
               </select>
             </div>
-             <div class="space-y-2">
+            <div class="space-y-2">
               <label class="text-sm font-medium">Format</label>
-               <select 
+              <select
                 v-model="form.format"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               >
@@ -238,23 +256,23 @@ async function handleSave() {
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            
             <div class="space-y-2">
               <label class="text-sm font-medium">Status (My List)</label>
-              <select 
+              <select
                 v-model="form.status"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               >
                 <option value="Planned">Planned</option>
-                <option value="Ongoing">Ongoing</option>
+                <option value="Reading">Reading</option>
                 <option value="Completed">Completed</option>
                 <option value="Dropped">Dropped</option>
+                <option value="On-Hold">On-Hold</option>
               </select>
             </div>
 
             <div class="space-y-2">
               <label class="text-sm font-medium">My Score (0-10)</label>
-              <input 
+              <input
                 v-model="form.score"
                 type="number"
                 min="0"
@@ -264,28 +282,47 @@ async function handleSave() {
               />
             </div>
 
-             <div class="space-y-2">
+            <div class="space-y-2">
               <label class="text-sm font-medium">Volumes Published</label>
-              <input 
-                v-model="form.volumePublished"
+              <input
+                v-model="form.volumesPublished"
                 type="number"
                 min="0"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               />
             </div>
-             <div class="space-y-2">
+            <div class="space-y-2">
               <label class="text-sm font-medium">Chapters Published</label>
-              <input 
-                v-model="form.chapterPublished"
+              <input
+                v-model="form.chaptersPublished"
                 type="number"
                 min="0"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               />
             </div>
 
-             <div class="space-y-2">
+            <div class="space-y-2">
+              <label class="text-sm font-medium">My Reading Vol</label>
+              <input
+                v-model="form.readingVolume"
+                type="number"
+                min="0"
+                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              />
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium">My Reading Ch</label>
+              <input
+                v-model="form.readingChapter"
+                type="number"
+                min="0"
+                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              />
+            </div>
+
+            <div class="space-y-2">
               <label class="text-sm font-medium">Release Status</label>
-               <select 
+              <select
                 v-model="form.releaseStatus"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               >
@@ -295,12 +332,11 @@ async function handleSave() {
                 <option value="Cancelled">Cancelled</option>
               </select>
             </div>
-
           </div>
 
           <div class="space-y-2">
             <label class="text-sm font-medium">Genres (comma separated)</label>
-            <input 
+            <input
               v-model="form.genre"
               placeholder="Action, Adventure, Fantasy"
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
@@ -310,23 +346,22 @@ async function handleSave() {
 
         <!-- Footer Actions -->
         <div class="p-4 border-t border-border bg-secondary/10 flex justify-end gap-3">
-          <button 
-             @click="close"
-             class="px-4 py-2 rounded-lg border border-input hover:bg-accent hover:text-accent-foreground transition-colors"
-             :disabled="saving"
-           >
-             Cancel
-           </button>
-           <button 
-             @click="handleSave"
-             class="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center gap-2"
-             :disabled="saving"
-           >
-             <span v-if="saving" class="animate-spin">⟳</span>
-             {{ saving ? 'Creating...' : 'Create Manga' }}
-           </button>
+          <button
+            class="px-4 py-2 rounded-lg border border-input hover:bg-accent hover:text-accent-foreground transition-colors"
+            :disabled="saving"
+            @click="close"
+          >
+            Cancel
+          </button>
+          <button
+            class="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center gap-2"
+            :disabled="saving"
+            @click="handleSave"
+          >
+            <span v-if="saving" class="animate-spin">⟳</span>
+            {{ saving ? 'Creating...' : 'Create Manga' }}
+          </button>
         </div>
-
       </div>
     </div>
   </Teleport>

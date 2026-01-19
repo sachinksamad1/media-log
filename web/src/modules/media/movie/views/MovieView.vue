@@ -8,4 +8,4 @@ import MovieList from '@modules/media/movie/components/MovieList.vue'
       <MovieList />
     </div>
   </div>
-</template> 
+</template>

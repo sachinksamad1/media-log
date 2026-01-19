@@ -3,9 +3,6 @@ import type { NonFiction } from '@modules/media/non-fiction/non-fiction-schema.j
 
 export interface NonFictionDTO extends MediaDTO {
   author?: string;
-  genres: string[];
-  origin?: string;
-  language: string;
   format: 'E-Book' | 'Physical';
   published?: string;
   volumes: {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { RouterView, useRoute } from "vue-router";
-import AppShell from "@/common/components/layout/AppShell.vue";
-import { Toaster } from "@/common/components/ui/toast";
-import { useAuthStore } from "@/core/stores/useAuthStore";
+import { RouterView, useRoute } from 'vue-router'
+import AppShell from '@/common/components/layout/AppShell.vue'
+import { Toaster } from '@/common/components/ui/toast'
+import { useAuthStore } from '@/core/stores/useAuthStore'
 
-const authStore = useAuthStore();
-const route = useRoute();
-authStore.initializeListener();
+const authStore = useAuthStore()
+const route = useRoute()
+authStore.initializeListener()
 </script>
 
 <template>

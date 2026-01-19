@@ -4,9 +4,6 @@ import { z } from 'zod';
 export const MovieSchema = MediaSchema.extend({
   director: z.string().optional(),
   cast: z.array(z.string()).default([]),
-  genres: z.array(z.string()).default([]),
-  origin: z.string().optional(),
-  language: z.string().optional(),
   movieStats: z
     .object({
       releaseDate: z.coerce.date().optional(),

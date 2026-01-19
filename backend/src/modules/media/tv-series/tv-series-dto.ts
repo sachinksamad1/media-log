@@ -5,9 +5,6 @@ export interface TvSeriesDTO extends MediaDTO {
   directors: string[];
   writers: string[];
   cast: string[];
-  genre: string[];
-  origin: string;
-  language: string;
   tvSeriesStats: {
     airingYear: string;
     currentSeason: number;

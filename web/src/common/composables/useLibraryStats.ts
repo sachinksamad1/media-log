@@ -1,6 +1,6 @@
-import { ref, computed, onMounted } from "vue"
-import { StatsService } from "@common/services/stats.service"
-import type { StatsResponse, MediaStats } from "@common/types/stats"
+import { ref, computed, onMounted } from 'vue'
+import { StatsService } from '@common/services/stats.service'
+import type { StatsResponse, MediaStats } from '@common/types/stats'
 
 export function useLibraryStats() {
   const statsResponse = ref<StatsResponse | null>(null)
@@ -10,17 +10,17 @@ export function useLibraryStats() {
   const fetchStats = async () => {
     try {
       loading.value = true
-      error.value = null  
+      error.value = null
 
       const res = await StatsService.getLibraryStats()
 
       if (!res.success || !res.data) {
-        throw new Error("Invalid stats payload")
+        throw new Error('Invalid stats payload')
       }
 
       statsResponse.value = res
     } catch (e) {
-      error.value = "Failed to load library statistics"
+      error.value = 'Failed to load library statistics'
       statsResponse.value = null
       console.error(e)
     } finally {
@@ -37,28 +37,20 @@ export function useLibraryStats() {
   const allStats = computed<MediaStats[]>(() => {
     const data = statsResponse.value?.data
 
-    if (!data || typeof data !== "object") {
+    if (!data || typeof data !== 'object') {
       return []
     }
 
     return Object.values(data)
   })
 
-  const ongoing = computed(() =>
-    allStats.value.reduce((sum, m) => sum + m.ongoing, 0)
-  )
+  const ongoing = computed(() => allStats.value.reduce((sum, m) => sum + m.ongoing, 0))
 
-  const planned = computed(() =>
-    allStats.value.reduce((sum, m) => sum + m.planned, 0)
-  )
+  const planned = computed(() => allStats.value.reduce((sum, m) => sum + m.planned, 0))
 
-  const completed = computed(() =>
-    allStats.value.reduce((sum, m) => sum + m.completed, 0)
-  )
+  const completed = computed(() => allStats.value.reduce((sum, m) => sum + m.completed, 0))
 
-  const total = computed(() =>
-    allStats.value.reduce((sum, m) => sum + m.total, 0)
-  )
+  const total = computed(() => allStats.value.reduce((sum, m) => sum + m.total, 0))
 
   return {
     loading,
@@ -70,6 +62,6 @@ export function useLibraryStats() {
     completed,
     total,
 
-    refetch: fetchStats
+    refetch: fetchStats,
   }
 }

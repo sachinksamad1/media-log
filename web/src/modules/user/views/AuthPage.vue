@@ -1,35 +1,33 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue"
-import { useRouter } from "vue-router"
-import { storeToRefs } from "pinia"
-import { useAuthStore } from "@/core/stores/useAuthStore"
-import { z } from "zod"
+import { ref, watch, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/core/stores/useAuthStore'
+import { z } from 'zod'
 
-import { Mail, Lock, Chrome, Loader2 } from "lucide-vue-next"
-import { useToast } from "@/common/components/ui/toast/use-toast"
+import { Chrome, Loader2 } from 'lucide-vue-next'
+import { useToast } from '@/common/components/ui/toast/use-toast'
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/common/components/ui/card"
-import { Input } from "@/common/components/ui/input"
-import { Button } from "@/common/components/ui/button"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/common/components/ui/tabs"
+} from '@/common/components/ui/card'
+import { Input } from '@/common/components/ui/input'
+import { Button } from '@/common/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/common/components/ui/tabs'
 
 /* -----------------------------
    Validation
 ----------------------------- */
 
-const emailSchema = z.string().email("Please enter a valid email address")
-const passwordSchema = z.string().min(6, "Password must be at least 6 characters")
-const usernameSchema = z.string().min(3, "Username must be at least 3 characters").max(25, "Username must be at most 25 characters")
+const emailSchema = z.string().email('Please enter a valid email address')
+const passwordSchema = z.string().min(6, 'Password must be at least 6 characters')
+const usernameSchema = z
+  .string()
+  .min(3, 'Username must be at least 3 characters')
+  .max(25, 'Username must be at most 25 characters')
 
 /* -----------------------------
    State
@@ -41,9 +39,9 @@ const authStore = useAuthStore()
 const { user } = storeToRefs(authStore)
 
 /* Tabs */
-const activeTab = ref<"signin" | "signup" | "recovery">("signin")
-const recoveryType = ref<"password" | "username">("password")
-const recoveryForm = ref({ email: "" })
+const activeTab = ref<'signin' | 'signup' | 'recovery'>('signin')
+const recoveryType = ref<'password' | 'username'>('password')
+const recoveryForm = ref({ email: '' })
 
 /* Loading */
 const isLoading = ref(false)
@@ -51,15 +49,15 @@ const isGoogleLoading = ref(false)
 
 /* Form Models (ISOLATED) */
 const signInForm = ref({
-  email: "",
-  password: "",
+  email: '',
+  password: '',
 })
 
 const signUpForm = ref({
-  username: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
 })
 
 /* -----------------------------
@@ -67,17 +65,17 @@ const signUpForm = ref({
 ----------------------------- */
 
 onMounted(() => {
-  if (user.value) router.push("/")
+  if (user.value) router.push('/')
 })
 
 watch(user, (newUser) => {
-  if (newUser) router.push("/")
+  if (newUser) router.push('/')
 })
 
 /* Clear form when switching tabs */
 watch(activeTab, () => {
-  signInForm.value = { email: "", password: "" }
-  signUpForm.value = { username: "", email: "", password: "", confirmPassword: "" }
+  signInForm.value = { email: '', password: '' }
+  signUpForm.value = { username: '', email: '', password: '', confirmPassword: '' }
 })
 
 /* -----------------------------
@@ -93,20 +91,21 @@ function validateInputs(isSignUp: boolean) {
     }
     emailSchema.parse(form.email)
     passwordSchema.parse(form.password)
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Invalid data'
     toast({
-      title: "Invalid input",
-      description: e.issues?.[0]?.message || "Invalid data",
-      variant: "destructive",
+      title: 'Invalid input',
+      description: message,
+      variant: 'destructive',
     })
     return false
   }
 
   if (isSignUp && form.password !== signUpForm.value.confirmPassword) {
     toast({
-      title: "Passwords do not match",
-      description: "Please make sure both passwords are the same",
-      variant: "destructive",
+      title: 'Passwords do not match',
+      description: 'Please make sure both passwords are the same',
+      variant: 'destructive',
     })
     return false
   }
@@ -123,18 +122,13 @@ async function handleSignIn() {
   isLoading.value = true
 
   try {
-    await authStore.login(
-      signInForm.value.email.trim(),
-      signInForm.value.password
-    )
-  } catch (error: any) {
+    await authStore.login(signInForm.value.email.trim(), signInForm.value.password)
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Sign in failed'
     toast({
-      title: "Sign in failed",
-      description:
-        error.message === "Firebase: Error (auth/invalid-credential)."
-          ? "Invalid email or password"
-          : error.message,
-      variant: "destructive",
+      title: 'Sign in failed',
+      description: message,
+      variant: 'destructive',
     })
   } finally {
     isLoading.value = false
@@ -153,14 +147,15 @@ async function handleSignUp() {
     )
 
     toast({
-      title: "Account created",
-      description: "You are now signed in",
+      title: 'Account created',
+      description: 'You are now signed in',
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Sign up failed'
     toast({
-      title: "Sign up failed",
-      description: error.message,
-      variant: "destructive",
+      title: 'Sign up failed',
+      description: message,
+      variant: 'destructive',
     })
   } finally {
     isLoading.value = false
@@ -171,11 +166,12 @@ async function handleGoogleSignIn() {
   isGoogleLoading.value = true
   try {
     await authStore.googleLogin()
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Google sign in failed'
     toast({
-      title: "Google sign in failed",
-      description: error.message,
-      variant: "destructive",
+      title: 'Google sign in failed',
+      description: message,
+      variant: 'destructive',
     })
   } finally {
     isGoogleLoading.value = false
@@ -185,35 +181,37 @@ async function handleGoogleSignIn() {
 async function handleRecovery() {
   try {
     emailSchema.parse(recoveryForm.value.email)
-  } catch (e: any) {
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : 'Invalid email'
     toast({
-      title: "Invalid email",
-      description: e.issues?.[0]?.message || "Please enter a valid email",
-      variant: "destructive",
+      title: 'Invalid email',
+      description: message,
+      variant: 'destructive',
     })
     return
   }
 
   isLoading.value = true
   try {
-    if (recoveryType.value === "password") {
+    if (recoveryType.value === 'password') {
       await authStore.resetPassword(recoveryForm.value.email)
       toast({
-        title: "Email sent",
-        description: "Check your email for password reset instructions.",
+        title: 'Email sent',
+        description: 'Check your email for password reset instructions.',
       })
     } else {
       await authStore.recoverUsername(recoveryForm.value.email)
       toast({
-        title: "Email sent",
-        description: "If an account exists, the username has been sent.",
+        title: 'Email sent',
+        description: 'If an account exists, the username has been sent.',
       })
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Recovery failed'
     toast({
-      title: "Recovery failed",
-      description: error.message,
-      variant: "destructive",
+      title: 'Recovery failed',
+      description: message,
+      variant: 'destructive',
     })
   } finally {
     isLoading.value = false
@@ -248,15 +246,29 @@ async function handleRecovery() {
 
             <!-- SIGN IN -->
             <TabsContent value="signin">
-              <form @submit.prevent="handleSignIn" class="space-y-4">
+              <form class="space-y-4" @submit.prevent="handleSignIn">
                 <Input v-model="signInForm.email" placeholder="Email" />
                 <Input v-model="signInForm.password" type="password" placeholder="Password" />
 
                 <div class="flex justify-between text-xs text-muted-foreground">
-                  <a href="#" @click.prevent="activeTab = 'recovery'; recoveryType = 'password'" class="hover:underline hover:text-primary">
+                  <a
+                    href="#"
+                    class="hover:underline hover:text-primary"
+                    @click.prevent="
+                      activeTab = 'recovery'
+                      recoveryType = 'password'
+                    "
+                  >
                     Forgot Password?
                   </a>
-                  <a href="#" @click.prevent="activeTab = 'recovery'; recoveryType = 'username'" class="hover:underline hover:text-primary">
+                  <a
+                    href="#"
+                    class="hover:underline hover:text-primary"
+                    @click.prevent="
+                      activeTab = 'recovery'
+                      recoveryType = 'username'
+                    "
+                  >
                     Forgot Username?
                   </a>
                 </div>
@@ -270,11 +282,15 @@ async function handleRecovery() {
 
             <!-- SIGN UP -->
             <TabsContent value="signup">
-              <form @submit.prevent="handleSignUp" class="space-y-4">
+              <form class="space-y-4" @submit.prevent="handleSignUp">
                 <Input v-model="signUpForm.username" placeholder="Username" />
                 <Input v-model="signUpForm.email" placeholder="Email" />
                 <Input v-model="signUpForm.password" type="password" placeholder="Password" />
-                <Input v-model="signUpForm.confirmPassword" type="password" placeholder="Confirm Password" />
+                <Input
+                  v-model="signUpForm.confirmPassword"
+                  type="password"
+                  placeholder="Confirm Password"
+                />
 
                 <Button class="w-full" :disabled="isLoading">
                   <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
@@ -290,28 +306,34 @@ async function handleRecovery() {
                   Recover {{ recoveryType === 'password' ? 'Password' : 'Username' }}
                 </h3>
                 <div class="flex gap-2 justify-center mb-4">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
+                  <Button
+                    type="button"
+                    variant="outline"
                     size="sm"
-                    :class="recoveryType === 'password' ? 'bg-primary/10 border-primary text-primary' : ''"
-                    @click="recoveryType = 'password'">
+                    :class="
+                      recoveryType === 'password' ? 'bg-primary/10 border-primary text-primary' : ''
+                    "
+                    @click="recoveryType = 'password'"
+                  >
                     Password
                   </Button>
-                  <Button 
-                    type="button" 
+                  <Button
+                    type="button"
                     variant="outline"
-                    size="sm" 
-                    :class="recoveryType === 'username' ? 'bg-primary/10 border-primary text-primary' : ''"
-                    @click="recoveryType = 'username'">
+                    size="sm"
+                    :class="
+                      recoveryType === 'username' ? 'bg-primary/10 border-primary text-primary' : ''
+                    "
+                    @click="recoveryType = 'username'"
+                  >
                     Username
                   </Button>
                 </div>
               </div>
 
-              <form @submit.prevent="handleRecovery" class="space-y-4">
+              <form class="space-y-4" @submit.prevent="handleRecovery">
                 <Input v-model="recoveryForm.email" placeholder="Enter your email" />
-                
+
                 <Button class="w-full" :disabled="isLoading">
                   <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
                   Send {{ recoveryType === 'password' ? 'Reset Link' : 'My Username' }}

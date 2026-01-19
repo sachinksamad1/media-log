@@ -6,9 +6,6 @@ export class FictionMapper extends MediaMapper<Fiction, FictionDTO> {
   protected mapSpecializedFields(entity: Fiction): Partial<FictionDTO> {
     return {
       author: entity.author,
-      genres: entity.genres || [],
-      origin: entity.origin,
-      language: entity.language,
       format: entity.format,
       type: entity.type,
       publicationInfo: {

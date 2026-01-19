@@ -5,10 +5,9 @@ import type { Games } from '@modules/media/game/game-schema.js';
 export class GameMapper extends MediaMapper<Games, GameDTO> {
   protected mapSpecializedFields(entity: Games): Partial<GameDTO> {
     return {
-      genres: entity.genres,
-      platforms: entity.platforms,
-      developers: entity.developers,
-      publishers: entity.publishers,
+      platforms: entity.platforms as GameDTO['platforms'],
+      developers: entity.developers as GameDTO['developers'],
+      publishers: entity.publishers as GameDTO['publishers'],
       playthroughs: entity.playthroughs.map((p) => ({
         ...p,
         achievementsUnlocked: p.achievementsUnlocked ?? 0,

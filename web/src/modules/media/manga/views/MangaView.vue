@@ -8,4 +8,4 @@ import MangaList from '@/modules/media/manga/components/MangaList.vue'
       <MangaList />
     </div>
   </div>
-</template> 
+</template>

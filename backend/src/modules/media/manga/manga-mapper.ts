@@ -8,8 +8,6 @@ export class MangaMapper extends MediaMapper<Manga, MangaDTO> {
     return {
       author: entity.author,
       illustrator: entity.illustrator,
-      origin: entity.origin,
-      genres: entity.genres || [],
       type: entity.type,
       format: entity.format,
       releaseStats: entity.releaseStats,

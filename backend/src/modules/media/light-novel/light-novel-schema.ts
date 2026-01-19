@@ -4,8 +4,6 @@ import { z } from 'zod';
 export const LightNovelSchema = MediaSchema.extend({
   author: z.string().optional(),
   illustrator: z.string().optional(),
-  origin: z.string().default('Japan'),
-  genres: z.array(z.string()).optional(),
   type: z.enum(['Series', 'Standalone']).optional().default('Series'),
   format: z
     .enum(['Web Novel', 'Light Novel', 'Physical', 'Digital'])

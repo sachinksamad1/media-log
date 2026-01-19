@@ -1,41 +1,41 @@
-// Release Stats
-export interface ReleaseStats {
-    releaseStatus: 'Ongoing' | 'Completed' | 'Hiatus' | 'Cancelled' | string;
-    volumes: number;
+export interface VolumeInfo {
+  standalone: boolean
+  seriesName?: string
+  order: number
+  total: number
+  isCompleted: boolean
 }
 
 // User Stats
 export interface UserStats {
-    score: number;
-    status: 'Completed' | 'Planned' | 'Ongoing' | string;
+  score: number
+  status: 'Planned' | 'Reading' | 'Completed' | 'Dropped' | 'On-Hold' | string
 }
 
 // NonFiction
 export interface NonFiction {
-    id: string;
-    title: string;
-    author: string;
-    illustrator: string;
-    origin: string;
-    genres: string[];
-    type: 'Series' | 'Standalone' | string;
-    format: 'Physical' | 'Digital' | 'Audiobook' | 'Hardcover' | 'Paperback' | string;    
-    releaseStats: ReleaseStats;
-    userStats: UserStats;
-    readingStats?: { currentReadingVolume: number };
-    imageUrl: string;
-    createdAt?: string;
-    updatedAt?: string;
+  id: string
+  title: string
+  author: string
+  origin: string
+  genres: string[]
+  format: 'E-Book' | 'Physical' | string
+  published?: string
+  volumes: VolumeInfo[]
+  userStats: UserStats
+  imageUrl: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 // NonFiction Response
 export interface NonFictionResponse {
-  success: boolean;
-  message: string;
-  data: NonFiction[];
+  success: boolean
+  message: string
+  data: NonFiction[]
   meta?: {
-    totalItems?: number;
-    nextCursor?: string | null;
-    count?: number;
-  };
+    totalItems?: number
+    nextCursor?: string | null
+    count?: number
+  }
 }

@@ -1,30 +1,40 @@
+// Game Stats
 export interface GameUserStats {
-    score: number;
-    status: 'Completed' | 'Playing' | 'Planned' | 'Dropped' | string;
-    playTime?: number; // Hours
+  score: number
+  playTime: number
+  status: 'Planned' | 'Playing' | 'Completed' | 'Dropped' | 'On-Hold' | string
+}
+
+export interface Playthrough {
+  platformUsed: string
+  isCompleted: boolean
+  achievementsUnlocked?: number
 }
 
 export interface Game {
-    id: string;
-    title: string;
-    developer: string;
-    publisher: string;
-    platforms: string[];
-    genres: string[];
-    releaseDate?: string;
-    userStats: GameUserStats;
-    imageUrl: string;
-    createdAt?: string;
-    updatedAt?: string;
+  id: string
+  title: string
+  developers: string[]
+  publishers: string[]
+  platforms: string[]
+  genres: string[]
+  playthroughs: Playthrough[]
+  userStats: GameUserStats
+  origin?: string
+  language?: string
+  imageUrl: string
+  releaseDate?: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface GameResponse {
-  success: boolean;
-  message: string;
-  data: Game[];
+  success: boolean
+  message: string
+  data: Game[]
   meta?: {
-    totalItems?: number;
-    nextCursor?: string | null;
-    count?: number;
-  };
+    totalItems?: number
+    nextCursor?: string | null
+    count?: number
+  }
 }

@@ -7,9 +7,6 @@ export class MovieMapper extends MediaMapper<Movie, MovieDTO> {
     return {
       director: entity.director,
       cast: entity.cast ?? [],
-      genres: entity.genres ?? [],
-      origin: entity.origin,
-      language: entity.language,
       movieStats: {
         releaseDate:
           entity.movieStats?.releaseDate instanceof Date

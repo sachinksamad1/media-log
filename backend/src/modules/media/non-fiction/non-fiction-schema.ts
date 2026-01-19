@@ -3,9 +3,6 @@ import { z } from 'zod';
 
 export const NonFictionSchema = MediaSchema.extend({
   author: z.string().optional(),
-  genres: z.array(z.string()).default([]),
-  origin: z.string().optional(),
-  language: z.string().default('English'),
   format: z.enum(['E-Book', 'Physical']).default('E-Book'),
   published: z.date().optional().or(z.string().regex(/\d{4}/)),
   volumes: z

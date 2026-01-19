@@ -2,10 +2,7 @@ import { MediaSchema } from '@common/media/media-schema.js';
 import { z } from 'zod';
 
 export const GameSchema = MediaSchema.extend({
-  genres: z.array(z.string()).optional(),
-  platforms: z
-    .array(z.enum(['PC', 'Xbox', 'PlayStation', 'Switch', 'Mobile', 'Other']))
-    .default([]),
+  platforms: z.array(z.string()).default([]),
   developers: z.array(z.string()).optional(),
   publishers: z.array(z.string()).optional(),
   playthroughs: z

@@ -7,8 +7,6 @@ export class LightNovelMapper extends MediaMapper<LightNovel, LightNovelDTO> {
     return {
       author: entity.author,
       illustrator: entity.illustrator,
-      origin: entity.origin,
-      genres: entity.genres || [],
       type: entity.type,
       format: entity.format,
       releaseStatus: entity.releaseStats,

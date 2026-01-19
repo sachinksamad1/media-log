@@ -16,9 +16,9 @@ const carouselIndex = ref<Record<string, number>>({})
 const grouped = computed(() => {
   const groups: Record<string, MediaItem[]> = {}
 
-  props.statusOrder.forEach(s => (groups[s] = []))
+  props.statusOrder.forEach((s) => (groups[s] = []))
 
-  props.items.forEach(item => {
+  props.items.forEach((item) => {
     groups[item.status]?.push(item)
   })
 
@@ -26,23 +26,17 @@ const grouped = computed(() => {
 })
 
 const nonEmptyStatuses = computed(() => {
-  return props.statusOrder.filter(status => (grouped.value[status]?.length || 0) > 0)
+  return props.statusOrder.filter((status) => (grouped.value[status]?.length || 0) > 0)
 })
 
 function next(status: string) {
   const total = grouped.value[status]?.length || 0
   const max = Math.max(0, total - VISIBLE)
-  carouselIndex.value[status] = Math.min(
-    (carouselIndex.value[status] || 0) + VISIBLE,
-    max
-  )
+  carouselIndex.value[status] = Math.min((carouselIndex.value[status] || 0) + VISIBLE, max)
 }
 
 function prev(status: string) {
-  carouselIndex.value[status] = Math.max(
-    (carouselIndex.value[status] || 0) - VISIBLE,
-    0
-  )
+  carouselIndex.value[status] = Math.max((carouselIndex.value[status] || 0) - VISIBLE, 0)
 }
 </script>
 
@@ -66,11 +60,7 @@ function prev(status: string) {
       </button>
     </div>
 
-    <section
-      v-for="status in nonEmptyStatuses"
-      :key="status"
-      class="mb-14"
-    >
+    <section v-for="status in nonEmptyStatuses" :key="status" class="mb-14">
       <h3 class="text-xl font-semibold mb-4 capitalize">
         {{ status }} ({{ grouped[status]?.length ?? 0 }})
       </h3>
@@ -80,14 +70,14 @@ function prev(status: string) {
         v-if="viewMode === 'grid'"
         class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6"
       >
-        <slot name="card" v-for="item in (grouped[status] ?? [])" :item="item" />
+        <slot v-for="item in grouped[status] ?? []" name="card" :item="item" />
       </div>
 
       <!-- CAROUSEL -->
       <div v-else class="relative group">
-        <button 
+        <button
           v-if="(grouped[status]?.length || 0) > VISIBLE"
-          class="carousel-btn left opacity-0 group-hover:opacity-100 transition-opacity" 
+          class="carousel-btn left opacity-0 group-hover:opacity-100 transition-opacity"
           :disabled="!carouselIndex[status]"
           @click="prev(status)"
         >
@@ -100,19 +90,19 @@ function prev(status: string) {
             :style="{ transform: `translateX(-${(carouselIndex[status] || 0) * 200}px)` }"
           >
             <!-- Fixed width container for carousel items to maintain consistent spacing -->
-            <div 
-                v-for="item in (grouped[status] ?? [])" 
-                :key="item.id"
-                class="min-w-[180px] w-[180px]"
+            <div
+              v-for="item in grouped[status] ?? []"
+              :key="item.id"
+              class="min-w-[180px] w-[180px]"
             >
-                <slot name="card" :item="item" />
+              <slot name="card" :item="item" />
             </div>
           </div>
         </div>
 
-        <button 
+        <button
           v-if="(grouped[status]?.length || 0) > VISIBLE"
-          class="carousel-btn right opacity-0 group-hover:opacity-100 transition-opacity" 
+          class="carousel-btn right opacity-0 group-hover:opacity-100 transition-opacity"
           @click="next(status)"
         >
           ›

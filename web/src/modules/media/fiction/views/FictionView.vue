@@ -8,4 +8,4 @@ import FictionList from '@modules/media/fiction/components/FictionList.vue'
       <FictionList />
     </div>
   </div>
-</template> 
+</template>

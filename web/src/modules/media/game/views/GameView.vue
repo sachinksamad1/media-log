@@ -8,4 +8,4 @@ import GameList from '@modules/media/game/components/GameList.vue'
       <GameList />
     </div>
   </div>
-</template> 
+</template>

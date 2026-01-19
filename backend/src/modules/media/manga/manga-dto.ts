@@ -5,8 +5,6 @@ import type { Manga } from '@/modules/media/manga/manga-schema.js';
 export interface MangaDTO extends MediaDTO {
   author: string;
   illustrator: string;
-  origin: string;
-  genres: string[];
   type: string;
   format: string;
   releaseStats: {

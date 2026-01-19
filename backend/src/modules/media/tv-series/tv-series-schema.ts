@@ -5,9 +5,6 @@ export const TvSeriesSchema = MediaSchema.extend({
   directors: z.array(z.string()).default([]),
   writers: z.array(z.string()).default([]),
   cast: z.array(z.string()).default([]),
-  genre: z.array(z.string()).default([]),
-  origin: z.string().default('International'),
-  language: z.string().default('English'),
   tvSeriesStats: z
     .object({
       airingYear: z.string().regex(/^\d{4}$/, 'Must be a 4-digit year'),

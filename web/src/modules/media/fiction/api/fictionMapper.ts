@@ -1,5 +1,5 @@
-import type { Fiction } from '../types/types';
-import type { FictionDto } from '../types/dtos';
+import type { Fiction } from '../types/types'
+import type { FictionDto } from '../types/dtos'
 
 export const FictionMapper = {
   toDomain(dto: FictionDto): Fiction {
@@ -18,7 +18,7 @@ export const FictionMapper = {
       imageUrl: dto.imageUrl,
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
-    };
+    }
   },
 
   toDto(domain: Fiction): FictionDto {
@@ -37,6 +37,6 @@ export const FictionMapper = {
       imageUrl: domain.imageUrl,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-    };
-  }
-};
+    }
+  },
+}

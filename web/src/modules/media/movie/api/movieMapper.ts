@@ -1,5 +1,5 @@
-import type { Movie } from '../types/types';
-import type { MovieDto } from '../types/dtos';
+import type { Movie } from '../types/types'
+import type { MovieDto } from '../types/dtos'
 
 export const MovieMapper = {
   toDomain(dto: MovieDto): Movie {
@@ -19,7 +19,7 @@ export const MovieMapper = {
       imageUrl: dto.imageUrl,
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
-    };
+    }
   },
 
   toDto(domain: Movie): MovieDto {
@@ -39,6 +39,6 @@ export const MovieMapper = {
       imageUrl: domain.imageUrl,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-    };
-  }
-};
+    }
+  },
+}

@@ -1,5 +1,5 @@
-import type { Anime } from '../types/types';
-import type { AnimeDto } from '../types/dtos';
+import type { Anime } from '../types/types'
+import type { AnimeDto } from '../types/dtos'
 
 export const AnimeMapper = {
   toDomain(dto: AnimeDto): Anime {
@@ -20,7 +20,7 @@ export const AnimeMapper = {
       imageUrl: dto.imageUrl,
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
-    };
+    }
   },
 
   toDto(domain: Anime): AnimeDto {
@@ -41,6 +41,6 @@ export const AnimeMapper = {
       imageUrl: domain.imageUrl,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-    };
-  }
-};
+    }
+  },
+}

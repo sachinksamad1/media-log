@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
-import { useAuthStore } from "@/core/stores/useAuthStore"
-import { userService } from "@/modules/user/api/userService"
-import { useToast } from "@/common/components/ui/toast/use-toast"
-import { storeToRefs } from "pinia"
+import { useAuthStore } from '@/core/stores/useAuthStore'
+import { userService } from '@/modules/user/api/userService'
+import { useToast } from '@/common/components/ui/toast/use-toast'
+import { storeToRefs } from 'pinia'
 
 import {
   Card,
@@ -11,10 +11,10 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/common/components/ui/card"
-import { Input } from "@/common/components/ui/input"
-import { Button } from "@/common/components/ui/button"
-import { Loader2 } from "lucide-vue-next"
+} from '@/common/components/ui/card'
+import { Input } from '@/common/components/ui/input'
+import { Button } from '@/common/components/ui/button'
+import { Loader2 } from 'lucide-vue-next'
 
 const authStore = useAuthStore()
 const { userProfile } = storeToRefs(authStore)
@@ -47,21 +47,22 @@ async function handleUpdateProfile() {
   isLoading.value = true
   try {
     const updatedProfile = await userService.updateMe({
-        displayName: formData.value.displayName,
+      displayName: formData.value.displayName,
     })
-    
+
     // Update store
     authStore.profile = updatedProfile
 
     toast({
-      title: "Settings updated",
-      description: "Your profile settings have been successfully saved.",
+      title: 'Settings updated',
+      description: 'Your profile settings have been successfully saved.',
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Could not update settings'
     toast({
-      title: "Update failed",
-      description: error.message || "Could not update settings",
-      variant: "destructive",
+      title: 'Update failed',
+      description: message,
+      variant: 'destructive',
     })
   } finally {
     isLoading.value = false
@@ -79,20 +80,21 @@ async function handleFileChange(event: Event) {
   isLoading.value = true
   try {
     const updatedProfile = await userService.uploadAvatar(file)
-    
+
     // Update store and local form state
     authStore.profile = updatedProfile
     formData.value.avatarImg = updatedProfile.avatarImg || ''
 
     toast({
-      title: "Avatar updated",
-      description: "Your profile picture has been updated successfully.",
+      title: 'Avatar updated',
+      description: 'Your profile picture has been updated successfully.',
     })
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : 'Could not upload image'
     toast({
-      title: "Upload failed",
-      description: error.message || "Could not upload image",
-      variant: "destructive",
+      title: 'Upload failed',
+      description: message,
+      variant: 'destructive',
     })
     // Reset input
     input.value = ''
@@ -110,51 +112,67 @@ async function handleFileChange(event: Event) {
         <CardDescription>Manage your account settings and preferences.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form @submit.prevent="handleUpdateProfile" class="space-y-6">
-            <div class="space-y-2">
-                <label for="displayName" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Display Name
-                </label>
-                <Input id="displayName" v-model="formData.displayName" placeholder="Enter your display name" />
-                <p class="text-sm text-muted-foreground">
-                    This is your public display name. It can be your real name or a pseudonym.
+        <form class="space-y-6" @submit.prevent="handleUpdateProfile">
+          <div class="space-y-2">
+            <label
+              for="displayName"
+              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Display Name
+            </label>
+            <Input
+              id="displayName"
+              v-model="formData.displayName"
+              placeholder="Enter your display name"
+            />
+            <p class="text-sm text-muted-foreground">
+              This is your public display name. It can be your real name or a pseudonym.
+            </p>
+          </div>
+
+          <div class="space-y-4">
+            <label
+              class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Avatar
+            </label>
+
+            <div class="flex items-center gap-4">
+              <div
+                class="w-16 h-16 rounded-full overflow-hidden bg-secondary border border-border flex items-center justify-center"
+              >
+                <img
+                  v-if="formData.avatarImg"
+                  :src="formData.avatarImg"
+                  alt="Avatar"
+                  class="w-full h-full object-cover"
+                />
+                <span v-else class="text-xl font-bold text-muted-foreground">
+                  {{ formData.displayName?.charAt(0).toUpperCase() || 'U' }}
+                </span>
+              </div>
+
+              <div class="flex-1 space-y-2">
+                <Input
+                  id="avatarUpload"
+                  type="file"
+                  accept="image/*"
+                  class="cursor-pointer"
+                  @change="handleFileChange"
+                />
+                <p class="text-xs text-muted-foreground">
+                  Upload a new profile picture. Max size 5MB.
                 </p>
+              </div>
             </div>
+          </div>
 
-            <div class="space-y-4">
-                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    Avatar
-                </label>
-                
-                <div class="flex items-center gap-4">
-                    <div class="w-16 h-16 rounded-full overflow-hidden bg-secondary border border-border flex items-center justify-center">
-                        <img v-if="formData.avatarImg" :src="formData.avatarImg" alt="Avatar" class="w-full h-full object-cover" />
-                        <span v-else class="text-xl font-bold text-muted-foreground">
-                            {{ formData.displayName?.charAt(0).toUpperCase() || 'U' }}
-                        </span>
-                    </div>
-
-                    <div class="flex-1 space-y-2">
-                        <Input 
-                          id="avatarUpload" 
-                          type="file" 
-                          accept="image/*"
-                          @change="handleFileChange"
-                          class="cursor-pointer"
-                        />
-                        <p class="text-xs text-muted-foreground">
-                            Upload a new profile picture. Max size 5MB.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex justify-end pt-4">
-                <Button type="submit" :disabled="isLoading">
-                    <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
-                    Save Changes
-                </Button>
-            </div>
+          <div class="flex justify-end pt-4">
+            <Button type="submit" :disabled="isLoading">
+              <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
+              Save Changes
+            </Button>
+          </div>
         </form>
       </CardContent>
     </Card>

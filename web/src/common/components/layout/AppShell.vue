@@ -17,15 +17,9 @@ const mainClasses = computed(() => ({
     <AppHeader />
 
     <div class="flex pt-16">
-      <AppSidebar
-        v-model:open="sidebarOpen"
-        v-model:collapsed="sidebarCollapsed"
-      />
+      <AppSidebar v-model:open="sidebarOpen" v-model:collapsed="sidebarCollapsed" />
 
-      <main
-        class="flex-1 transition-all duration-300"
-        :class="mainClasses"
-      >
+      <main class="flex-1 transition-all duration-300" :class="mainClasses">
         <slot />
       </main>
     </div>

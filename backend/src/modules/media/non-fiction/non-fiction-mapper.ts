@@ -6,9 +6,6 @@ export class NonFictionMapper extends MediaMapper<NonFiction, NonFictionDTO> {
   protected mapSpecializedFields(entity: NonFiction): Partial<NonFictionDTO> {
     return {
       author: entity.author,
-      genres: entity.genres,
-      origin: entity.origin,
-      language: entity.language,
       format: entity.format,
       published:
         entity.published instanceof Date

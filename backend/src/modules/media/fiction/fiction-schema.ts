@@ -3,9 +3,6 @@ import { z } from 'zod';
 
 export const FictionSchema = MediaSchema.extend({
   author: z.string().optional(),
-  genres: z.array(z.string()).optional(),
-  origin: z.string().optional(),
-  language: z.string().optional(),
   format: z.enum(['E-Book', 'Physical']).default('E-Book'),
   type: z.enum(['Novel', 'Short Story']).default('Novel'),
 

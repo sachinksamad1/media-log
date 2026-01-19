@@ -1,5 +1,5 @@
-import type { Game } from '../types/types';
-import type { GameDto } from '../types/dtos';
+import type { Game } from '../types/types'
+import type { GameDto } from '../types/dtos'
 
 export const GameMapper = {
   toDomain(dto: GameDto): Game {
@@ -15,7 +15,7 @@ export const GameMapper = {
       imageUrl: dto.imageUrl,
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
-    };
+    }
   },
 
   toDto(domain: Game): GameDto {
@@ -31,6 +31,6 @@ export const GameMapper = {
       imageUrl: domain.imageUrl,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-    };
-  }
-};
+    }
+  },
+}

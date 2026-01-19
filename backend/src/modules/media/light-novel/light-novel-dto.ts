@@ -4,8 +4,6 @@ import type { LightNovel } from '@modules/media/light-novel/light-novel-schema.j
 export interface LightNovelDTO extends MediaDTO {
   author: string;
   illustrator: string;
-  origin: string;
-  genres: string[];
   type: string;
   format: string;
   releaseStatus: {

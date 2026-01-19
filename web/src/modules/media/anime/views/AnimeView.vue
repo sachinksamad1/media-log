@@ -8,4 +8,4 @@ import AnimeList from '@/modules/media/anime/components/AnimeList.vue'
       <AnimeList />
     </div>
   </div>
-</template> 
+</template>

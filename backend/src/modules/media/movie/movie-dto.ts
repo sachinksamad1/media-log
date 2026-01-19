@@ -7,9 +7,6 @@ import type { Movie } from '@modules/media/movie/movie-schema.js';
 export interface MovieDTO extends MediaDTO {
   director?: string;
   cast: string[];
-  genres: string[];
-  origin?: string;
-  language?: string;
   movieStats: {
     releaseDate?: string;
     runtimeMinutes?: number;

@@ -4,8 +4,6 @@ import { z } from 'zod';
 export const MangaSchema = MediaSchema.extend({
   author: z.string().optional(),
   illustrator: z.string().optional(),
-  origin: z.string().default('Japan'),
-  genres: z.array(z.string()).default([]),
   type: z
     .enum(['Manga', 'Manhwa', 'Manhua', 'One-shot', 'Doujinshi'])
     .default('Manga'),

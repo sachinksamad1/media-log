@@ -3,6 +3,8 @@ import { z } from 'zod';
 export const UserStatusEnum = z.enum([
   'Planned',
   'Watching',
+  'Reading',
+  'Playing',
   'Ongoing',
   'Completed',
   'Dropped',
@@ -13,6 +15,9 @@ export const MediaSchema = z.object({
   id: z.string().optional(),
   uid: z.string().min(1, 'User ID is required'),
   title: z.string().min(1, 'Title is required'),
+  genres: z.array(z.string()).optional(),
+  origin: z.string().optional(),
+  language: z.string().optional(),
 
   // Shared User Stats
   userStats: z
@@ -26,7 +31,7 @@ export const MediaSchema = z.object({
     }),
 
   // Centralized Image Handling
-  imageUrl: z.url('Invalid image URL').optional().or(z.literal('')),
+  imageUrl: z.url('Invalid image URL').optional(),
 
   // Automated Audit Info
   createdAt: z.preprocess(

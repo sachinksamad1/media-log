@@ -1,8 +1,10 @@
 export type MediaStatus =
-  | 'Completed'
-  | 'Ongoing'
   | 'Planned'
   | 'Watching'
+  | 'Reading'
+  | 'Playing'
+  | 'Ongoing'
+  | 'Completed'
   | 'Dropped'
   | 'On-Hold';
 

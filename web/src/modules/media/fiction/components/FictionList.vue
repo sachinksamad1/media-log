@@ -73,10 +73,10 @@ async function fetchLibrary(isLoadMore = false) {
   try {
     loading.value = true
     const cursor = isLoadMore ? nextCursor.value || undefined : undefined
-    
+
     // Pass selectedFilter
     const response = await FictionService.getAll(LIMIT, cursor, selectedFilter.value)
-    
+
     if (isLoadMore) {
       library.value.push(...response.data)
     } else {
@@ -86,7 +86,6 @@ async function fetchLibrary(isLoadMore = false) {
     // Update Pagination State
     nextCursor.value = response.meta?.nextCursor || null
     hasMore.value = !!nextCursor.value
-
   } catch (err) {
     error.value = 'Failed to load library'
     console.error(err)
@@ -96,31 +95,35 @@ async function fetchLibrary(isLoadMore = false) {
 }
 
 // Search Logic
-watchDebounced(searchQuery, async (q) => {
-  if (!q || q.trim() === '') {
-    if (isSearching.value) {
+watchDebounced(
+  searchQuery,
+  async (q) => {
+    if (!q || q.trim() === '') {
+      if (isSearching.value) {
         isSearching.value = false
         // Reset to normal list
         nextCursor.value = null
         hasMore.value = true
         fetchLibrary()
+      }
+      return
     }
-    return
-  }
-  
-  isSearching.value = true
-  loading.value = true
-  try {
-     const results = await FictionService.search(q)
-     library.value = results
-     hasMore.value = false 
-  } catch (err) {
-    error.value = 'Failed to search'
-    console.error(err)
-  } finally {
-    loading.value = false
-  }
-}, { debounce: 500 })
+
+    isSearching.value = true
+    loading.value = true
+    try {
+      const results = await FictionService.search(q)
+      library.value = results
+      hasMore.value = false
+    } catch (err) {
+      error.value = 'Failed to search'
+      console.error(err)
+    } finally {
+      loading.value = false
+    }
+  },
+  { debounce: 500 }
+)
 
 const authStore = useAuthStore()
 
@@ -131,13 +134,13 @@ onMounted(() => {
       () => authStore.isInitialLoading,
       (loading) => {
         if (!loading) {
-          fetchLibrary()
+          if (authStore.isAuthenticated) fetchLibrary()
           unwatch()
         }
       }
     )
   } else {
-    fetchLibrary()
+    if (authStore.isAuthenticated) fetchLibrary()
   }
 })
 </script>
@@ -145,14 +148,13 @@ onMounted(() => {
 <template>
   <div class="min-h-screen bg-background text-foreground w-full">
     <div class="mx-auto w-full max-w-7xl px-2 lg:px-4 py-2">
-
       <!-- HEADER / FILTERS -->
       <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
         <div class="flex items-center gap-4">
-          <h3 class="text-xl font-semibold text-[hsl(var(--category-fiction))]">My Fiction Library</h3>
-          <button 
-            @click="isAddModalOpen = true"
+          <h3 class="text-xl font-semibold text-[hsl(var(--category-fiction))]">Fiction Library</h3>
+          <button
             class="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity flex items-center gap-1"
+            @click="isAddModalOpen = true"
           >
             <span>+</span> Add Fiction
           </button>
@@ -161,20 +163,24 @@ onMounted(() => {
         <!-- SEARCH BAR -->
         <div class="relative w-full sm:max-w-xs order-last sm:order-none mt-4 sm:mt-0">
           <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input 
-            v-model="searchQuery" 
-            class="w-full pl-9 pr-4 py-2 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm" 
-            placeholder="Search fiction..." 
+          <input
+            v-model="searchQuery"
+            class="w-full pl-9 pr-4 py-2 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm"
+            placeholder="Search fiction..."
           />
         </div>
-        
+
         <div class="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
-          <button 
-            v-for="filter in ['All', 'Completed', 'Planned', 'Ongoing']" 
+          <button
+            v-for="filter in ['All', 'Completed', 'Planned', 'Ongoing']"
             :key="filter"
-            @click="setFilter(filter)"
             class="px-4 py-1.5 rounded-md text-sm font-medium transition-all"
-            :class="selectedFilter === filter ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'"
+            :class="
+              selectedFilter === filter
+                ? 'bg-background shadow-sm text-foreground'
+                : 'text-muted-foreground hover:text-foreground'
+            "
+            @click="setFilter(filter)"
           >
             {{ filter }}
           </button>
@@ -184,16 +190,19 @@ onMounted(() => {
       <!-- ERROR STATE -->
       <div v-if="error" class="text-destructive text-center py-8">
         {{ error }}
-        <button 
-          @click="fetchLibrary()" 
+        <button
           class="block mx-auto mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90"
+          @click="fetchLibrary()"
         >
           Retry
         </button>
       </div>
 
       <!-- EMPTY STATE -->
-      <div v-else-if="!loading && !authStore.isInitialLoading && library.length === 0" class="text-center py-12 text-muted">
+      <div
+        v-else-if="!loading && !authStore.isInitialLoading && library.length === 0"
+        class="text-center py-12 text-muted"
+      >
         No fiction found in your library.
       </div>
 
@@ -210,28 +219,27 @@ onMounted(() => {
       <!-- LOAD MORE -->
       <div v-if="hasMore" class="mt-12 flex justify-center">
         <button
-          @click="fetchLibrary(true)"
           :disabled="loading"
           class="px-8 py-3 bg-secondary text-secondary-foreground rounded-full font-medium shadow-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          @click="fetchLibrary(true)"
         >
           {{ loading ? 'Loading...' : 'Load More' }}
         </button>
       </div>
-
     </div>
 
     <!-- Modals -->
-    <FictionDetailModal 
+    <FictionDetailModal
       v-if="selectedFiction"
       :fiction="selectedFiction"
-      :isOpen="isModalOpen"
+      :is-open="isModalOpen"
       @close="isModalOpen = false"
       @update="handleUpdate"
       @delete="handleDelete"
     />
 
     <AddNewFictionModal
-      :isOpen="isAddModalOpen"
+      :is-open="isAddModalOpen"
       @close="isAddModalOpen = false"
       @created="handleCreate"
     />

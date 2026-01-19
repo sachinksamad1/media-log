@@ -1,5 +1,3 @@
-
-
 export { default as Toaster } from './Toaster.vue'
 export { default as Toast } from './Toast.vue'
 export { default as ToastViewport } from './ToastViewport.vue'
@@ -10,5 +8,4 @@ export { default as ToastDescription } from './ToastDescription.vue'
 export { default as ToastProvider } from './ToastProvider.vue'
 export { useToast } from './use-toast'
 
-export { toastVariants } from './constants'
-
+export { toastVariants, type ToastVariant } from './constants'

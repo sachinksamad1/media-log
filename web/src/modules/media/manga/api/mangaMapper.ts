@@ -1,5 +1,5 @@
-import type { Manga } from '../types/types';
-import type { MangaDto } from '../types/dtos';
+import type { Manga } from '../types/types'
+import type { MangaDto } from '../types/dtos'
 
 export const MangaMapper = {
   toDomain(dto: MangaDto): Manga {
@@ -17,7 +17,7 @@ export const MangaMapper = {
       imageUrl: dto.imageUrl,
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
-    };
+    }
   },
 
   toDto(domain: Manga): MangaDto {
@@ -35,6 +35,6 @@ export const MangaMapper = {
       imageUrl: domain.imageUrl,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-    };
-  }
-};
+    }
+  },
+}

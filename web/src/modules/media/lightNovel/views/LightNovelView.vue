@@ -8,4 +8,4 @@ import LightNovelList from '@/modules/media/lightNovel/components/LightNovelList
       <LightNovelList />
     </div>
   </div>
-</template> 
+</template>

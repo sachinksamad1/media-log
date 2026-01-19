@@ -3,9 +3,6 @@ import type { Fiction } from '@modules/media/fiction/fiction-schema.js';
 
 export interface FictionDTO extends MediaDTO {
   author?: string;
-  genres: string[];
-  origin?: string;
-  language?: string;
   format: 'E-Book' | 'Physical';
   type: 'Novel' | 'Short Story';
   publicationInfo: {

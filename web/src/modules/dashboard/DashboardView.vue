@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import StatsCard from "@common/components/ui/StatsCard.vue"
+import StatsCard from '@common/components/ui/StatsCard.vue'
 </script>
 
 <template>

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, type Component, type VNode } from 'vue'
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 5000
@@ -9,7 +9,7 @@ export interface ToastProps {
   id: string
   title?: string
   description?: string
-  action?: any
+  action?: Component | VNode
   variant?: ToastVariant
   open?: boolean
   onOpenChange?: (open: boolean) => void

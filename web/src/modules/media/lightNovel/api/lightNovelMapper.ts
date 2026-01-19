@@ -1,5 +1,5 @@
-import type { LightNovel } from '../types/types';
-import type { LightNovelDto } from '../types/dtos';
+import type { LightNovel } from '../types/types'
+import type { LightNovelDto } from '../types/dtos'
 
 export const LightNovelMapper = {
   toDomain(dto: LightNovelDto): LightNovel {
@@ -18,7 +18,7 @@ export const LightNovelMapper = {
       imageUrl: dto.imageUrl,
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
-    };
+    }
   },
 
   toDto(domain: LightNovel): LightNovelDto {
@@ -37,6 +37,6 @@ export const LightNovelMapper = {
       imageUrl: domain.imageUrl,
       createdAt: domain.createdAt,
       updatedAt: domain.updatedAt,
-    };
-  }
-};
+    }
+  },
+}
