@@ -15,13 +15,13 @@ export const MovieService = {
   },
 
   async create(movie: Partial<Movie> | FormData): Promise<Movie> {
-    const { data } = await http.post<MovieDto>('/movie', movie)
-    return MovieMapper.toDomain(data)
+    const { data } = await http.post<{ data: MovieDto }>('/movie', movie)
+    return MovieMapper.toDomain(data.data)
   },
 
   async update(id: string, movie: Partial<Movie> | FormData): Promise<Movie> {
-    const { data } = await http.patch<MovieDto>(`/movie/${id}`, movie)
-    return MovieMapper.toDomain(data)
+    const { data } = await http.patch<{ data: MovieDto }>(`/movie/${id}`, movie)
+    return MovieMapper.toDomain(data.data)
   },
 
   async delete(id: string): Promise<void> {

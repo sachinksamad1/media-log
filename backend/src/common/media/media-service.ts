@@ -1,3 +1,5 @@
+import { userActivityService } from '@modules/user-activity/user-activity.service.js';
+
 import type { MediaRepository } from './media-repository.js';
 import type { BaseMediaType } from './media-types.js';
 
@@ -26,17 +28,41 @@ export abstract class MediaService<T extends BaseMediaType> {
   }
 
   async create(data: T, userId: string) {
-    return this.repository.create(data, userId);
+    const created = await this.repository.create(data, userId);
+    await userActivityService.logActivity(
+      userId,
+      'CREATE',
+      this.repository.collectionName,
+      created.id!,
+      created.title,
+    );
+    return created;
   }
 
   async update(id: string, data: Partial<T>, userId: string) {
     // Check existence before update - calling getById will also check ownership via repo
-    await this.getById(id, userId);
-    return this.repository.update(id, data, userId);
+    const existing = await this.getById(id, userId);
+    const updated = await this.repository.update(id, data, userId);
+
+    await userActivityService.logActivity(
+      userId,
+      'UPDATE',
+      this.repository.collectionName,
+      id,
+      existing.title,
+    );
+    return updated;
   }
 
   async delete(id: string, userId: string) {
-    await this.getById(id, userId);
-    return this.repository.delete(id, userId);
+    const existing = await this.getById(id, userId);
+    await this.repository.delete(id, userId);
+    await userActivityService.logActivity(
+      userId,
+      'DELETE',
+      this.repository.collectionName,
+      id,
+      existing.title,
+    );
   }
 }

@@ -3,12 +3,16 @@ import type { Fiction } from '@modules/media/fiction/fiction-schema.js';
 
 export interface FictionDTO extends MediaDTO {
   author?: string;
-  format: 'E-Book' | 'Physical';
-  type: 'Novel' | 'Short Story';
+  format: string; // 'Physical' or 'Digital' 
+  type: string; // 'Series' or 'Standalone'
   publicationInfo: {
     published?: string;
+    series?: string;
     volumes: number;
-    status: 'Completed' | 'Ongoing' | 'Hiatus';
+    status: string;
+  };
+  readingStats: {
+    currentReadingVolume: number;
   };
 }
 

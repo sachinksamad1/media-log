@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useRouter, useRoute, type LocationQueryValue } from 'vue-router'
-import { Search, Bell, User, Menu, LogOut, Settings } from 'lucide-vue-next'
+import { Search, Bell, User, Menu, LogOut, Settings, Plus, Edit, Trash, CheckCircle } from 'lucide-vue-next'
 import { onClickOutside } from '@vueuse/core'
+import { userActivityService } from '@/modules/user-activity/service'
+import type { UserActivity } from '@/modules/user-activity/types'
 import ThemeToggle from '../ui/ThemeToggle.vue'
 import { useLayout } from '../../composables/useLayout'
 import { useAuthStore } from '@/core/stores/useAuthStore'
@@ -13,6 +15,43 @@ const route = useRoute()
 const authStore = useAuthStore()
 const isProfileOpen = ref(false)
 const profileDropdownRef = ref(null)
+
+const activities = ref<UserActivity[]>([])
+const isNotificationsOpen = ref(false)
+const notificationDropdownRef = ref(null)
+
+onClickOutside(notificationDropdownRef, () => {
+  isNotificationsOpen.value = false
+})
+
+const toggleNotifications = () => {
+  isNotificationsOpen.value = !isNotificationsOpen.value
+  if (isNotificationsOpen.value) {
+    fetchActivities()
+  }
+}
+
+const fetchActivities = async () => {
+  try {
+    activities.value = await userActivityService.getRecent(10)
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+const formatActivityTime = (dateStr: string) => {
+  const date = new Date(dateStr)
+  const now = new Date()
+  const diffMs = now.getTime() - date.getTime()
+  const diffMins = Math.floor(diffMs / 60000)
+  const diffHours = Math.floor(diffMins / 60)
+  const diffDays = Math.floor(diffHours / 24)
+
+  if (diffMins < 1) return 'Just now'
+  if (diffMins < 60) return `${diffMins}m ago`
+  if (diffHours < 24) return `${diffHours}h ago`
+  return `${diffDays}d ago`
+}
 
 const searchQuery = ref('')
 
@@ -122,11 +161,84 @@ const handleLogout = async () => {
         <ThemeToggle />
 
         <!-- Notifications -->
-        <button
-          class="text-muted-foreground hover:text-foreground hover:bg-secondary p-2 rounded-md"
-        >
-          <Bell class="h-5 w-5" />
-        </button>
+        <!-- Notifications -->
+        <div ref="notificationDropdownRef" class="relative">
+          <button
+            class="text-muted-foreground hover:text-foreground hover:bg-secondary p-2 rounded-md outline-none"
+            :class="{ 'text-foreground bg-secondary': isNotificationsOpen }"
+            @click="toggleNotifications"
+          >
+            <Bell class="h-5 w-5" />
+          </button>
+
+          <!-- Notification Dropdown -->
+          <div
+            v-if="isNotificationsOpen"
+            class="absolute right-0 mt-2 w-80 rounded-xl border border-border bg-card shadow-2xl animate-in fade-in zoom-in-95 duration-200 z-50 overflow-hidden"
+          >
+            <div class="p-4 border-b border-border bg-muted/30 flex justify-between items-center">
+              <h3 class="font-medium text-sm">Activity</h3>
+              <span class="text-xs text-muted-foreground">Recent</span>
+            </div>
+
+            <div class="max-h-96 overflow-y-auto">
+              <div
+                v-if="activities.length === 0"
+                class="p-8 text-center text-muted-foreground text-sm"
+              >
+                No recent activity
+              </div>
+              <div v-else class="divide-y divide-border">
+                <div
+                  v-for="item in activities"
+                  :key="item.id"
+                  class="p-3 hover:bg-muted/30 transition-colors flex gap-3"
+                >
+                  <!-- Icon based on action -->
+                  <div class="mt-1">
+                    <div
+                      v-if="item.action === 'CREATE'"
+                      class="w-8 h-8 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center"
+                    >
+                      <Plus class="w-4 h-4" />
+                    </div>
+                    <div
+                      v-else-if="item.action === 'UPDATE'"
+                      class="w-8 h-8 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center"
+                    >
+                      <Edit class="w-4 h-4" />
+                    </div>
+                    <div
+                      v-else-if="item.action === 'DELETE'"
+                      class="w-8 h-8 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center"
+                    >
+                      <Trash class="w-4 h-4" />
+                    </div>
+                    <div
+                      v-else-if="item.action === 'COMPLETE'"
+                      class="w-8 h-8 rounded-full bg-purple-500/10 text-purple-500 flex items-center justify-center"
+                    >
+                      <CheckCircle class="w-4 h-4" />
+                    </div>
+                  </div>
+
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium truncate">
+                      {{ item.resourceTitle || item.resourceType }}
+                    </p>
+                    <p class="text-xs text-muted-foreground">
+                      <span class="capitalize">{{ item.action.toLowerCase() }}</span>
+                      <span v-if="item.details"> • {{ item.details }}</span>
+                    </p>
+                    <p class="text-[10px] text-muted-foreground mt-1 text-right">
+                      {{ formatActivityTime(item.createdAt) }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <!-- User Profile -->
         <div ref="profileDropdownRef" class="relative">

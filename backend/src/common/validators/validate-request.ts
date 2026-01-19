@@ -46,7 +46,7 @@ export const validate =
           message: e.message,
         }));
 
-        // 
+        // eslint-disable-next-line no-console
         console.error('Validation Warning:', JSON.stringify(details, null, 2));
 
         return next(

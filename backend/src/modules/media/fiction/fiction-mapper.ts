@@ -10,8 +10,12 @@ export class FictionMapper extends MediaMapper<Fiction, FictionDTO> {
       type: entity.type,
       publicationInfo: {
         published: this.formatPublishedDate(entity.publicationInfo?.published),
+        series: entity.publicationInfo?.series,
         volumes: entity.publicationInfo?.volumes ?? 1,
         status: entity.publicationInfo?.status ?? 'Completed',
+      },
+      readingStats: {
+        currentReadingVolume: entity.readingStats?.currentReadingVolume ?? 1,
       },
     };
   }

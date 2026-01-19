@@ -4,7 +4,7 @@ import { MovieService } from '@modules/media/movie/api/movieService'
 import type { Movie } from '@modules/media/movie/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean
 }>()
 
@@ -46,7 +46,7 @@ const form = reactive<{
   duration: 0,
   language: '',
   country: '',
-  status: 'Plan to Watch',
+  status: 'Planned',
   score: 0,
   watchedDate: '',
   rewatchCount: 0,
@@ -72,7 +72,7 @@ function resetForm() {
   form.duration = 0
   form.language = ''
   form.country = ''
-  form.status = 'Plan to Watch'
+  form.status = 'Planned'
   form.score = 0
   form.watchedDate = ''
   form.rewatchCount = 0
@@ -101,8 +101,8 @@ async function handleSave() {
       title: form.title,
       director: form.director,
       movieStats: {
-        releaseDate: form.releaseDate,
-        runtimeMinutes: Number(form.duration),
+        releaseDate: form.releaseDate ? form.releaseDate : undefined,
+        runtimeMinutes: Number(form.duration) > 0 ? Number(form.duration) : undefined,
         productionCompany: form.studio || form.producer,
       },
       origin: form.country,
@@ -180,7 +180,7 @@ async function handleSave() {
             <button
               class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
               @click="
-                selectedFile = null
+                selectedFile = null,
                 previewUrl = null
               "
             >

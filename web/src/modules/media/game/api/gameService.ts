@@ -15,13 +15,13 @@ export const GameService = {
   },
 
   async create(game: Partial<Game> | FormData): Promise<Game> {
-    const { data } = await http.post<GameDto>('/games', game)
-    return GameMapper.toDomain(data)
+    const { data } = await http.post<{ data: GameDto }>('/games', game)
+    return GameMapper.toDomain(data.data)
   },
 
   async update(id: string, game: Partial<Game> | FormData): Promise<Game> {
-    const { data } = await http.patch<GameDto>(`/games/${id}`, game)
-    return GameMapper.toDomain(data)
+    const { data } = await http.patch<{ data: GameDto }>(`/games/${id}`, game)
+    return GameMapper.toDomain(data.data)
   },
 
   async delete(id: string): Promise<void> {

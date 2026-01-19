@@ -4,16 +4,16 @@ import { LightNovelService } from '@/modules/media/lightNovel/api/lightNovelServ
 import type { LightNovel } from '@/modules/media/lightNovel/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean
 }>()
+
+const { toast } = useToast()
 
 const emit = defineEmits<{
   (e: 'close'): void
   (e: 'created', newLightNovel: LightNovel): void
 }>()
-
-const { toast } = useToast()
 
 const saving = ref(false)
 const selectedFile = ref<File | null>(null)
@@ -168,7 +168,7 @@ async function handleSave() {
             <button
               class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
               @click="
-                selectedFile = null
+                selectedFile = null,
                 previewUrl = null
               "
             >

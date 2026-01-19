@@ -1,7 +1,7 @@
-// Release Stats
 // Publication Info
 export interface PublicationInfo {
   published?: string // Date or string
+  series: string
   volumes: number
   status: 'Completed' | 'Ongoing' | 'Hiatus' | string
 }
@@ -17,13 +17,13 @@ export interface Fiction {
   id: string
   title: string
   author: string
-  illustrator?: string
   origin: string
   genres: string[]
   type: 'Novel' | 'Short Story' | string
   format: 'E-Book' | 'Physical' | string
   publicationInfo: PublicationInfo
   userStats: UserStats
+  readingStats?: { currentReadingVolume: number }
   imageUrl: string
   createdAt?: string
   updatedAt?: string

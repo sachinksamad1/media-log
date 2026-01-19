@@ -3,16 +3,22 @@ import { z } from 'zod';
 
 export const FictionSchema = MediaSchema.extend({
   author: z.string().optional(),
-  format: z.enum(['E-Book', 'Physical']).default('E-Book'),
-  type: z.enum(['Novel', 'Short Story']).default('Novel'),
-
+  format: z.string().optional(),
+  type: z.string().optional(),
   publicationInfo: z
     .object({
-      published: z.date().optional().or(z.string().regex(/\d{4}/)),
-      volumes: z.number().int().min(1).default(1),
-      status: z.enum(['Completed', 'Ongoing', 'Hiatus']).default('Completed'),
+      published: z.date().optional().or(z.string().optional()),
+      series: z.string().optional(),
+      volumes: z.number().int().min(0).default(0),
+      status: z.string().optional(),
     })
-    .default({ volumes: 1, status: 'Completed' }),
+    .default({ volumes: 0, status: '' }),
+
+  readingStats: z
+    .object({
+      currentReadingVolume: z.number().int().min(0),
+    })
+    .default({ currentReadingVolume: 1 }),
 });
 
 export type Fiction = z.infer<typeof FictionSchema>;

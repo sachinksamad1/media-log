@@ -1,6 +1,6 @@
 export interface TvSeriesUserStatsDto {
   score: number
-  status: 'Completed' | 'Plan to Watch' | 'Watching' | 'Dropped' | 'On Hold' | string
+  status: 'Completed' | 'Planned' | 'Watching' | 'Dropped' | 'On-Hold' | string
   watchedEpisodes?: number
   rewatchCount?: number
 }
@@ -8,19 +8,23 @@ export interface TvSeriesUserStatsDto {
 export interface TvSeriesDto {
   id: string
   title: string
-  director: string
-  producer: string
-  studio: string
-  network: string
+  directors: string[]
+  writers: string[]
   cast: string[]
   genres: string[]
-  releaseDate?: string
-  endDate?: string
-  episodes?: number
+  tvSeriesStats: {
+    airingYear: string
+    currentSeason: number
+    totalSeasons: number
+    totalEpisodes?: number
+    isCompleted: boolean
+  }
   language: string
-  country: string
+  origin?: string
   userStats: TvSeriesUserStatsDto
   imageUrl: string
+  network?: string
+  studio?: string
   createdAt?: string
   updatedAt?: string
 }

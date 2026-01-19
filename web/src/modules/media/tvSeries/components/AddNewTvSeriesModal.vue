@@ -50,7 +50,7 @@ const form = reactive<{
   episodes: 0,
   language: '',
   country: '',
-  status: 'Plan to Watch',
+  status: 'Planned',
   score: 0,
   watchedEpisodes: 0,
   rewatchCount: 0,
@@ -78,7 +78,7 @@ function resetForm() {
   form.episodes = 0
   form.language = ''
   form.country = ''
-  form.status = 'Plan to Watch'
+  form.status = 'Planned'
   form.score = 0
   form.watchedEpisodes = 0
   form.rewatchCount = 0
@@ -113,7 +113,7 @@ async function handleSave() {
         airingYear: form.releaseDate.split('-')[0] || '2000',
         currentSeason: 1, // Default or add input
         totalSeasons: 1, // Default or add input
-        totalEpisodes: Number(form.episodes),
+        totalEpisodes: Number(form.episodes) > 0 ? Number(form.episodes) : undefined,
         isCompleted: form.status === 'Completed',
         // endDate mapping if needed? No endDate in TvSeriesStats schema shown in Step 197.
       },
@@ -196,7 +196,7 @@ async function handleSave() {
             <button
               class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
               @click="
-                selectedFile = null
+                selectedFile = null,
                 previewUrl = null
               "
             >

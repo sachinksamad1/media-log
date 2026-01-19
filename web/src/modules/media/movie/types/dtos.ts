@@ -1,6 +1,6 @@
 export interface MovieUserStatsDto {
   score: number
-  status: 'Completed' | 'Plan to Watch' | 'Watching' | 'Dropped' | string
+  status: 'Completed' | 'Planned' | 'Watching' | 'Dropped' | string
   watchedDate?: string
   rewatchCount?: number
 }
@@ -8,15 +8,17 @@ export interface MovieUserStatsDto {
 export interface MovieDto {
   id: string
   title: string
-  director: string
-  producer: string
-  studio: string
+  director?: string
   cast: string[]
-  genres: string[]
-  releaseDate?: string
-  duration?: number // In minutes
-  language: string
-  country: string
+  genres?: string[]
+  movieStats: {
+    releaseDate?: string
+    runtimeMinutes?: number
+    productionCompany?: string
+  }
+  language?: string
+  origin?: string // map backend 'origin' to this
+  country?: string // or this? Backend MediaDTO has 'origin'. Frontend uses 'country'.
   userStats: MovieUserStatsDto
   imageUrl: string
   createdAt?: string

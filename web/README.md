@@ -1,5 +1,69 @@
-# Vue 3 + TypeScript + Vite
+# Media Log Web
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+The frontend web application for Media Log, built to provide a rich user interface for tracking and managing your media consumption (Movies, TV Series, Games, etc.).
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Tech Stack
+
+- **Framework:** Vue 3
+- **Build Tool:** Vite
+- **Language:** TypeScript
+- **Styling:** TailwindCSS
+- **State Management:** Pinia
+- **Routing:** Vue Router
+- **Icons:** Lucide Vue Next
+- **HTTP Client:** Axios
+- **UI Components:** Radix Vue & Headless UI patterns
+
+## Prerequisites
+
+- Node.js
+- pnpm
+
+## Setup & Installation
+
+1.  **Install Dependencies**
+    ```bash
+    pnpm install
+    ```
+
+2.  **Environment Variables**
+    Create a `.env` file in the root of the `web` directory (copy from `.env.example` if available) to configure API base URLs and other settings.
+    ```env
+    VITE_API_BASE_URL=http://localhost:3000/api/v1
+    ```
+
+## Running the Application
+
+-   **Development Server**
+    ```bash
+    pnpm dev
+    ```
+    Typically runs on `http://localhost:5173`.
+
+-   **Production Build**
+    ```bash
+    pnpm build
+    ```
+    Outputs static files to the `dist` directory.
+
+-   **Preview Production Build**
+    ```bash
+    pnpm preview
+    ```
+
+## Project Structure
+
+-   `src/modules`: Feature-based architecture (e.g., `auth`, `media`, `user-activity`).
+-   `src/common`: Shared components, utilities, and API configuration.
+-   `src/components`: Global UI components.
+
+## Scripts
+
+-   `pnpm dev`: Start the Vite dev server.
+-   `pnpm build`: Type-check and build for production.
+-   `pnpm lint`: Run ESLint.
+-   `pnpm lint:fix`: Fix linting errors.
+
+## License
+
+Private / MIT (See package.json)

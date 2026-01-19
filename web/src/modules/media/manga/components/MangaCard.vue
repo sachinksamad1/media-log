@@ -23,7 +23,7 @@ const statusClass = computed(() => {
 })
 
 const volumesText = computed(() => {
-  const count = props.manga.releaseStats?.volumePublished || 0
+  const count = props.manga.releaseStats?.volumesPublished || 0
   return `${count} Volume${count !== 1 ? 's' : ''}`
 })
 </script>

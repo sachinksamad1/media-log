@@ -4,7 +4,7 @@ import { MangaService } from '@/modules/media/manga/api/manga.service'
 import type { Manga } from '@/modules/media/manga/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean
 }>()
 
@@ -180,7 +180,7 @@ async function handleSave() {
             <button
               class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
               @click="
-                selectedFile = null
+                selectedFile = null,
                 previewUrl = null
               "
             >

@@ -32,7 +32,7 @@ const form = reactive<{
   score: number
   volumes: number
   releaseStatus: string
-  genre: string
+  genres: string
   type: string
   format: string
   origin: string
@@ -44,7 +44,7 @@ const form = reactive<{
   score: 0,
   volumes: 0,
   releaseStatus: '',
-  genre: '',
+  genres: '',
   type: '',
   format: '',
   origin: '',
@@ -62,7 +62,7 @@ function syncForm(data: LightNovel) {
   form.score = data.userStats?.score ?? 0
   form.volumes = data.releaseStats?.volumes ?? 0
   form.releaseStatus = data.releaseStats?.releaseStatus ?? 'Ongoing'
-  form.genre = data.genres ? data.genres.join(', ') : ''
+  form.genres = data.genres ? data.genres.join(', ') : ''
   form.type = data.type
   form.format = data.format
   form.origin = data.origin
@@ -149,7 +149,7 @@ async function handleSave() {
         volumes: Number(form.volumes),
         releaseStatus: form.releaseStatus,
       },
-      genres: form.genre
+      genres: form.genres
         .split(',')
         .map((s) => s.trim())
         .filter((s) => s),
@@ -310,11 +310,11 @@ async function handleDelete() {
               </div>
             </div>
 
-            <div v-if="form.genre" class="space-y-2">
+            <div v-if="form.genres" class="space-y-2">
               <h4 class="text-sm font-semibold text-muted-foreground">Genres</h4>
               <div class="flex flex-wrap gap-2">
                 <span
-                  v-for="g in form.genre.split(', ')"
+                  v-for="g in form.genres.split(', ')"
                   :key="g"
                   class="px-2 py-1 text-xs rounded-md bg-secondary text-secondary-foreground"
                 >
@@ -464,7 +464,7 @@ async function handleDelete() {
             <div class="space-y-2">
               <label class="text-sm font-medium">Genres (comma separated)</label>
               <input
-                v-model="form.genre"
+                v-model="form.genres"
                 placeholder="Action, Adventure, Fantasy"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               />

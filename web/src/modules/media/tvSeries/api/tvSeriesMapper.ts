@@ -6,25 +6,16 @@ export const TvSeriesMapper = {
     return {
       id: dto.id,
       title: dto.title,
-      directors: dto.director ? [dto.director] : [],
-      writers: [], // Not present in DTO
-      cast: dto.cast,
-      genres: dto.genres,
-      tvSeriesStats: {
-        airingYear: dto.releaseDate?.split('-')[0] || 'Unknown',
-        currentSeason: 1, // Default
-        totalSeasons: 1, // Default
-        totalEpisodes: dto.episodes,
-        isCompleted: !!dto.endDate,
-      },
+      directors: dto.directors || [],
+      writers: dto.writers || [],
+      cast: dto.cast || [],
+      genres: dto.genres || [],
+      tvSeriesStats: dto.tvSeriesStats,
       language: dto.language,
-      origin: dto.country,
+      origin: dto.origin,
       network: dto.network,
       studio: dto.studio,
-      userStats: {
-        ...dto.userStats,
-        watchedEpisodes: dto.userStats.watchedEpisodes || 0,
-      },
+      userStats: dto.userStats,
       imageUrl: dto.imageUrl,
       createdAt: dto.createdAt,
       updatedAt: dto.updatedAt,
@@ -35,16 +26,15 @@ export const TvSeriesMapper = {
     return {
       id: domain.id,
       title: domain.title,
-      director: domain.directors.join(', '),
-      producer: '', // Not present in Domain
-      studio: domain.studio || '',
-      network: domain.network || '',
+      directors: domain.directors,
+      writers: domain.writers,
       cast: domain.cast,
       genres: domain.genres,
-      // releaseDate and endDate are optional in DTO, and we only have airingYear in domain
-      episodes: domain.tvSeriesStats.totalEpisodes,
+      tvSeriesStats: domain.tvSeriesStats,
       language: domain.language,
-      country: domain.origin || '',
+      origin: domain.origin,
+      network: domain.network,
+      studio: domain.studio,
       userStats: domain.userStats,
       imageUrl: domain.imageUrl,
       createdAt: domain.createdAt,

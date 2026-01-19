@@ -15,13 +15,13 @@ export const TvSeriesService = {
   },
 
   async create(tvSeries: Partial<TvSeries> | FormData): Promise<TvSeries> {
-    const { data } = await http.post<TvSeriesDto>('/tv-series', tvSeries)
-    return TvSeriesMapper.toDomain(data)
+    const { data } = await http.post<{ data: TvSeriesDto }>('/tv-series', tvSeries)
+    return TvSeriesMapper.toDomain(data.data)
   },
 
   async update(id: string, tvSeries: Partial<TvSeries> | FormData): Promise<TvSeries> {
-    const { data } = await http.patch<TvSeriesDto>(`/tv-series/${id}`, tvSeries)
-    return TvSeriesMapper.toDomain(data)
+    const { data } = await http.patch<{ data: TvSeriesDto }>(`/tv-series/${id}`, tvSeries)
+    return TvSeriesMapper.toDomain(data.data)
   },
 
   async delete(id: string): Promise<void> {

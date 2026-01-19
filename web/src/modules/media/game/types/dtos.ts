@@ -7,12 +7,14 @@ export interface GameUserStatsDto {
 export interface GameDto {
   id: string
   title: string
-  developer: string
-  publisher: string
+  developers: string[]
+  publishers: string[]
   platforms: string[]
   genres: string[]
-  releaseDate?: string
+  releaseDate?: string // Not in backend schema, but keeping optional
   userStats: GameUserStatsDto
+  language?: string
+  origin?: string
   imageUrl: string
   createdAt?: string
   updatedAt?: string

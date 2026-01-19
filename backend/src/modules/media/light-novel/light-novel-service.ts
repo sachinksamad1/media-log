@@ -1,8 +1,11 @@
 import { MediaService } from '@common/media/media-service.js';
 import { LightNovelRepository } from '@modules/media/light-novel/light-novel-repo.js';
 import type { LightNovelSchema } from '@modules/media/light-novel/light-novel-schema.js';
+import { userActivityService } from '@modules/user-activity/user-activity.service.js';
 import type { z } from 'zod';
 import 'multer';
+
+
 
 export class LightNovelService extends MediaService<z.infer<typeof LightNovelSchema>> {
   protected repository: LightNovelRepository;
@@ -18,7 +21,15 @@ export class LightNovelService extends MediaService<z.infer<typeof LightNovelSch
     userId: string,
     file?: Express.Multer.File,
   ) {
-    return this.repository.createWithImage(data, userId, file);
+    const created = await this.repository.createWithImage(data, userId, file);
+    await userActivityService.logActivity(
+      userId,
+      'CREATE',
+      this.repository.collectionName,
+      created.id!,
+      created.title,
+    );
+    return created;
   }
   async update(
     id: string,
@@ -26,7 +37,26 @@ export class LightNovelService extends MediaService<z.infer<typeof LightNovelSch
     userId: string,
     file?: Express.Multer.File,
   ) {
-    return this.repository.updateWithImage(id, data, userId, file);
+    // Check existence and title for logging
+    const existing = await this.getById(id, userId);
+    
+    const updated = await this.repository.updateWithImage(id, data, userId, file);
+    
+    try {
+      if (existing) {
+        await userActivityService.logActivity(
+          userId,
+          'UPDATE',
+          this.repository.collectionName,
+          id,
+          existing.title,
+        );
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+       console.error('Failed to log activity:', error);
+    }
+    return updated;
   }
 
   async completeSeries(id: string, userId: string, score?: number) {

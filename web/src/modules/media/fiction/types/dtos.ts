@@ -1,6 +1,8 @@
 export interface FictionReleaseStatsDto {
-  releaseStatus: 'Ongoing' | 'Completed' | 'Hiatus' | 'Cancelled' | string
+  published?: string
+  series: string
   volumes: number
+  releaseStatus: 'Ongoing' | 'Completed' | 'Hiatus' | 'Cancelled' | string
 }
 
 export interface FictionUserStatsDto {
@@ -12,12 +14,15 @@ export interface FictionDto {
   id: string
   title: string
   author: string
-  illustrator: string
-  origin: string
+  origin?: string
   genres: string[]
   type: 'Series' | 'Standalone' | string
   format: 'Physical' | 'Digital' | 'Audiobook' | 'Hardcover' | 'Paperback' | string
-  releaseStats: FictionReleaseStatsDto
+  publicationInfo: {
+    published?: string
+    volumes: number
+    status: string
+  }
   userStats: FictionUserStatsDto
   readingStats?: { currentReadingVolume: number }
   imageUrl: string

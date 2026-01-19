@@ -4,7 +4,7 @@ import { FictionService } from '@modules/media/fiction/api/fictionService'
 import type { Fiction } from '@modules/media/fiction/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean
 }>()
 
@@ -23,7 +23,6 @@ const previewUrl = ref<string | null>(null)
 const form = reactive<{
   title: string
   author: string
-  illustrator: string
   status: string
   score: number
   volumes: number
@@ -35,7 +34,6 @@ const form = reactive<{
 }>({
   title: '',
   author: '',
-  illustrator: '',
   status: 'Planned',
   score: 0,
   volumes: 0,
@@ -58,7 +56,6 @@ function handleFileSelect(event: Event) {
 function resetForm() {
   form.title = ''
   form.author = ''
-  form.illustrator = ''
   form.status = 'Planned'
   form.score = 0
   form.volumes = 0
@@ -91,7 +88,6 @@ async function handleSave() {
     const payload: Partial<Fiction> = {
       title: form.title,
       author: form.author,
-      illustrator: form.illustrator,
       type: form.type,
       format: form.format,
       origin: form.origin,
@@ -168,7 +164,7 @@ async function handleSave() {
             <button
               class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
               @click="
-                selectedFile = null
+                selectedFile = null,
                 previewUrl = null
               "
             >
@@ -193,14 +189,6 @@ async function handleSave() {
                 v-model="form.author"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
                 placeholder="Author name"
-              />
-            </div>
-            <div class="space-y-2">
-              <label class="text-sm font-medium">Illustrator</label>
-              <input
-                v-model="form.illustrator"
-                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
-                placeholder="Illustrator name"
               />
             </div>
           </div>
@@ -245,15 +233,11 @@ async function handleSave() {
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="space-y-2">
               <label class="text-sm font-medium">Origin</label>
-              <select
+              <input
                 v-model="form.origin"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
-              >
-                <option value="USA">USA</option>
-                <option value="UK">UK</option>
-                <option value="Japan">Japan</option>
-                <option value="Other">Other</option>
-              </select>
+                placeholder="Origin"
+              />
             </div>
             <div class="space-y-2">
               <label class="text-sm font-medium">Release Status</label>

@@ -24,7 +24,7 @@ const statusClass = computed(() => {
 })
 
 const volumesText = computed(() => {
-  const count = props.fiction.releaseStats?.volumes || 0
+  const count = props.fiction.publicationInfo?.volumes || 0
   return `${count} Volume${count !== 1 ? 's' : ''}`
 })
 </script>

@@ -12,6 +12,9 @@ export abstract class MediaMapper<T extends z.infer<typeof MediaSchema>, DTO> {
       id: entity.id,
       title: entity.title,
       imageUrl: entity.imageUrl || '',
+      origin: entity.origin,
+      genres: entity.genres || [],
+      language: entity.language,
       userStats: entity.userStats,
       // Convert Dates to ISO strings for frontend consistency
       createdAt: formatTimestamp(entity.createdAt),

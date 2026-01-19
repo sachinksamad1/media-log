@@ -27,7 +27,6 @@ const previewUrl = ref<string | null>(null)
 const form = reactive<{
   title: string
   author: string
-  illustrator: string
   status: string
   score: number
   volumes: number
@@ -36,10 +35,10 @@ const form = reactive<{
   type: string
   format: string
   origin: string
+  published?: string
 }>({
   title: '',
   author: '',
-  illustrator: '',
   status: '',
   score: 0,
   volumes: 0,
@@ -48,6 +47,7 @@ const form = reactive<{
   type: '',
   format: '',
   origin: '',
+  published: '',
 })
 
 // Sync props to form when opened
@@ -57,7 +57,6 @@ function syncForm(data: Fiction) {
 
   form.title = data.title
   form.author = data.author
-  form.illustrator = data.illustrator ?? ''
   form.status = data.userStats?.status ?? ''
   form.score = data.userStats?.score ?? 0
   form.volumes = data.publicationInfo?.volumes ?? 0
@@ -66,6 +65,7 @@ function syncForm(data: Fiction) {
   form.type = data.type
   form.format = data.format
   form.origin = data.origin
+  form.published = data.publicationInfo?.published
 }
 
 watch(
@@ -135,7 +135,6 @@ async function handleSave() {
     const payload: Partial<Fiction> = {
       title: form.title,
       author: form.author,
-      illustrator: form.illustrator,
       type: form.type,
       format: form.format,
       origin: form.origin,
@@ -247,7 +246,7 @@ async function handleDelete() {
               <span
                 class="px-2 py-0.5 rounded bg-primary/20 border border-primary/30 backdrop-blur-sm"
               >
-                {{ fiction?.origin || 'USA' }}
+                {{ fiction?.origin || 'Unknown' }}
               </span>
               <span
                 class="px-2 py-0.5 rounded bg-primary/20 border border-primary/30 backdrop-blur-sm"
@@ -292,21 +291,6 @@ async function handleDelete() {
                 >
                   {{ form.releaseStatus }}
                 </div>
-              </div>
-            </div>
-
-            <div v-if="form.author || form.illustrator" class="grid grid-cols-2 gap-4">
-              <div v-if="form.author" class="p-3 bg-secondary/30 rounded-lg">
-                <div class="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                  Author
-                </div>
-                <div class="font-medium">{{ form.author }}</div>
-              </div>
-              <div v-if="form.illustrator" class="p-3 bg-secondary/30 rounded-lg">
-                <div class="text-xs text-muted-foreground uppercase tracking-wider mb-1">
-                  Illustrator
-                </div>
-                <div class="font-medium">{{ form.illustrator }}</div>
               </div>
             </div>
 
@@ -365,13 +349,6 @@ async function handleDelete() {
                   class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
                 />
               </div>
-              <div class="space-y-2">
-                <label class="text-sm font-medium">Illustrator</label>
-                <input
-                  v-model="form.illustrator"
-                  class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
-                />
-              </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -400,15 +377,10 @@ async function handleDelete() {
               </div>
               <div class="space-y-2">
                 <label class="text-sm font-medium">Origin</label>
-                <select
+                <input
                   v-model="form.origin"
                   class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
-                >
-                  <option value="USA">USA</option>
-                  <option value="UK">UK</option>
-                  <option value="Japan">Japan</option>
-                  <option value="Other">Other</option>
-                </select>
+                />
               </div>
             </div>
 

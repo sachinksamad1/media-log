@@ -9,6 +9,7 @@ import mangaRoutes from '@modules/media/manga/manga-routes.js';
 import moviesRoutes from '@modules/media/movie/movie-routes.js';
 import nonFictionRoutes from '@modules/media/non-fiction/non-fiction-routes.js';
 import tvSeriesRoutes from '@modules/media/tv-series/tv-series-routes.js';
+import { userActivityRouter } from '@modules/user-activity/user-activity.routes.js';
 import usersRoutes from '@modules/users/users-routes.js';
 import healthRoutes from '@platform/health-routes.js';
 import { Router } from 'express';
@@ -41,5 +42,7 @@ router.use('/non-fiction', nonFictionRoutes);
 router.use('/tv-series', tvSeriesRoutes);
 // Users Routes
 router.use('/users', usersRoutes);
+// User Activity Routes
+router.use('/user-activity', userActivityRouter);
 
 export default router;

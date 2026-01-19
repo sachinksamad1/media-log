@@ -74,7 +74,7 @@ const platformText = computed(() => {
         </div>
       </div>
       <div class="mt-1 text-xs text-muted-foreground line-clamp-1">
-        {{ game.developer }}
+        {{ game.developers.join(', ') }}
       </div>
     </div>
   </div>
