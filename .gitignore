@@ -91,3 +91,11 @@ DashboardViewDropped.vue
 
 # Do not ignore pubspec.lock, as it ensures consistent package versions across environments
 !pubspec.lock
+
+# Firebase
+.firebase
+firebase.json
+.firebaserc
+firebase-debug.log
+firebase-b*.json
+

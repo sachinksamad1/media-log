@@ -22,6 +22,14 @@ const limiter = rateLimit({
 });
 app.use('/api/', limiter);
 
+app.use((req, res, next) => {
+  // If request is /api/users/sync, change it to /users/sync
+  if (req.url.startsWith('/api')) {
+    req.url = req.url.replace('/api', '');
+  }
+  next();
+});
+
 // 3. Logging & Monitoring
 app.use(morgan('dev'));
 
@@ -31,7 +39,7 @@ app.use(express.json({ limit: '10kb' })); // Body limit prevents large payload a
 
 // 5. Routes & Error Handling
 app.use('/health', (req, res) => res.status(200).json({ status: 'OK' }));
-app.use('/api/v1', routes);
+app.use('/v1', routes);
 app.use(globalErrorHandler);
 
 export default app;

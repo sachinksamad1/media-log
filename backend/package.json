@@ -2,13 +2,17 @@
   "name": "media-log-backend",
   "version": "1.0.0",
   "description": "Media Log Backend",
-  "main": "dist/server.js",
   "packageManager": "pnpm@10.28.1",
+  "main": "dist/firebase.js",
+  "engines": {
+    "node": "20"
+  },
   "scripts": {
     "seed": "tsx seed/seed.ts",
     "seed:users": "tsx seed/seed-users.ts",
     "start": "node dist/server.js",
     "build": "tsc && tsc-alias",
+    "deploy": "pnpm build && firebase deploy --only functions",
     "dev": "tsx watch src/server.ts",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
@@ -59,12 +63,14 @@
     "typescript-eslint": "^8.52.0"
   },
   "dependencies": {
+    "@google-cloud/functions-framework": "^5.0.0",
     "@types/nodemailer": "^7.0.5",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-rate-limit": "^8.2.1",
     "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.3",
     "helmet": "^8.1.0",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",

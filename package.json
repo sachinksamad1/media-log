@@ -1,0 +1,11 @@
+{
+  "name": "media-log-monorepo",
+  "private": true,
+  "scripts": {
+    "build:web": "cd web && pnpm build",
+    "build:backend": "cd backend && pnpm build",
+    "build": "pnpm build:web && pnpm build:backend",
+    "deploy": "pnpm build && firebase deploy",
+    "clean": "rd /s /q web/dist backend/dist"
+  }
+}

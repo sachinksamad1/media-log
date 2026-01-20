@@ -2,10 +2,10 @@ import env from '@config/env.js';
 
 export const validateEnv = (): void => {
   const requiredFields = [
-    { name: 'FIREBASE_PROJECT_ID', value: env.firebase.projectId },
-    { name: 'FIREBASE_CLIENT_EMAIL', value: env.firebase.clientEmail },
-    { name: 'FIREBASE_PRIVATE_KEY', value: env.firebase.privateKey },
-    { name: 'FIREBASE_STORAGE_BUCKET', value: env.firebase.storageBucket },
+    { name: 'FB_PROJECT_ID', value: env.firebase.projectId },
+    { name: 'FB_CLIENT_EMAIL', value: env.firebase.clientEmail },
+    { name: 'FB_PRIVATE_KEY', value: env.firebase.privateKey },
+    { name: 'FB_STORAGE_BUCKET', value: env.firebase.storageBucket },
   ];
 
   const missingFields = requiredFields
