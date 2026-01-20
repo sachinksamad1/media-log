@@ -25,7 +25,7 @@ export const useLightNovelStore = defineStore('lightNovel', {
       try {
         const response = await LightNovelService.getAll()
         this.items = response.data
-      } catch (err) {
+      } catch {
         this.error = 'Failed to load light novels'
       } finally {
         this.loading = false

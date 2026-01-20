@@ -26,7 +26,7 @@ export const useMovieStore = defineStore('movie', {
       try {
         const response = await MovieService.getAll()
         this.items = response.data
-      } catch (err) {
+      } catch {
         this.error = 'Failed to load movies'
       } finally {
         this.loading = false

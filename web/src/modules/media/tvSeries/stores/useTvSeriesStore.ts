@@ -27,7 +27,7 @@ export const useTvSeriesStore = defineStore('tvSeries', {
       try {
         const response = await TvSeriesService.getAll()
         this.items = response.data
-      } catch (err) {
+      } catch {
         this.error = 'Failed to load TV Series'
       } finally {
         this.loading = false

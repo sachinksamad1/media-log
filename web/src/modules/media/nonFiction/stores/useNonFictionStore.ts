@@ -25,7 +25,7 @@ export const useNonFictionStore = defineStore('nonFiction', {
       try {
         const response = await NonFictionService.getAll()
         this.items = response.data
-      } catch (err) {
+      } catch {
         this.error = 'Failed to load non-fiction'
       } finally {
         this.loading = false

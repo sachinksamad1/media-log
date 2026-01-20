@@ -39,6 +39,9 @@ export const authService = {
   },
 
   async getToken(): Promise<string | null> {
+    // Wait for auth state to be ready before checking currentUser
+    // This prevents race conditions on page reload
+    await auth.authStateReady()
     const user = auth.currentUser
     if (!user) return null
     return await user.getIdToken(true)

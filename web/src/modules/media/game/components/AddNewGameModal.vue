@@ -4,7 +4,7 @@ import { GameService } from '@modules/media/game/api/gameService'
 import type { Game } from '@modules/media/game/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean
 }>()
 

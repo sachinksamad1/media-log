@@ -4,7 +4,7 @@ import { NonFictionService } from '@modules/media/nonFiction/api/nonFictionServi
 import type { NonFiction } from '@modules/media/nonFiction/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean
 }>()
 
@@ -92,11 +92,9 @@ async function handleSave() {
     const payload: Partial<NonFiction> = {
       title: form.title,
       author: form.author,
-      // illustrator removed
-      type: form.type,
       format: form.format,
       origin: form.origin,
-      published: form.published, // Add this field to form state
+      published: form.published,
       userStats: {
         status: form.status,
         score: Number(form.score),

@@ -25,7 +25,7 @@ export const useMangaStore = defineStore('manga', {
       try {
         const response = await MangaService.getAll()
         this.items = response.data
-      } catch (err) {
+      } catch {
         this.error = 'Failed to load manga'
       } finally {
         this.loading = false

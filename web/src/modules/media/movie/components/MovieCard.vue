@@ -23,9 +23,10 @@ const statusClass = computed(() => {
 })
 
 const durationText = computed(() => {
-  if (!props.movie.duration) return ''
-  const hours = Math.floor(props.movie.duration / 60)
-  const minutes = props.movie.duration % 60
+  const duration = props.movie.movieStats.runtimeMinutes
+  if (!duration) return ''
+  const hours = Math.floor(duration / 60)
+  const minutes = duration % 60
   return `${hours}h ${minutes}m`
 })
 </script>

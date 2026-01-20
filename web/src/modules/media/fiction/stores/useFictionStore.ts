@@ -25,7 +25,7 @@ export const useFictionStore = defineStore('fiction', {
       try {
         const response = await FictionService.getAll()
         this.items = response.data
-      } catch (err) {
+      } catch {
         this.error = 'Failed to load fiction'
       } finally {
         this.loading = false

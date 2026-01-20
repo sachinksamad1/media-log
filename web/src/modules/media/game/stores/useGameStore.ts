@@ -26,7 +26,7 @@ export const useGameStore = defineStore('game', {
       try {
         const response = await GameService.getAll()
         this.items = response.data
-      } catch (err) {
+      } catch {
         this.error = 'Failed to load games'
       } finally {
         this.loading = false

@@ -25,7 +25,7 @@ export const useAnimeStore = defineStore('anime', {
       try {
         const response = await AnimeService.getAll()
         this.items = response.data
-      } catch (err) {
+      } catch {
         this.error = 'Failed to load anime'
       } finally {
         this.loading = false

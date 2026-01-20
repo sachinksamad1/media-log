@@ -145,16 +145,17 @@ async function handleSave() {
   try {
     const payload: Partial<Movie> = {
       title: form.title,
-      director: form.director,
+      director: form.director || undefined,
       // producer/studio mapped to productionCompany
       movieStats: {
         ...props.movie.movieStats,
-        releaseDate: form.releaseDate,
-        runtimeMinutes: Number(form.duration),
-        productionCompany: form.producer || form.studio,
+        // Only include releaseDate if it has a value (empty string fails date coercion)
+        releaseDate: form.releaseDate || undefined,
+        runtimeMinutes: form.duration ? Number(form.duration) : undefined,
+        productionCompany: form.producer || form.studio || undefined,
       },
-      origin: form.country, // Map country input to origin
-      language: form.language,
+      origin: form.country || undefined, // Map country input to origin
+      language: form.language || undefined,
 
       userStats: {
         ...props.movie.userStats,
