@@ -7,5 +7,8 @@
     "build": "pnpm build:web && pnpm build:backend",
     "deploy": "pnpm build && firebase deploy",
     "clean": "rd /s /q web/dist backend/dist"
+  },
+  "engines": {
+    "node": "20"
   }
 }
