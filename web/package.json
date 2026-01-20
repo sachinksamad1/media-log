@@ -1,12 +1,13 @@
 {
-  "name": "web",
+  "name": "media-log-web",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.28.1",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc --noEmit -b && vite build",
-    "typecheck": "vue-tsc --noEmit",
+    "build": "vue-tsc --noEmit && vite build",
+    "type-check": "vue-tsc --noEmit",
     "preview": "vite preview",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix"

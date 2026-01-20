@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Media Log Backend",
   "main": "dist/server.js",
-  "packageManager": "pnpm@10.28.0",
+  "packageManager": "pnpm@10.28.1",
   "scripts": {
     "seed": "tsx seed/seed.ts",
     "seed:users": "tsx seed/seed-users.ts",
