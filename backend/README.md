@@ -69,7 +69,3 @@ The backend service for the Media Log application, providing API endpoints for m
 -   `/api/v1/movies`: Movie management
 -   `/api/v1/games`: Game management
 -   `/api/v1/user-activity`: User logs
-
-## License
-
-MIT
