@@ -1,6 +1,6 @@
 # Media Log Web
 
-The frontend web application for Media Log, built to provide a rich user interface for tracking and managing your media consumption (Movies, TV Series, Games, etc.).
+The frontend web application for MediaLog, built to provide a rich user interface for tracking and managing your media consumption (Movies, TV Series, Games, etc.).
 
 ## Tech Stack
 
@@ -29,26 +29,26 @@ The frontend web application for Media Log, built to provide a rich user interfa
 2.  **Environment Variables**
     Create a `.env` file in the root of the `web` directory (copy from `.env.example` if available) to configure API base URLs and other settings.
     ```env
-    VITE_API_BASE_URL=http://localhost:3000/api/v1
+    VITE_API_BASE_URL=http://localhost:3000/api
     ```
 
 ## Running the Application
 
 -   **Development Server**
     ```bash
-    pnpm dev
+    pnpm run dev
     ```
     Typically runs on `http://localhost:5173`.
 
 -   **Production Build**
     ```bash
-    pnpm build
+    pnpm run build
     ```
     Outputs static files to the `dist` directory.
 
 -   **Preview Production Build**
     ```bash
-    pnpm preview
+    pnpm run preview
     ```
 
 ## Project Structure
@@ -59,11 +59,7 @@ The frontend web application for Media Log, built to provide a rich user interfa
 
 ## Scripts
 
--   `pnpm dev`: Start the Vite dev server.
--   `pnpm build`: Type-check and build for production.
--   `pnpm lint`: Run ESLint.
--   `pnpm lint:fix`: Fix linting errors.
-
-## License
-
-Private / MIT (See package.json)
+-   `pnpm run dev`: Start the Vite dev server.
+-   `pnpm run build`: Type-check and build for production.
+-   `pnpm run lint`: Run ESLint.
+-   `pnpm run lint:fix`: Fix linting errors
