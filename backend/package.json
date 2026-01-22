@@ -4,9 +4,6 @@
   "description": "Media Log Backend",
   "packageManager": "pnpm@10.28.1",
   "main": "dist/firebase.js",
-  "engines": {
-    "node": "20"
-  },
   "scripts": {
     "seed": "tsx seed/seed.ts",
     "seed:users": "tsx seed/seed-users.ts",

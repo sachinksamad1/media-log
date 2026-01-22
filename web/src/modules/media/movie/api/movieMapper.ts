@@ -6,9 +6,9 @@ export const MovieMapper = {
     return {
       id: dto.id,
       title: dto.title,
-      director: dto.director || '',
+      director: dto.director,
       cast: dto.cast,
-      genres: dto.genres || [],
+      genres: dto.genres,
       movieStats: {
         releaseDate: dto.movieStats.releaseDate,
         runtimeMinutes: dto.movieStats.runtimeMinutes,

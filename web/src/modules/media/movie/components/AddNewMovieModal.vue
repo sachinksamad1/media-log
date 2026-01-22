@@ -22,15 +22,15 @@ const previewUrl = ref<string | null>(null)
 // Local Mutable State
 const form = reactive<{
   title: string
+  genres: string
+  origin: string
+  language: string
   director: string
   producer: string
   studio: string
   cast: string
-  genres: string
   releaseDate: string
   duration: number
-  language: string
-  country: string
   status: string
   score: number
   watchedDate: string
@@ -45,7 +45,7 @@ const form = reactive<{
   releaseDate: '',
   duration: 0,
   language: '',
-  country: '',
+  origin: '',
   status: 'Planned',
   score: 0,
   watchedDate: '',
@@ -71,7 +71,7 @@ function resetForm() {
   form.releaseDate = ''
   form.duration = 0
   form.language = ''
-  form.country = ''
+  form.origin = ''
   form.status = 'Planned'
   form.score = 0
   form.watchedDate = ''
@@ -105,7 +105,7 @@ async function handleSave() {
         runtimeMinutes: Number(form.duration) > 0 ? Number(form.duration) : undefined,
         productionCompany: form.studio || form.producer,
       },
-      origin: form.country,
+      origin: form.origin,
       language: form.language,
       userStats: {
         status: form.status,
@@ -268,7 +268,7 @@ async function handleSave() {
             <div class="space-y-2">
               <label class="text-sm font-medium">Country</label>
               <input
-                v-model="form.country"
+                v-model="form.origin"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
                 placeholder="USA, UK"
               />

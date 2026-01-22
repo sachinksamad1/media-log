@@ -11,7 +11,7 @@ const statusClass = computed(() => {
   switch (status) {
     case 'Completed':
       return 'bg-green-500 text-white'
-    case 'Plan to Watch':
+    case 'Planned':
       return 'bg-blue-500 text-white'
     case 'Watching':
       return 'bg-amber-500 text-white'

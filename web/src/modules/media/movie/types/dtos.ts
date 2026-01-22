@@ -17,12 +17,11 @@ export interface MovieDto {
     productionCompany?: string
   }
   language?: string
-  origin?: string // map backend 'origin' to this
-  country?: string // or this? Backend MediaDTO has 'origin'. Frontend uses 'country'.
+  origin?: string
   userStats: MovieUserStatsDto
   imageUrl: string
-  createdAt?: string
-  updatedAt?: string
+  createdAt: string
+  updatedAt: string
 }
 
 export interface MovieResponseDto {

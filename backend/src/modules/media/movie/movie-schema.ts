@@ -3,6 +3,8 @@ import { z } from 'zod';
 
 export const MovieSchema = MediaSchema.extend({
   director: z.string().optional(),
+  producer: z.string().optional(),
+  studio: z.string().optional(),
   cast: z.array(z.string()).default([]),
   movieStats: z
     .object({

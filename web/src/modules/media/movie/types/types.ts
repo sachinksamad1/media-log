@@ -12,16 +12,18 @@ export interface MovieStats {
 export interface Movie {
   id: string
   title: string
-  director: string
-  cast: string[]
-  genres: string[]
-  movieStats: MovieStats
-  userStats: MovieUserStats
-  language?: string
-  origin?: string
   imageUrl: string
-  createdAt?: string
-  updatedAt?: string
+  origin?: string
+  genres?: string[]
+  language?: string
+  createdAt: string
+  updatedAt: string
+  userStats: MovieUserStats
+
+  // Movie specific
+  director?: string
+  cast: string[]
+  movieStats: MovieStats
 }
 
 export interface MovieResponse {

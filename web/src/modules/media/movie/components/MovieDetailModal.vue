@@ -34,7 +34,7 @@ const form = reactive<{
   releaseDate: string
   duration: number
   language: string
-  country: string
+  origin: string
   status: string
   score: number
   watchedDate: string
@@ -49,7 +49,7 @@ const form = reactive<{
   releaseDate: '',
   duration: 0,
   language: '',
-  country: '',
+  origin: '',
   status: '',
   score: 0,
   watchedDate: '',
@@ -57,13 +57,12 @@ const form = reactive<{
 })
 
 // Sync props to form when opened
-// Sync props to form when opened
 function syncForm(data: Movie) {
   selectedFile.value = null
   previewUrl.value = null
 
   form.title = data.title
-  form.director = data.director
+  form.director = data.director ?? ''
   form.producer = data.movieStats?.productionCompany ?? ''
   form.studio = '' // Deprecated/merged
   form.status = data.userStats?.status ?? ''
@@ -72,9 +71,8 @@ function syncForm(data: Movie) {
   form.rewatchCount = 0 // Not in schema
   form.releaseDate = data.movieStats?.releaseDate ?? ''
   form.duration = data.movieStats?.runtimeMinutes ?? 0
-  form.language = data.language ?? '' // MediaSchema has language? Yes.
-  form.country = data.movieStats?.productionCompany ?? '' // Maybe use origin? MediaSchema has origin.
-  // Actually origin is usually Country.
+  form.language = data.language ?? ''
+  form.origin = data.origin ?? ''
 
   form.genres = data.genres ? data.genres.join(', ') : ''
   form.cast = data.cast ? data.cast.join(', ') : ''
@@ -154,7 +152,7 @@ async function handleSave() {
         runtimeMinutes: form.duration ? Number(form.duration) : undefined,
         productionCompany: form.producer || form.studio || undefined,
       },
-      origin: form.country || undefined, // Map country input to origin
+      origin: form.origin || undefined,
       language: form.language || undefined,
 
       userStats: {
@@ -340,7 +338,7 @@ async function handleDelete() {
               <div>{{ form.language }}</div>
 
               <div class="text-muted-foreground">Country</div>
-              <div>{{ form.country }}</div>
+              <div>{{ form.origin }}</div>
 
               <div class="text-muted-foreground">Added to Library</div>
               <div>{{ new Date(movie?.createdAt || '').toLocaleDateString() }}</div>
@@ -423,7 +421,7 @@ async function handleDelete() {
               <div class="space-y-2">
                 <label class="text-sm font-medium">Country</label>
                 <input
-                  v-model="form.country"
+                  v-model="form.origin"
                   class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
                 />
               </div>
