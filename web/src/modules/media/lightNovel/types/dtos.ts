@@ -1,11 +1,11 @@
 export interface LightNovelReleaseStatsDto {
   releaseStatus: 'Ongoing' | 'Completed' | 'Hiatus' | 'Cancelled' | string
-  volumes: number
+  volumesPublished: number
 }
 
 export interface LightNovelUserStatsDto {
   score: number
-  status: 'Completed' | 'Planned' | 'Ongoing' | string
+  status: 'Planned' | 'Reading' | 'Completed' | 'Dropped' | 'On-Hold' | string
 }
 
 export interface LightNovelDto {

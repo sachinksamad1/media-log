@@ -10,7 +10,10 @@ export class ApiClient {
   /**
    * Make a GET request
    */
-  async get<T>(endpoint: string, options?: { headers?: Record<string, string> }): Promise<{
+  async get<T>(
+    endpoint: string,
+    options?: { headers?: Record<string, string> },
+  ): Promise<{
     status: number;
     data: T;
     ok: boolean;
@@ -32,7 +35,7 @@ export class ApiClient {
   async post<T, D = unknown>(
     endpoint: string,
     data: D,
-    options?: { headers?: Record<string, string> }
+    options?: { headers?: Record<string, string> },
   ): Promise<{
     status: number;
     data: T;
@@ -56,7 +59,7 @@ export class ApiClient {
   async put<T, D = unknown>(
     endpoint: string,
     data: D,
-    options?: { headers?: Record<string, string> }
+    options?: { headers?: Record<string, string> },
   ): Promise<{
     status: number;
     data: T;
@@ -77,7 +80,10 @@ export class ApiClient {
   /**
    * Make a DELETE request
    */
-  async delete<T>(endpoint: string, options?: { headers?: Record<string, string> }): Promise<{
+  async delete<T>(
+    endpoint: string,
+    options?: { headers?: Record<string, string> },
+  ): Promise<{
     status: number;
     data: T;
     ok: boolean;
@@ -99,7 +105,7 @@ export class ApiClient {
   async patch<T, D = unknown>(
     endpoint: string,
     data: D,
-    options?: { headers?: Record<string, string> }
+    options?: { headers?: Record<string, string> },
   ): Promise<{
     status: number;
     data: T;

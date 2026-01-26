@@ -13,10 +13,12 @@ const statusClass = computed(() => {
       return 'bg-green-500 text-white'
     case 'Planned':
       return 'bg-blue-500 text-white'
-    case 'Ongoing':
+    case 'Reading':
       return 'bg-amber-500 text-white'
     case 'Dropped':
       return 'bg-red-500 text-white'
+    case 'On-Hold':
+      return 'bg-slate-500 text-white'
     default:
       return 'bg-gray-500 text-white'
   }

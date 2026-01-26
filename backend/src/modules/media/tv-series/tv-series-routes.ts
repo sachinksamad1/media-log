@@ -1,6 +1,6 @@
 import { protect } from '@common/middlewares/auth-middleware.js';
+import { fileUploadMiddleware } from '@common/middlewares/file-upload.js';
 import { validate } from '@common/validators/validate-request.js';
-import { upload } from '@config/firestorage.js';
 import { TvSeriesController } from '@modules/media/tv-series/tv-series-controller.js';
 import {
   createTvSeriesValidator,
@@ -19,36 +19,26 @@ router.use(protect);
 router
   .route('/')
   .post(
-    // 1. Process the multipart/form-data first to populate req.body
-    upload.single('imageUrl'),
-    // 2. Validate the populated body
-    (req, res, next) => validate(createTvSeriesValidator)(req, res, next),
+    fileUploadMiddleware,
+    validate(createTvSeriesValidator),
     controller.create,
   )
   .get(controller.getAll);
 
 router.patch(
   '/:id/complete',
-  (req, res, next) => validate(completeTvSeriesValidator)(req, res, next),
+  validate(completeTvSeriesValidator),
   controller.complete,
 );
 
 router
   .route('/:id')
-  .get(
-    (req, res, next) => validate(tvSeriesIdValidator)(req, res, next),
-    controller.getById,
-  )
+  .get(validate(tvSeriesIdValidator), controller.getById)
   .patch(
-    // 1. Allow optional image updates
-    upload.single('imageUrl'),
-    // 2. Validate the update data
-    (req, res, next) => validate(updateTvSeriesValidator)(req, res, next),
+    fileUploadMiddleware,
+    validate(updateTvSeriesValidator),
     controller.update,
   )
-  .delete(
-    (req, res, next) => validate(tvSeriesIdValidator)(req, res, next),
-    controller.delete,
-  );
+  .delete(validate(tvSeriesIdValidator), controller.delete);
 
 export default router;

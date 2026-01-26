@@ -3,9 +3,8 @@ import { LightNovelRepository } from '@modules/media/light-novel/light-novel-rep
 import type { LightNovelSchema } from '@modules/media/light-novel/light-novel-schema.js';
 import { userActivityService } from '@modules/user-activity/user-activity.service.js';
 import type { z } from 'zod';
-import 'multer';
 
-
+import type { UploadedFile } from '@/common/types/file-types.js';
 
 export class LightNovelService extends MediaService<z.infer<typeof LightNovelSchema>> {
   protected repository: LightNovelRepository;
@@ -19,7 +18,7 @@ export class LightNovelService extends MediaService<z.infer<typeof LightNovelSch
   async create(
     data: z.infer<typeof LightNovelSchema>,
     userId: string,
-    file?: Express.Multer.File,
+    file?: UploadedFile,
   ) {
     const created = await this.repository.createWithImage(data, userId, file);
     await userActivityService.logActivity(
@@ -35,13 +34,18 @@ export class LightNovelService extends MediaService<z.infer<typeof LightNovelSch
     id: string,
     data: Partial<z.infer<typeof LightNovelSchema>>,
     userId: string,
-    file?: Express.Multer.File,
+    file?: UploadedFile,
   ) {
     // Check existence and title for logging
     const existing = await this.getById(id, userId);
-    
-    const updated = await this.repository.updateWithImage(id, data, userId, file);
-    
+
+    const updated = await this.repository.updateWithImage(
+      id,
+      data,
+      userId,
+      file,
+    );
+
     try {
       if (existing) {
         await userActivityService.logActivity(
@@ -54,7 +58,7 @@ export class LightNovelService extends MediaService<z.infer<typeof LightNovelSch
       }
     } catch (error) {
       // eslint-disable-next-line no-console
-       console.error('Failed to log activity:', error);
+      console.error('Failed to log activity:', error);
     }
     return updated;
   }

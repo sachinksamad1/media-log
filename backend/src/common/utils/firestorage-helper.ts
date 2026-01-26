@@ -2,6 +2,8 @@ import { storage } from '@config/firebase.js';
 import sharp from 'sharp';
 import { v4 as uuidv4 } from 'uuid';
 
+import type { UploadedFile } from '@/common/types/file-types.js';
+
 export class StorageHelper {
   private static bucket = storage.bucket();
 
@@ -9,11 +11,12 @@ export class StorageHelper {
    * Universal upload handler for any media type
    */
   static async uploadMediaImage(
-    file: Express.Multer.File,
+    file: UploadedFile,
     folder: string,
   ): Promise<string> {
     // 1. Convert image to WebP using Sharp
-    const webpBuffer = await sharp(file.buffer)
+    // file.filepath from file upload middleware
+    const webpBuffer = await sharp(file.filepath)
       .webp({ quality: 80 })
       .toBuffer();
 

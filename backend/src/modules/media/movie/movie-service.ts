@@ -3,9 +3,8 @@ import { MovieRepository } from '@modules/media/movie/movie-repo.js';
 import type { MovieSchema } from '@modules/media/movie/movie-schema.js';
 import { userActivityService } from '@modules/user-activity/user-activity.service.js';
 import type { z } from 'zod';
-import 'multer';
 
-
+import type { UploadedFile } from '@/common/types/file-types.js';
 
 export class MovieService extends MediaService<z.infer<typeof MovieSchema>> {
   protected repository: MovieRepository;
@@ -19,7 +18,7 @@ export class MovieService extends MediaService<z.infer<typeof MovieSchema>> {
   async create(
     data: z.infer<typeof MovieSchema>,
     userId: string,
-    file?: Express.Multer.File,
+    file?: UploadedFile,
   ) {
     const created = await this.repository.createWithImage(data, userId, file);
     await userActivityService.logActivity(
@@ -35,13 +34,18 @@ export class MovieService extends MediaService<z.infer<typeof MovieSchema>> {
     id: string,
     data: Partial<z.infer<typeof MovieSchema>>,
     userId: string,
-    file?: Express.Multer.File,
+    file?: UploadedFile,
   ) {
     // Check existence and title for logging
     const existing = await this.getById(id, userId);
-    
-    const updated = await this.repository.updateWithImage(id, data, userId, file);
-    
+
+    const updated = await this.repository.updateWithImage(
+      id,
+      data,
+      userId,
+      file,
+    );
+
     try {
       if (existing) {
         await userActivityService.logActivity(
@@ -62,8 +66,19 @@ export class MovieService extends MediaService<z.infer<typeof MovieSchema>> {
   async completeMovie(id: string, userId: string, score?: number) {
     const movie = await this.getById(id, userId);
 
-    const finalScore = score !== undefined ? score : movie.userStats?.score || 0;
+    const finalScore =
+      score !== undefined ? score : movie.userStats?.score || 0;
 
-    return this.update(id, { userStats: { ...(movie.userStats || {}), status: 'Completed', score: finalScore, } }, userId);
+    return this.update(
+      id,
+      {
+        userStats: {
+          ...(movie.userStats || {}),
+          status: 'Completed',
+          score: finalScore,
+        },
+      },
+      userId,
+    );
   }
 }

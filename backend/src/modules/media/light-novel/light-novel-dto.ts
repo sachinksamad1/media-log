@@ -6,9 +6,9 @@ export interface LightNovelDTO extends MediaDTO {
   illustrator: string;
   type: string;
   format: string;
-  releaseStatus: {
+  releaseStats: {
     releaseStatus: string;
-    volumes: number;
+    volumesPublished: number;
   };
   readingStats: {
     currentReadingVolume: number;

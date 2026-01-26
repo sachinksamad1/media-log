@@ -1,6 +1,6 @@
 import { protect } from '@common/middlewares/auth-middleware.js';
+import { fileUploadMiddleware } from '@common/middlewares/file-upload.js';
 import { validate } from '@common/validators/validate-request.js';
-import { upload } from '@config/firestorage.js';
 import { MovieController } from '@modules/media/movie/movie-controller.js';
 import {
   movieIdValidator,
@@ -18,37 +18,23 @@ router.use(protect);
 
 router
   .route('/')
-  .post(
-    // 1. Process the multipart/form-data first to populate req.body
-    upload.single('imageUrl'),
-    // 2. Validate the populated body
-    (req, res, next) => validate(createMovieValidator)(req, res, next),
-    controller.create,
-  )
+  .post(fileUploadMiddleware, validate(createMovieValidator), controller.create)
   .get(controller.getAll);
 
 router.patch(
   '/:id/complete',
-  (req, res, next) => validate(completeMovieValidator)(req, res, next),
+  validate(completeMovieValidator),
   controller.complete,
 );
 
 router
   .route('/:id')
-  .get(
-    (req, res, next) => validate(movieIdValidator)(req, res, next),
-    controller.getById,
-  )
+  .get(validate(movieIdValidator), controller.getById)
   .patch(
-    // 1. Allow optional image updates
-    upload.single('imageUrl'),
-    // 2. Validate the update data
-    (req, res, next) => validate(updateMovieValidator)(req, res, next),
+    fileUploadMiddleware,
+    validate(updateMovieValidator),
     controller.update,
   )
-  .delete(
-    (req, res, next) => validate(movieIdValidator)(req, res, next),
-    controller.delete,
-  );
+  .delete(validate(movieIdValidator), controller.delete);
 
 export default router;

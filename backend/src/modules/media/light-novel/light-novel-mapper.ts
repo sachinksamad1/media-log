@@ -9,7 +9,13 @@ export class LightNovelMapper extends MediaMapper<LightNovel, LightNovelDTO> {
       illustrator: entity.illustrator,
       type: entity.type,
       format: entity.format,
-      releaseStatus: entity.releaseStats,
+      releaseStats: {
+        releaseStatus: entity.releaseStats.releaseStatus,
+        volumesPublished:
+          entity.releaseStats.volumesPublished ??
+          (entity.releaseStats as unknown as { volumes?: number }).volumes ??
+          0,
+      },
       readingStats: entity.readingStats,
     };
   }

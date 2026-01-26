@@ -14,7 +14,7 @@ async function globalSetup(config: FullConfig): Promise<void> {
   // Validate required environment variables
   const requiredEnvVars = ['BASE_URL'];
   const missingVars = requiredEnvVars.filter(
-    (varName) => !process.env[varName] && !config.projects[0]?.use?.baseURL
+    (varName) => !process.env[varName] && !config.projects[0]?.use?.baseURL,
   );
 
   if (missingVars.length > 0) {

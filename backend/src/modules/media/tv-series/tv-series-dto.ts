@@ -5,6 +5,16 @@ export interface TvSeriesDTO extends MediaDTO {
   directors: string[];
   writers: string[];
   cast: string[];
+  network?: string;
+  studio?: string;
+  releaseDate?: string;
+  endDate?: string;
+  userStats: {
+    score: number;
+    status: string;
+    watchedEpisodes: number;
+    rewatchCount: number;
+  };
   tvSeriesStats: {
     airingYear: string;
     currentSeason: number;

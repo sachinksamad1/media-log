@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import { NonFictionService } from '@modules/media/nonFiction/api/nonFictionService'
 import type { NonFiction } from '@modules/media/nonFiction/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import { AxiosError } from 'axios'
 
 defineProps<{
   isOpen: boolean
@@ -44,7 +45,7 @@ const form = reactive<{
   genre: '',
   type: 'Series',
   format: 'Physical',
-  origin: 'USA',
+  origin: '',
   published: '',
 })
 
@@ -67,7 +68,7 @@ function resetForm() {
   form.genre = ''
   form.type = 'Series'
   form.format = 'Physical'
-  form.origin = 'USA'
+  form.origin = ''
   selectedFile.value = null
   previewUrl.value = null
 }
@@ -133,9 +134,13 @@ async function handleSave() {
     close()
   } catch (err) {
     console.error('Failed to create', err)
+    let message = 'Failed to add Non-Fiction'
+    if (err instanceof AxiosError && err.response?.data?.message) {
+      message = err.response.data.message
+    }
     toast({
       title: 'Error',
-      description: 'Failed to add Non-Fiction',
+      description: message,
       variant: 'destructive',
     })
   } finally {
@@ -250,15 +255,11 @@ async function handleSave() {
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="space-y-2">
               <label class="text-sm font-medium">Origin</label>
-              <select
+              <input
                 v-model="form.origin"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
-              >
-                <option value="USA">USA</option>
-                <option value="UK">UK</option>
-                <option value="Japan">Japan</option>
-                <option value="Other">Other</option>
-              </select>
+                placeholder="Origin"
+              />
             </div>
             <div class="space-y-2">
               <label class="text-sm font-medium">Release Status</label>
@@ -283,7 +284,6 @@ async function handleSave() {
               >
                 <option value="Planned">Planned</option>
                 <option value="Reading">Reading</option>
-                <option value="Ongoing">Ongoing</option>
                 <option value="Completed">Completed</option>
                 <option value="Dropped">Dropped</option>
                 <option value="On-Hold">On-Hold</option>

@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import { MangaService } from '@/modules/media/manga/api/manga.service'
 import type { Manga } from '@/modules/media/manga/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import { AxiosError } from 'axios'
 
 defineProps<{
   isOpen: boolean
@@ -140,9 +141,13 @@ async function handleSave() {
     close()
   } catch (err) {
     console.error('Failed to create', err)
+    let message = 'Failed to add manga'
+    if (err instanceof AxiosError && err.response?.data?.message) {
+      message = err.response.data.message
+    }
     toast({
       title: 'Error',
-      description: 'Failed to add manga',
+      description: message,
       variant: 'destructive',
     })
   } finally {

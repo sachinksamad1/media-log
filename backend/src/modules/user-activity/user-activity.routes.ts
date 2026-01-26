@@ -3,8 +3,6 @@ import { Router } from 'express';
 
 import { UserActivityController } from './user-activity.controller.js';
 
-
-
 export const userActivityRouter = Router();
 const controller = new UserActivityController();
 

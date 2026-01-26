@@ -6,6 +6,7 @@ import type { Manga } from '@modules/media/manga/types/types'
 import MangaDetailModal from '@modules/media/manga/components/MangaDetailModal.vue'
 import AddNewMangaModal from '@modules/media/manga/components/AddNewMangaModal.vue'
 import MangaCard from '@modules/media/manga/components/MangaCard.vue'
+import Carousel from '@common/components/ui/Carousel.vue'
 import { watchDebounced } from '@vueuse/core'
 import { Search } from 'lucide-vue-next'
 
@@ -13,6 +14,8 @@ import { Search } from 'lucide-vue-next'
 // STATE
 // ----------------------------------------------------
 const library = ref<Manga[]>([])
+const readingList = ref<Manga[]>([])
+const plannedList = ref<Manga[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 const nextCursor = ref<string | null>(null)
@@ -49,17 +52,20 @@ function openDetails(manga: Manga) {
 function handleUpdate(updated: Manga) {
   // Reload the list to ensure data consistency
   fetchManga()
+  fetchFeatured()
   selectedManga.value = updated
 }
 
 function handleCreate() {
   // Reload list to include new item in correct order/filter
   fetchManga()
+  fetchFeatured()
   isAddModalOpen.value = false
 }
 
 function handleDelete() {
   fetchManga()
+  fetchFeatured()
   isModalOpen.value = false
   selectedManga.value = null
 }
@@ -67,6 +73,19 @@ function handleDelete() {
 // ----------------------------------------------------
 // FETCH
 // ----------------------------------------------------
+async function fetchFeatured() {
+  try {
+    const [reading, planned] = await Promise.all([
+      MangaService.getAll(10, undefined, 'Reading'),
+      MangaService.getAll(10, undefined, 'Planned')
+    ])
+    readingList.value = reading.data
+    plannedList.value = planned.data
+  } catch (e) {
+    console.error('Failed to fetch featured lists', e)
+  }
+}
+
 async function fetchManga(isLoadMore = false) {
   if (loading.value || (!hasMore.value && isLoadMore)) return
 
@@ -135,12 +154,14 @@ onMounted(() => {
       (loading) => {
         if (!loading) {
           fetchManga()
+          fetchFeatured()
           unwatch()
         }
       }
     )
   } else {
     fetchManga()
+    fetchFeatured()
   }
 })
 </script>
@@ -149,7 +170,7 @@ onMounted(() => {
   <div class="min-h-screen bg-background text-foreground w-full">
     <div class="mx-auto w-full max-w-7xl px-2 lg:px-4 py-2">
       <!-- HEADER / FILTERS -->
-      <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
+      <div class="flex flex-col lg:flex-row items-center justify-between mb-8 gap-4">
         <div class="flex items-center gap-4">
           <h3 class="text-xl font-semibold text-[hsl(var(--category-manga))]">Manga Library</h3>
           <button
@@ -161,18 +182,18 @@ onMounted(() => {
         </div>
 
         <!-- SEARCH BAR -->
-        <div class="relative w-full sm:max-w-xs order-last sm:order-none mt-4 sm:mt-0">
+        <div class="relative w-full lg:max-w-[220px] order-last lg:order-none mt-4 lg:mt-0">
           <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             v-model="searchQuery"
-            class="w-full pl-9 pr-4 py-2 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm"
+            class="w-full pl-9 pr-4 py-1.5 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm"
             placeholder="Search manga..."
           />
         </div>
 
-        <div class="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
+        <div class="flex flex-wrap justify-center items-center gap-2 bg-secondary/50 p-1 rounded-lg">
           <button
-            v-for="filter in ['All', 'Completed', 'Planned', 'Ongoing']"
+            v-for="filter in ['All', 'Completed', 'Planned', 'Reading', 'Dropped', 'On-Hold']"
             :key="filter"
             class="px-4 py-1.5 rounded-md text-sm font-medium transition-all"
             :class="
@@ -198,22 +219,52 @@ onMounted(() => {
         </button>
       </div>
 
+      <!-- CAROUSELS (Reading & Planned) -->
+      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+        <Carousel v-if="readingList.length > 0" title="Currently Reading">
+          <MangaCard
+            v-for="manga in readingList"
+            :key="manga.id"
+            :manga="manga"
+            class="min-w-[200px] w-[200px]"
+            @click="openDetails(manga)"
+          />
+        </Carousel>
+
+        <Carousel v-if="plannedList.length > 0" title="Planned">
+          <MangaCard
+            v-for="manga in plannedList"
+            :key="manga.id"
+            :manga="manga"
+            class="min-w-[200px] w-[200px]"
+            @click="openDetails(manga)"
+          />
+        </Carousel>
+      </div>
+
       <!-- EMPTY STATE -->
       <div
-        v-else-if="!loading && !authStore.isInitialLoading && library.length === 0"
+        v-if="!loading && !authStore.isInitialLoading && library.length === 0"
         class="text-center py-12 text-muted"
       >
         No manga found in your library.
       </div>
 
       <!-- GRID -->
-      <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
-        <MangaCard
-          v-for="manga in library"
-          :key="manga.id"
-          :manga="manga"
-          @click="openDetails(manga)"
-        />
+      <div v-else>
+        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
+          <h3 class="text-xl font-semibold">
+            {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Manga' }}
+          </h3>
+        </div>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
+          <MangaCard
+            v-for="manga in library"
+            :key="manga.id"
+            :manga="manga"
+            @click="openDetails(manga)"
+          />
+        </div>
       </div>
 
       <!-- LOAD MORE -->

@@ -9,22 +9,24 @@ const props = defineProps<{
 const statusClass = computed(() => {
   const status = props.lightNovel.userStats.status
   switch (status) {
-    case 'Complete': // Note: Type says Complete, but Manga had Completed. I should stick to Type for now but handle both cases if possible. Manga had Completed.
+    case 'Complete': 
     case 'Completed':
       return 'bg-green-500 text-white'
     case 'Planned':
       return 'bg-blue-500 text-white'
-    case 'Ongoing':
+    case 'Reading':
       return 'bg-amber-500 text-white'
     case 'Dropped':
       return 'bg-red-500 text-white'
+    case 'On-Hold':
+      return 'bg-slate-500 text-white'
     default:
       return 'bg-gray-500 text-white'
   }
 })
 
 const volumesText = computed(() => {
-  const count = props.lightNovel.releaseStats?.volumes || 0
+  const count = props.lightNovel.releaseStats?.volumesPublished || 0
   return `${count} Volume${count !== 1 ? 's' : ''}`
 })
 </script>

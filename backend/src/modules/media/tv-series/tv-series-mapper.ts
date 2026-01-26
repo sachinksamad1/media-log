@@ -8,6 +8,10 @@ export class TvSeriesMapper extends MediaMapper<TvSeries, TvSeriesDTO> {
       directors: entity.directors,
       writers: entity.writers,
       cast: entity.cast,
+      network: entity.network,
+      studio: entity.studio,
+      releaseDate: entity.releaseDate,
+      endDate: entity.endDate,
       tvSeriesStats: entity.tvSeriesStats || {
         airingYear: 'Unknown',
         currentSeason: 1,

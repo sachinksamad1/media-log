@@ -3,11 +3,9 @@ import type { CollectionReference } from 'firebase-admin/firestore';
 import type { MediaStatus, BaseMediaType } from './media-types.js';
 
 import { AppError } from '@/common/errors/app-error.js';
+import type { UploadedFile } from '@/common/types/file-types.js';
 import { StorageHelper } from '@/common/utils/firestorage-helper.js';
 import { db } from '@/config/firebase.js';
-
-
-
 
 export abstract class MediaRepository<T extends BaseMediaType> {
   public readonly collectionName: string;
@@ -45,7 +43,7 @@ export abstract class MediaRepository<T extends BaseMediaType> {
   async createWithImage(
     data: T,
     userId: string,
-    imageFile?: Express.Multer.File,
+    imageFile?: UploadedFile,
   ): Promise<T> {
     let imageUrl = data.imageUrl;
 
@@ -83,7 +81,7 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     id: string,
     data: Partial<T>,
     userId: string,
-    imageFile?: Express.Multer.File,
+    imageFile?: UploadedFile,
   ): Promise<T> {
     const docRef = this.collection.doc(id);
     const existing = await docRef.get();
@@ -198,8 +196,8 @@ export abstract class MediaRepository<T extends BaseMediaType> {
   }
 
   /*
-  * Search by title
-  */
+   * Search by title
+   */
   async searchByTitle(
     query: string,
     userId: string,

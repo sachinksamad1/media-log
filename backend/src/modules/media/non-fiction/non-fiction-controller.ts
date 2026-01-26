@@ -20,7 +20,11 @@ export class NonFictionController extends MediaController {
       typeof req.body.data === 'string' ? JSON.parse(req.body.data) : req.body;
 
     const result = await this.service.create(data, userId, file);
-    this.sendCreated(res, this.mapper.toDto(result), 'Non-fiction added with image');
+    this.sendCreated(
+      res,
+      this.mapper.toDto(result),
+      'Non-fiction added with image',
+    );
   });
 
   update = catchAsync(async (req: Request, res: Response) => {

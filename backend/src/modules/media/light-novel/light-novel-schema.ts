@@ -13,7 +13,7 @@ export const LightNovelSchema = MediaSchema.extend({
     releaseStatus: z
       .enum(['Ongoing', 'Completed', 'Hiatus', 'Cancelled'])
       .default('Ongoing'),
-    volumes: z.number().int().min(1).default(1),
+    volumesPublished: z.number().int().min(0).default(0),
   }),
   readingStats: z
     .object({

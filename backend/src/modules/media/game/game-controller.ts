@@ -63,11 +63,7 @@ export class GameController extends MediaController {
       userId,
       score,
     );
-    this.sendSuccess(
-      res,
-      this.mapper.toDto(result),
-      'Game marked as complete',
-    );
+    this.sendSuccess(res, this.mapper.toDto(result), 'Game marked as complete');
   });
 
   // Delete game

@@ -9,7 +9,10 @@ export class UserActivityController {
     const userId = req.user!.uid;
     const limit = parseInt(req.query.limit as string) || 20;
 
-    const activities = await userActivityService.getRecentActivities(userId, limit);
+    const activities = await userActivityService.getRecentActivities(
+      userId,
+      limit,
+    );
 
     ResponseUtil.send(res, 200, activities, 'Recent activities fetched');
   });

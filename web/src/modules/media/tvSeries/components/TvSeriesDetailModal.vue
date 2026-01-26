@@ -68,14 +68,14 @@ function syncForm(data: TvSeries) {
   form.title = data.title
   form.director = data.directors ? data.directors.join(', ') : ''
   // form.producer = ((data as any).producer) ?? ''
-  // form.studio = ((data as any).studio) ?? ''
-  // form.network = ((data as any).network) ?? ''
+  form.studio = data.studio ?? ''
+  form.network = data.network ?? ''
   form.status = data.userStats?.status ?? ''
   form.score = data.userStats?.score ?? 0
-  // form.watchedEpisodes = data.userStats?.watchedEpisodes ?? 0
-  // form.rewatchCount = data.userStats?.rewatchCount ?? 0
-  // form.releaseDate = ((data as any).releaseDate) ?? ''
-  // form.endDate = ((data as any).endDate) ?? ''
+  form.watchedEpisodes = data.userStats?.watchedEpisodes ?? 0
+  form.rewatchCount = data.userStats?.rewatchCount ?? 0
+  form.releaseDate = data.releaseDate ?? ''
+  form.endDate = data.endDate ?? ''
   form.episodes = data.tvSeriesStats?.totalEpisodes ?? 0
   form.language = data.language
   form.country = data.origin ?? ''
@@ -153,10 +153,10 @@ async function handleSave() {
         .map((s) => s.trim())
         .filter((s) => s),
       // producer: form.producer,
-      // studio: form.studio,
-      // network: form.network,
-      // releaseDate: form.releaseDate,
-      // endDate: form.endDate,
+      studio: form.studio,
+      network: form.network,
+      releaseDate: form.releaseDate,
+      endDate: form.endDate,
       tvSeriesStats: {
         ...(props.tvSeries.tvSeriesStats || {}),
         totalEpisodes: Number(form.episodes),
@@ -167,8 +167,8 @@ async function handleSave() {
         ...props.tvSeries.userStats,
         status: form.status,
         score: Number(form.score),
-        // watchedEpisodes: Number(form.watchedEpisodes),
-        // rewatchCount: Number(form.rewatchCount),
+        watchedEpisodes: Number(form.watchedEpisodes),
+        rewatchCount: Number(form.rewatchCount),
       },
       cast: form.cast
         .split(',')

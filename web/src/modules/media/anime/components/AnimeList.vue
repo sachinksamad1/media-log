@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { AnimeService } from '@/modules/media/anime/api/animeService'
+import { useAuthStore } from '@/core/stores/useAuthStore'
 import type { Anime } from '@/modules/media/anime/types/types'
 import AnimeDetailModal from '@/modules/media/anime/components/AnimeDetailModal.vue'
 import AddNewAnimeModal from '@/modules/media/anime/components/AddNewAnimeModal.vue'
-import AnimeCard from '@/modules/media/anime/components/AnimeCard.vue'
+import AnimeCard from '@modules/media/anime/components/AnimeCard.vue'
+import Carousel from '@common/components/ui/Carousel.vue'
 import { watchDebounced } from '@vueuse/core'
 import { Search } from 'lucide-vue-next'
 
@@ -12,6 +14,8 @@ import { Search } from 'lucide-vue-next'
 // STATE
 // ----------------------------------------------------
 const library = ref<Anime[]>([])
+const watchingLibrary = ref<Anime[]>([])
+const plannedLibrary = ref<Anime[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 const nextCursor = ref<string | null>(null)
@@ -52,15 +56,32 @@ function handleUpdate(updated: Anime) {
 }
 
 function handleCreate() {
-  // Reload list to include new item in correct order/filter
   fetchAnime()
+  fetchCarousels()
   isAddModalOpen.value = false
 }
 
 function handleDelete() {
   fetchAnime()
+  fetchCarousels()
   isModalOpen.value = false
   selectedAnime.value = null
+}
+
+// ----------------------------------------------------
+// FETCH CAROUSELS
+// ----------------------------------------------------
+async function fetchCarousels() {
+  try {
+    const [watching, planned] = await Promise.all([
+      AnimeService.getAll(20, undefined, 'Watching'),
+      AnimeService.getAll(20, undefined, 'Planned')
+    ])
+    watchingLibrary.value = watching.data
+    plannedLibrary.value = planned.data
+  } catch (err) {
+    console.error('Failed to load carousels', err)
+  }
 }
 
 // ----------------------------------------------------
@@ -124,9 +145,25 @@ watchDebounced(
   { debounce: 500 }
 )
 
+const authStore = useAuthStore()
+
 // Initial Load
 onMounted(() => {
-  fetchAnime()
+  if (authStore.isInitialLoading) {
+    const unwatch = watch(
+      () => authStore.isInitialLoading,
+      (loading) => {
+        if (!loading) {
+          fetchAnime()
+          fetchCarousels()
+          unwatch()
+        }
+      }
+    )
+  } else {
+    fetchAnime()
+    fetchCarousels()
+  }
 })
 </script>
 
@@ -146,18 +183,18 @@ onMounted(() => {
         </div>
 
         <!-- SEARCH BAR -->
-        <div class="relative w-full sm:max-w-xs order-last sm:order-none mt-4 sm:mt-0">
+        <div class="relative w-full lg:max-w-[220px] order-last lg:order-none mt-4 lg:mt-0">
           <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             v-model="searchQuery"
-            class="w-full pl-9 pr-4 py-2 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm"
+            class="w-full pl-9 pr-4 py-1.5 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm"
             placeholder="Search anime..."
           />
         </div>
 
-        <div class="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
+        <div class="flex flex-wrap justify-center items-center gap-2 bg-secondary/50 p-1 rounded-lg">
           <button
-            v-for="filter in ['All', 'Completed', 'Planned', 'Ongoing']"
+            v-for="filter in ['All', 'Completed', 'Planned', 'Watching', 'Dropped', 'On-Hold']"
             :key="filter"
             class="px-4 py-1.5 rounded-md text-sm font-medium transition-all"
             :class="
@@ -172,6 +209,35 @@ onMounted(() => {
         </div>
       </div>
 
+      <!-- CAROUSELS (Watching & Planned) -->
+      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+        <Carousel v-if="watchingLibrary.length > 0" title="Currently Watching">
+          <div 
+            v-for="anime in watchingLibrary" 
+            :key="anime.id" 
+            class="w-[200px] flex-shrink-0 snap-center"
+          >
+            <AnimeCard
+              :anime="anime"
+              @click="openDetails(anime)"
+            />
+          </div>
+        </Carousel>
+
+        <Carousel v-if="plannedLibrary.length > 0" title="Planned to Watch">
+          <div 
+            v-for="anime in plannedLibrary" 
+            :key="anime.id" 
+            class="w-[200px] flex-shrink-0 snap-center"
+          >
+            <AnimeCard
+              :anime="anime"
+              @click="openDetails(anime)"
+            />
+          </div>
+        </Carousel>
+      </div>
+
       <!-- ERROR STATE -->
       <div v-if="error" class="text-destructive text-center py-8">
         {{ error }}
@@ -184,18 +250,26 @@ onMounted(() => {
       </div>
 
       <!-- EMPTY STATE -->
-      <div v-else-if="!loading && library.length === 0" class="text-center py-12 text-muted">
+      <div v-else-if="!loading && !authStore.isInitialLoading && library.length === 0" class="text-center py-12 text-muted">
         No anime found in your library.
       </div>
 
       <!-- GRID -->
-      <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
+      <div v-else>
+        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
+
+          <h3 class="text-xl font-semibold">
+            {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Anime' }}
+          </h3>
+        </div>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
         <AnimeCard
           v-for="anime in library"
           :key="anime.id"
           :anime="anime"
           @click="openDetails(anime)"
         />
+      </div>
       </div>
 
       <!-- LOAD MORE -->

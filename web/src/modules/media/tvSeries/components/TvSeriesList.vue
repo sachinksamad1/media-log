@@ -6,6 +6,7 @@ import type { TvSeries } from '@modules/media/tvSeries/types/types'
 import TvSeriesDetailModal from '@modules/media/tvSeries/components/TvSeriesDetailModal.vue'
 import AddNewTvSeriesModal from '@modules/media/tvSeries/components/AddNewTvSeriesModal.vue'
 import TvSeriesCard from '@modules/media/tvSeries/components/TvSeriesCard.vue'
+import Carousel from '@common/components/ui/Carousel.vue'
 import { watchDebounced } from '@vueuse/core'
 import { Search } from 'lucide-vue-next'
 
@@ -13,6 +14,8 @@ import { Search } from 'lucide-vue-next'
 // STATE
 // ----------------------------------------------------
 const library = ref<TvSeries[]>([])
+const watchingLibrary = ref<TvSeries[]>([])
+const planToWatchLibrary = ref<TvSeries[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 const nextCursor = ref<string | null>(null)
@@ -47,21 +50,37 @@ function openDetails(item: TvSeries) {
 }
 
 function handleUpdate(updated: TvSeries) {
-  // Reload the list to ensure data consistency
-  fetchLibrary() // Or update local state optimize
+  fetchLibrary()
   selectedShow.value = updated
 }
 
 function handleCreate() {
-  // Reload list to include new item in correct order/filter
   fetchLibrary()
+  fetchCarousels()
   isAddModalOpen.value = false
 }
 
 function handleDelete() {
   fetchLibrary()
+  fetchCarousels()
   isModalOpen.value = false
   selectedShow.value = null
+}
+
+// ----------------------------------------------------
+// FETCH CAROUSELS
+// ----------------------------------------------------
+async function fetchCarousels() {
+  try {
+    const [watching, planned] = await Promise.all([
+      TvSeriesService.getAll(20, undefined, 'Watching'),
+      TvSeriesService.getAll(20, undefined, 'Plan to Watch')
+    ])
+    watchingLibrary.value = watching.data
+    planToWatchLibrary.value = planned.data
+  } catch (err) {
+    console.error('Failed to load carousels', err)
+  }
 }
 
 // ----------------------------------------------------
@@ -135,12 +154,14 @@ onMounted(() => {
       (loading) => {
         if (!loading) {
           fetchLibrary()
+          fetchCarousels()
           unwatch()
         }
       }
     )
   } else {
     fetchLibrary()
+    fetchCarousels()
   }
 })
 </script>
@@ -189,6 +210,35 @@ onMounted(() => {
         </div>
       </div>
 
+      <!-- CAROUSELS (Watching & Planned) -->
+      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+        <Carousel v-if="watchingLibrary.length > 0" title="Currently Watching">
+          <div 
+            v-for="tvSeries in watchingLibrary" 
+            :key="tvSeries.id" 
+            class="w-[200px] flex-shrink-0 snap-center"
+          >
+            <TvSeriesCard
+              :tv-series="tvSeries"
+              @click="openDetails(tvSeries)"
+            />
+          </div>
+        </Carousel>
+
+        <Carousel v-if="planToWatchLibrary.length > 0" title="Planned to Watch">
+          <div 
+            v-for="tvSeries in planToWatchLibrary" 
+            :key="tvSeries.id" 
+            class="w-[200px] flex-shrink-0 snap-center"
+          >
+            <TvSeriesCard
+              :tv-series="tvSeries"
+              @click="openDetails(tvSeries)"
+            />
+          </div>
+        </Carousel>
+      </div>
+
       <!-- ERROR STATE -->
       <div v-if="error" class="text-destructive text-center py-8">
         {{ error }}
@@ -208,14 +258,22 @@ onMounted(() => {
         No TV Series found in your library.
       </div>
 
-      <!-- GRID -->
-      <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
+     <!-- GRID -->
+      <div v-else>
+        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
+
+          <h3 class="text-xl font-semibold">
+            {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + (selectedFilter === 'All' ? '' : ' TV Series') }}
+          </h3>
+        </div>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
         <TvSeriesCard
-          v-for="item in library"
-          :key="item.id"
-          :tv-series="item"
-          @click="openDetails(item)"
+          v-for="tvSeries in library"
+          :key="tvSeries.id"
+          :tv-series="tvSeries"
+          @click="openDetails(tvSeries)"
         />
+      </div>
       </div>
 
       <!-- LOAD MORE -->

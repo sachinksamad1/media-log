@@ -6,6 +6,7 @@ import type { Movie } from '@modules/media/movie/types/types'
 import MovieDetailModal from '@modules/media/movie/components/MovieDetailModal.vue'
 import AddNewMovieModal from '@modules/media/movie/components/AddNewMovieModal.vue'
 import MovieCard from '@modules/media/movie/components/MovieCard.vue'
+import Carousel from '@common/components/ui/Carousel.vue'
 import { watchDebounced } from '@vueuse/core'
 import { Search } from 'lucide-vue-next'
 
@@ -13,6 +14,7 @@ import { Search } from 'lucide-vue-next'
 // STATE
 // ----------------------------------------------------
 const library = ref<Movie[]>([])
+const plannedLibrary = ref<Movie[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 const nextCursor = ref<string | null>(null)
@@ -38,7 +40,7 @@ function setFilter(filter: string) {
   // Reset pagination
   nextCursor.value = null
   hasMore.value = true
-  fetchLibrary()
+  fetchMovie()
 }
 
 function openDetails(item: Movie) {
@@ -48,26 +50,43 @@ function openDetails(item: Movie) {
 
 function handleUpdate(updated: Movie) {
   // Reload the list to ensure data consistency
-  fetchLibrary() // Or update local state optimize
+  fetchMovie() // Or update local state optimize
+  fetchCarousel()
   selectedMovie.value = updated
 }
 
 function handleCreate() {
   // Reload list to include new item in correct order/filter
-  fetchLibrary()
+  fetchMovie()
+  fetchCarousel()
   isAddModalOpen.value = false
 }
 
 function handleDelete() {
-  fetchLibrary()
+  fetchMovie()
+  fetchCarousel()
   isModalOpen.value = false
   selectedMovie.value = null
 }
 
 // ----------------------------------------------------
+// FETCH CAROUSELS
+// ----------------------------------------------------
+async function fetchCarousel() {
+  try {
+    const [planned] = await Promise.all([
+      MovieService.getAll(20, undefined, 'Planned')
+    ])
+    plannedLibrary.value = planned.data
+  } catch (err) {
+    console.error('Failed to load library', err)
+  }
+}
+
+// ----------------------------------------------------
 // FETCH
 // ----------------------------------------------------
-async function fetchLibrary(isLoadMore = false) {
+async function fetchMovie(isLoadMore = false) {
   if (loading.value || (!hasMore.value && isLoadMore)) return
 
   try {
@@ -104,7 +123,7 @@ watchDebounced(
         // Reset to normal list
         nextCursor.value = null
         hasMore.value = true
-        fetchLibrary()
+        fetchMovie()
       }
       return
     }
@@ -134,13 +153,15 @@ onMounted(() => {
       () => authStore.isInitialLoading,
       (loading) => {
         if (!loading) {
-          fetchLibrary()
+          fetchMovie()
+          fetchCarousel()
           unwatch()
         }
       }
     )
   } else {
-    fetchLibrary()
+    fetchMovie()
+    fetchCarousel()
   }
 })
 </script>
@@ -172,7 +193,7 @@ onMounted(() => {
 
         <div class="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
           <button
-            v-for="filter in ['All', 'Completed', 'Watching', 'Plan to Watch']"
+            v-for="filter in ['All', 'Completed', 'Planned']"
             :key="filter"
             class="px-4 py-1.5 rounded-md text-sm font-medium transition-all"
             :class="
@@ -187,12 +208,25 @@ onMounted(() => {
         </div>
       </div>
 
+      <!-- CAROUSELS (Planned) -->
+      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+        <Carousel v-if="plannedLibrary.length > 0" title="Planned">
+          <MovieCard
+            v-for="movie in plannedLibrary"
+            :key="movie.id"
+            :movie="movie"
+            class="min-w-[200px] w-[200px]"
+            @click="openDetails(movie)"
+          />
+        </Carousel>
+      </div>
+
       <!-- ERROR STATE -->
       <div v-if="error" class="text-destructive text-center py-8">
         {{ error }}
         <button
           class="block mx-auto mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90"
-          @click="fetchLibrary()"
+          @click="fetchMovie()"
         >
           Retry
         </button>
@@ -207,13 +241,21 @@ onMounted(() => {
       </div>
 
       <!-- GRID -->
-      <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
+      <div v-else>
+        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
+
+          <h3 class="text-xl font-semibold">
+            {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Movies' }}
+          </h3>
+        </div>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
         <MovieCard
-          v-for="item in library"
-          :key="item.id"
-          :movie="item"
-          @click="openDetails(item)"
+          v-for="movie in library"
+          :key="movie.id"
+          :movie="movie"
+          @click="openDetails(movie)"
         />
+      </div>
       </div>
 
       <!-- LOAD MORE -->
@@ -221,7 +263,7 @@ onMounted(() => {
         <button
           :disabled="loading"
           class="px-8 py-3 bg-secondary text-secondary-foreground rounded-full font-medium shadow-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          @click="fetchLibrary(true)"
+          @click="fetchMovie(true)"
         >
           {{ loading ? 'Loading...' : 'Load More' }}
         </button>

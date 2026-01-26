@@ -3,7 +3,7 @@ import type { Fiction } from '@modules/media/fiction/fiction-schema.js';
 
 export interface FictionDTO extends MediaDTO {
   author?: string;
-  format: string; // 'Physical' or 'Digital' 
+  format: string; // 'Physical' or 'Digital'
   type: string; // 'Series' or 'Standalone'
   publicationInfo: {
     published?: string;

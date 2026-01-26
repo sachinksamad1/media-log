@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import { TvSeriesService } from '@modules/media/tvSeries/api/tvSeriesService'
 import type { TvSeries } from '@modules/media/tvSeries/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import { AxiosError } from 'axios'
 
 defineProps<{
   isOpen: boolean
@@ -156,9 +157,13 @@ async function handleSave() {
     close()
   } catch (err) {
     console.error('Failed to create', err)
+    let message = 'Failed to add TV Series'
+    if (err instanceof AxiosError && err.response?.data?.message) {
+      message = err.response.data.message
+    }
     toast({
       title: 'Error',
-      description: 'Failed to add TV Series',
+      description: message,
       variant: 'destructive',
     })
   } finally {

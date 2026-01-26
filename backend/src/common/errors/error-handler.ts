@@ -1,5 +1,4 @@
 import type { Request, Response, NextFunction } from 'express';
-import { MulterError } from 'multer';
 import { ZodError } from 'zod';
 
 import { AppError } from '@/common/errors/app-error.js';
@@ -27,12 +26,6 @@ export const globalErrorHandler = (
     message = 'Validation Failed';
   }
 
-  // Multer file size error
-  else if (isMulterLimitError(err)) {
-    statusCode = 413;
-    message = 'File too large. Max limit is 5MB.';
-  }
-
   // Fallback for native JS errors
   else if (err instanceof Error) {
     message = err.message;
@@ -49,8 +42,4 @@ export const globalErrorHandler = (
 
 const isZodError = (err: unknown): err is ZodError => {
   return err instanceof ZodError;
-};
-
-const isMulterLimitError = (err: unknown): err is MulterError => {
-  return err instanceof MulterError && err.code === 'LIMIT_FILE_SIZE';
 };

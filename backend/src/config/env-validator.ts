@@ -13,7 +13,9 @@ export const validateEnv = (): void => {
     .map((field) => field.name);
 
   if (missingFields.length > 0) {
-    const missingList = missingFields.map((field) => `   - ${field}`).join('\n');
+    const missingList = missingFields
+      .map((field) => `   - ${field}`)
+      .join('\n');
     throw new Error(`❌ MISSING ENVIRONMENT VARIABLES:\n${missingList}`);
   }
 

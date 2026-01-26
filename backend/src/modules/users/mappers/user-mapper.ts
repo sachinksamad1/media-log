@@ -24,8 +24,12 @@ export class UserMapper {
   private static toDate(val: Date | Timestamp | string | undefined): Date {
     if (!val) return new Date();
     if (val instanceof Date) return val;
-    if (typeof val === 'object' && 'toDate' in val && typeof val.toDate === 'function') {
-        return val.toDate(); // Handle Firestore Timestamp
+    if (
+      typeof val === 'object' &&
+      'toDate' in val &&
+      typeof val.toDate === 'function'
+    ) {
+      return val.toDate(); // Handle Firestore Timestamp
     }
     if (typeof val === 'string') return new Date(val);
     return new Date(); // Fallback
@@ -33,10 +37,10 @@ export class UserMapper {
 
   private static formatDate(date: Date): string {
     try {
-      return new Intl.DateTimeFormat("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
+      return new Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
       }).format(date);
     } catch {
       return date.toISOString();

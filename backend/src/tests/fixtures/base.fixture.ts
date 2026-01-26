@@ -46,8 +46,10 @@ export const test = base.extend<CustomFixtures>({
   // eslint-disable-next-line no-empty-pattern
   testData: async ({}, use) => {
     const helper: TestDataHelper = {
-      uniqueEmail: () => `test-${Date.now()}-${Math.random().toString(36).substring(7)}@example.com`,
-      uniqueUsername: () => `user_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+      uniqueEmail: () =>
+        `test-${Date.now()}-${Math.random().toString(36).substring(7)}@example.com`,
+      uniqueUsername: () =>
+        `user_${Date.now()}_${Math.random().toString(36).substring(7)}`,
       timestamp: () => Date.now(),
     };
 
@@ -63,16 +65,24 @@ export { expect };
 export const apiExpect = {
   /** Expect a successful response (2xx) */
   toBeSuccessful: (response: { ok: () => boolean; status: () => number }) => {
-    expect(response.ok(), `Expected successful response, got ${response.status()}`).toBeTruthy();
+    expect(
+      response.ok(),
+      `Expected successful response, got ${response.status()}`,
+    ).toBeTruthy();
   },
 
   /** Expect a specific status code */
-  toHaveStatus: (response: { status: () => number }, expectedStatus: number) => {
+  toHaveStatus: (
+    response: { status: () => number },
+    expectedStatus: number,
+  ) => {
     expect(response.status()).toBe(expectedStatus);
   },
 
   /** Expect JSON response with specific structure */
-  toHaveJsonBody: async <T>(response: { json: () => Promise<T> }): Promise<T> => {
+  toHaveJsonBody: async <T>(response: {
+    json: () => Promise<T>;
+  }): Promise<T> => {
     const body = await response.json();
     expect(body).toBeDefined();
     return body;

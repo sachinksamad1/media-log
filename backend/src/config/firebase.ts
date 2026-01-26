@@ -1,13 +1,13 @@
-import env from '@config/env.js';
+import config from '@config/env.js';
 import admin from 'firebase-admin';
 
 admin.initializeApp({
   credential: admin.credential.cert({
-    projectId: env.firebase.projectId,
-    clientEmail: env.firebase.clientEmail,
-    privateKey: env.firebase.privateKey,
+    projectId: config.firebase.projectId,
+    clientEmail: config.firebase.clientEmail,
+    privateKey: config.firebase.privateKey,
   }),
-  storageBucket: env.firebase.storageBucket,
+  storageBucket: config.firebase.storageBucket,
 });
 
 export const db = admin.firestore();

@@ -27,6 +27,8 @@ export interface TvSeries {
   imageUrl: string
   network?: string
   studio?: string
+  releaseDate?: string
+  endDate?: string
   createdAt?: string
   updatedAt?: string
 }

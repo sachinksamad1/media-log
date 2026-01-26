@@ -29,12 +29,15 @@ build/
 *.tgz
 
 # Backend
-.env
+backend/.env
+.env.dev
 serviceAccountKey.json
 
 # Frontend
-.env
-.gemini
+frontend/.env
+frontend/.env.development
+frontend/.env.production
+frontend/.gemini
 
 # Misc
 DashboardViewDropped.vue

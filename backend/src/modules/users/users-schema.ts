@@ -20,7 +20,7 @@ export const UserSchema = z.object({
   username: z.string().min(3).max(25).trim(),
   email: z.email().lowercase(),
   displayName: z.string().optional(),
-  avatarImg: z.string().optional().or(z.literal("")), // image
+  avatarImg: z.string().optional().or(z.literal('')), // image
 
   // UI & Personalization
   preferences: PreferencesSchema.default(PreferencesSchema.parse({})),

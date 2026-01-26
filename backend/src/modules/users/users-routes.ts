@@ -1,13 +1,9 @@
 import { protect } from '@common/middlewares/auth-middleware.js';
+import { fileUploadMiddleware } from '@common/middlewares/file-upload.js';
 import { usersController } from '@modules/users/users-controller.js';
 import { Router } from 'express';
-import multer from 'multer';
 
 const router = Router();
-const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-});
 
 // Public routes
 router.post('/signup', usersController.register);
@@ -19,10 +15,6 @@ router.use(protect);
 router.post('/sync', usersController.syncUser);
 router.get('/me', usersController.getMe);
 router.patch('/me', usersController.updateMe);
-router.post(
-  '/me/avatar',
-  upload.single('avatar'),
-  usersController.uploadAvatar,
-);
+router.post('/me/avatar', fileUploadMiddleware, usersController.uploadAvatar);
 
 export default router;

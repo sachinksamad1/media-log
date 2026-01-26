@@ -1,10 +1,11 @@
 import axios from 'axios'
 import { authService } from '@/modules/user/api/authService'
+import config from '@/config/env'
 
 const httpClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: config.api.baseUrl,
   headers: {
-    // 'Content-Type': 'application/json', // Let axios set this automatically
+    // 'Content-Type': 'application/json', // Axios set this automatically
   },
 })
 

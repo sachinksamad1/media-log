@@ -1,5 +1,8 @@
 import type { GlobalSearchResponse } from '@/common/search/search-dto.js';
-import type { SearchableMedia, SearchableRepository } from '@/common/search/search-types.js';
+import type {
+  SearchableMedia,
+  SearchableRepository,
+} from '@/common/search/search-types.js';
 import { AnimeRepository } from '@/modules/media/anime/anime-repo.js';
 import { FictionRepository } from '@/modules/media/fiction/fiction-repo.js';
 import { GameRepository } from '@/modules/media/game/game-repo.js';
@@ -25,14 +28,20 @@ export class GlobalSearchService {
     };
   }
 
-  private formatDate(date: Date | { toDate: () => Date } | string | number | null | undefined): string {
+  private formatDate(
+    date: Date | { toDate: () => Date } | string | number | null | undefined,
+  ): string {
     if (!date) return new Date().toISOString();
-    
+
     // Handle Firestore Timestamp
-    if (typeof date === 'object' && 'toDate' in date && typeof (date as { toDate: () => Date }).toDate === 'function') {
+    if (
+      typeof date === 'object' &&
+      'toDate' in date &&
+      typeof (date as { toDate: () => Date }).toDate === 'function'
+    ) {
       return (date as { toDate: () => Date }).toDate().toISOString();
     }
-    
+
     // Handle native Date
     if (date instanceof Date) {
       return date.toISOString();

@@ -3,11 +3,10 @@ import { FictionRepository } from '@modules/media/fiction/fiction-repo.js';
 import type { FictionSchema } from '@modules/media/fiction/fiction-schema.js';
 import { userActivityService } from '@modules/user-activity/user-activity.service.js';
 import type { z } from 'zod';
-import 'multer';
 
-export class FictionService extends MediaService<
-  z.infer<typeof FictionSchema>
-> {
+import type { UploadedFile } from '@/common/types/file-types.js';
+
+export class FictionService extends MediaService<z.infer<typeof FictionSchema>> {
   protected repository: FictionRepository;
 
   constructor() {
@@ -19,7 +18,7 @@ export class FictionService extends MediaService<
   async create(
     data: z.infer<typeof FictionSchema>,
     userId: string,
-    file?: Express.Multer.File,
+    file?: UploadedFile,
   ) {
     const created = await this.repository.createWithImage(data, userId, file);
     await userActivityService.logActivity(
@@ -35,7 +34,7 @@ export class FictionService extends MediaService<
     id: string,
     data: Partial<z.infer<typeof FictionSchema>>,
     userId: string,
-    file?: Express.Multer.File,
+    file?: UploadedFile,
   ) {
     // Check existence and title for logging
     const existing = await this.getById(id, userId);

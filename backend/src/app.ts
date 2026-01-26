@@ -22,13 +22,22 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-
 // 3. Logging & Monitoring
 app.use(morgan('dev'));
 
 // 4. Parsing & CORS
 app.use(cors());
-app.use(express.json({ limit: '10kb' })); // Body limit prevents large payload attacks
+// Skip JSON parsing for multipart requests - these are handled by fileUploadMiddleware
+app.use(
+  express.json({
+    limit: '10kb',
+    type: (req) => {
+      const contentType = req.headers['content-type'] || '';
+      // Skip JSON parsing for multipart/form-data requests
+      return !contentType.includes('multipart/form-data');
+    },
+  }),
+);
 
 // 5. Routes & Error Handling
 app.use('/check', (req, res) => res.status(200).json({ status: 'OK' }));

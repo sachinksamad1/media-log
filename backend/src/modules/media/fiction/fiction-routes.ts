@@ -1,6 +1,6 @@
 import { protect } from '@common/middlewares/auth-middleware.js';
+import { fileUploadMiddleware } from '@common/middlewares/file-upload.js';
 import { validate } from '@common/validators/validate-request.js';
-import { upload } from '@config/firestorage.js';
 import { FictionController } from '@modules/media/fiction/fiction-controller.js';
 import {
   fictionIdValidator,
@@ -19,36 +19,26 @@ router.use(protect);
 router
   .route('/')
   .post(
-    // 1. Process the multipart/form-data first to populate req.body
-    upload.single('imageUrl'),
-    // 2. Validate the populated body
-    (req, res, next) => validate(createFictionValidator)(req, res, next),
+    fileUploadMiddleware,
+    validate(createFictionValidator),
     controller.create,
   )
   .get(controller.getAll);
 
 router.patch(
   '/:id/complete',
-  (req, res, next) => validate(completeFictionValidator)(req, res, next),
+  validate(completeFictionValidator),
   controller.complete,
 );
 
 router
   .route('/:id')
-  .get(
-    (req, res, next) => validate(fictionIdValidator)(req, res, next),
-    controller.getById,
-  )
+  .get(validate(fictionIdValidator), controller.getById)
   .patch(
-    // 1. Allow optional image updates
-    upload.single('imageUrl'),
-    // 2. Validate the update data
-    (req, res, next) => validate(updateFictionValidator)(req, res, next),
+    fileUploadMiddleware,
+    validate(updateFictionValidator),
     controller.update,
   )
-  .delete(
-    (req, res, next) => validate(fictionIdValidator)(req, res, next),
-    controller.delete,
-  );
+  .delete(validate(fictionIdValidator), controller.delete);
 
 export default router;

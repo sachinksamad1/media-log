@@ -58,9 +58,10 @@ function syncForm(data: LightNovel) {
   form.title = data.title
   form.author = data.author
   form.illustrator = data.illustrator
-  form.status = data.userStats?.status ?? ''
+  const rawStatus = data.userStats?.status
+  form.status = rawStatus === 'Ongoing' ? 'Reading' : (rawStatus || 'Planned')
   form.score = data.userStats?.score ?? 0
-  form.volumes = data.releaseStats?.volumes ?? 0
+  form.volumes = data.releaseStats?.volumesPublished ?? 0
   form.releaseStatus = data.releaseStats?.releaseStatus ?? 'Ongoing'
   form.genres = data.genres ? data.genres.join(', ') : ''
   form.type = data.type
@@ -146,7 +147,7 @@ async function handleSave() {
       },
       releaseStats: {
         ...props.lightNovel.releaseStats,
-        volumes: Number(form.volumes),
+        volumesPublished: Number(form.volumes),
         releaseStatus: form.releaseStatus,
       },
       genres: form.genres
@@ -419,9 +420,10 @@ async function handleDelete() {
                   class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
                 >
                   <option value="Planned">Planned</option>
-                  <option value="Ongoing">Ongoing</option>
+                  <option value="Reading">Reading</option>
                   <option value="Completed">Completed</option>
                   <option value="Dropped">Dropped</option>
+                  <option value="On-Hold">On-Hold</option>
                 </select>
               </div>
 
@@ -491,7 +493,7 @@ async function handleDelete() {
               @click="toggleStatus"
             >
               <RotateCcw class="w-4 h-4" />
-              <span>Mark Ongoing</span>
+              <span>Mark Reading</span>
             </button>
             <button
               class="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"

@@ -22,9 +22,9 @@ const statusClass = computed(() => {
   }
 })
 
-const episodesText = computed(() => {
-  const total = props.tvSeries.tvSeriesStats.totalEpisodes || '?'
-  return `${props.tvSeries.userStats.watchedEpisodes || 0}/${total} Eps`
+const seasonsText = computed(() => {
+  const total = props.tvSeries.tvSeriesStats.totalSeasons
+  return `${total} Season${total !== 1 ? 's' : ''}`
 })
 </script>
 
@@ -64,7 +64,7 @@ const episodesText = computed(() => {
         {{ tvSeries.title }}
       </h4>
       <div class="flex items-center justify-between text-sm text-muted-foreground">
-        <span>{{ episodesText }}</span>
+        <span>{{ seasonsText }}</span>
         <div class="flex items-center gap-1 text-accent">
           <span>⭐</span>
           <span>{{ tvSeries.userStats.score }}</span>

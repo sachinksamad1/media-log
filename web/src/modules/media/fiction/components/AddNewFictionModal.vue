@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import { FictionService } from '@modules/media/fiction/api/fictionService'
 import type { Fiction } from '@modules/media/fiction/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import { AxiosError } from 'axios'
 
 defineProps<{
   isOpen: boolean
@@ -96,6 +97,7 @@ async function handleSave() {
         score: Number(form.score),
       },
       publicationInfo: {
+        series: form.type === 'Series' ? form.title : '',
         volumes: Number(form.volumes),
         status: form.releaseStatus,
       },
@@ -124,9 +126,13 @@ async function handleSave() {
     close()
   } catch (err) {
     console.error('Failed to create', err)
+    let message = 'Failed to add Fiction'
+    if (err instanceof AxiosError && err.response?.data?.message) {
+      message = err.response.data.message
+    }
     toast({
       title: 'Error',
-      description: 'Failed to add Fiction',
+      description: message,
       variant: 'destructive',
     })
   } finally {

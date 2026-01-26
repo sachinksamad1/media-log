@@ -3,6 +3,7 @@ import { ref, reactive } from 'vue'
 import { MovieService } from '@modules/media/movie/api/movieService'
 import type { Movie } from '@modules/media/movie/types/types'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import { AxiosError } from 'axios'
 
 defineProps<{
   isOpen: boolean
@@ -140,9 +141,13 @@ async function handleSave() {
     close()
   } catch (err) {
     console.error('Failed to create', err)
+    let message = 'Failed to add Movie'
+    if (err instanceof AxiosError && err.response?.data?.message) {
+      message = err.response.data.message
+    }
     toast({
       title: 'Error',
-      description: 'Failed to add Movie',
+      description: message,
       variant: 'destructive',
     })
   } finally {

@@ -1,12 +1,10 @@
-import 'multer';
 import { MediaService } from '@common/media/media-service.js';
 import { userActivityService } from '@modules/user-activity/user-activity.service.js';
 import type { z } from 'zod';
 
+import type { UploadedFile } from '@/common/types/file-types.js';
 import { MangaRepository } from '@/modules/media/manga/manga-repo.js';
 import type { MangaSchema } from '@/modules/media/manga/manga-schema.js';
-
-
 
 export class MangaService extends MediaService<z.infer<typeof MangaSchema>> {
   protected repository: MangaRepository;
@@ -20,7 +18,7 @@ export class MangaService extends MediaService<z.infer<typeof MangaSchema>> {
   async create(
     data: z.infer<typeof MangaSchema>,
     userId: string,
-    file?: Express.Multer.File,
+    file?: UploadedFile,
   ) {
     const created = await this.repository.createWithImage(data, userId, file);
     await userActivityService.logActivity(
@@ -36,13 +34,18 @@ export class MangaService extends MediaService<z.infer<typeof MangaSchema>> {
     id: string,
     data: Partial<z.infer<typeof MangaSchema>>,
     userId: string,
-    file?: Express.Multer.File,
+    file?: UploadedFile,
   ) {
     // Check existence and title for logging
     const existing = await this.getById(id, userId);
-    
-    const updated = await this.repository.updateWithImage(id, data, userId, file);
-    
+
+    const updated = await this.repository.updateWithImage(
+      id,
+      data,
+      userId,
+      file,
+    );
+
     try {
       if (existing) {
         await userActivityService.logActivity(

@@ -1,6 +1,6 @@
 import { protect } from '@common/middlewares/auth-middleware.js';
+import { fileUploadMiddleware } from '@common/middlewares/file-upload.js';
 import { validate } from '@common/validators/validate-request.js';
-import { upload } from '@config/firestorage.js';
 import { MangaController } from '@modules/media/manga/manga-controller.js';
 import {
   mangaIdValidator,
@@ -18,37 +18,23 @@ router.use(protect);
 
 router
   .route('/')
-  .post(
-    // 1. Process the multipart/form-data first to populate req.body
-    upload.single('imageUrl'),
-    // 2. Validate the populated body
-    (req, res, next) => validate(createMangaValidator)(req, res, next),
-    controller.create,
-  )
+  .post(fileUploadMiddleware, validate(createMangaValidator), controller.create)
   .get(controller.getAll);
 
 router.patch(
   '/:id/complete',
-  (req, res, next) => validate(completeMangaValidator)(req, res, next),
+  validate(completeMangaValidator),
   controller.complete,
 );
 
 router
   .route('/:id')
-  .get(
-    (req, res, next) => validate(mangaIdValidator)(req, res, next),
-    controller.getById,
-  )
+  .get(validate(mangaIdValidator), controller.getById)
   .patch(
-    // 1. Allow optional image updates
-    upload.single('imageUrl'),
-    // 2. Validate the update data
-    (req, res, next) => validate(updateMangaValidator)(req, res, next),
+    fileUploadMiddleware,
+    validate(updateMangaValidator),
     controller.update,
   )
-  .delete(
-    (req, res, next) => validate(mangaIdValidator)(req, res, next),
-    controller.delete,
-  );
+  .delete(validate(mangaIdValidator), controller.delete);
 
 export default router;

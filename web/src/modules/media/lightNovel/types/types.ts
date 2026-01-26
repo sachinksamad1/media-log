@@ -1,7 +1,7 @@
 // Release Stats
 export interface ReleaseStats {
   releaseStatus: 'Ongoing' | 'Completed' | 'Hiatus' | 'Cancelled' | string
-  volumes: number
+  volumesPublished: number
 }
 
 // User Stats

@@ -9,7 +9,7 @@ export class FictionController extends MediaController {
   private service = new FictionService();
   private mapper = new FictionMapper();
 
-create = catchAsync(async (req: Request, res: Response) => {
+  create = catchAsync(async (req: Request, res: Response) => {
     // 1. Multer puts the file here
     const file = req.file;
     const userId = req.user!.uid;
@@ -20,7 +20,11 @@ create = catchAsync(async (req: Request, res: Response) => {
       typeof req.body.data === 'string' ? JSON.parse(req.body.data) : req.body;
 
     const result = await this.service.create(data, userId, file);
-    this.sendCreated(res, this.mapper.toDto(result), 'Fiction added with image');
+    this.sendCreated(
+      res,
+      this.mapper.toDto(result),
+      'Fiction added with image',
+    );
   });
 
   update = catchAsync(async (req: Request, res: Response) => {

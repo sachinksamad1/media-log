@@ -6,6 +6,7 @@ import type { Game } from '@modules/media/game/types/types'
 import GameDetailModal from '@modules/media/game/components/GameDetailModal.vue'
 import AddNewGameModal from '@modules/media/game/components/AddNewGameModal.vue'
 import GameCard from '@modules/media/game/components/GameCard.vue'
+import Carousel from '@common/components/ui/Carousel.vue'
 import { watchDebounced } from '@vueuse/core'
 import { Search } from 'lucide-vue-next'
 
@@ -13,6 +14,8 @@ import { Search } from 'lucide-vue-next'
 // STATE
 // ----------------------------------------------------
 const library = ref<Game[]>([])
+const plannedLibrary = ref<Game[]>([])
+const playingLibrary = ref<Game[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 const nextCursor = ref<string | null>(null)
@@ -38,7 +41,7 @@ function setFilter(filter: string) {
   // Reset pagination
   nextCursor.value = null
   hasMore.value = true
-  fetchLibrary()
+  fetchGame()
 }
 
 function openDetails(item: Game) {
@@ -47,27 +50,43 @@ function openDetails(item: Game) {
 }
 
 function handleUpdate(updated: Game) {
-  // Reload the list to ensure data consistency
-  fetchLibrary() // Or update local state optimize
+  fetchGame() 
   selectedGame.value = updated
 }
 
 function handleCreate() {
-  // Reload list to include new item in correct order/filter
-  fetchLibrary()
+  fetchGame()
+  fetchCarousels()
   isAddModalOpen.value = false
 }
 
 function handleDelete() {
-  fetchLibrary()
+  fetchGame()
+  fetchCarousels()
   isModalOpen.value = false
   selectedGame.value = null
 }
 
 // ----------------------------------------------------
+// FETCH CAROUSELS
+// ----------------------------------------------------
+async function fetchCarousels() {
+  try {
+    const [playing, planned] = await Promise.all([
+      GameService.getAll(20, undefined, 'Playing'),
+      GameService.getAll(20, undefined, 'Planned')
+    ])
+    playingLibrary.value = playing.data
+    plannedLibrary.value = planned.data
+  } catch (err) {
+    console.error('Failed to load carousels', err)
+  }
+}
+
+// ----------------------------------------------------
 // FETCH
 // ----------------------------------------------------
-async function fetchLibrary(isLoadMore = false) {
+async function fetchGame(isLoadMore = false) {
   if (loading.value || (!hasMore.value && isLoadMore)) return
 
   try {
@@ -104,7 +123,7 @@ watchDebounced(
         // Reset to normal list
         nextCursor.value = null
         hasMore.value = true
-        fetchLibrary()
+        fetchGame()
       }
       return
     }
@@ -134,13 +153,15 @@ onMounted(() => {
       () => authStore.isInitialLoading,
       (loading) => {
         if (!loading) {
-          fetchLibrary()
+          fetchGame()
+          fetchCarousels()
           unwatch()
         }
       }
     )
   } else {
-    fetchLibrary()
+    fetchGame()
+    fetchCarousels()
   }
 })
 </script>
@@ -187,12 +208,41 @@ onMounted(() => {
         </div>
       </div>
 
+      <!-- CAROUSELS (Watching & Planned) -->
+      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+        <Carousel v-if="playingLibrary.length > 0" title="Currently Playing">
+          <div 
+            v-for="game in playingLibrary" 
+            :key="game.id" 
+            class="w-[200px] flex-shrink-0 snap-center"
+          >
+            <GameCard
+              :game="game"
+              @click="openDetails(game)"
+            />
+          </div>
+        </Carousel>
+
+        <Carousel v-if="plannedLibrary.length > 0" title="Planned to Play">
+          <div 
+            v-for="game in plannedLibrary" 
+            :key="game.id" 
+            class="w-[200px] flex-shrink-0 snap-center"
+          >
+            <GameCard
+              :game="game"
+              @click="openDetails(game)"
+            />
+          </div>
+        </Carousel>
+      </div>
+
       <!-- ERROR STATE -->
       <div v-if="error" class="text-destructive text-center py-8">
         {{ error }}
         <button
           class="block mx-auto mt-4 px-4 py-2 bg-primary text-primary-foreground rounded-md hover:opacity-90"
-          @click="fetchLibrary()"
+          @click="fetchGame()"
         >
           Retry
         </button>
@@ -207,8 +257,21 @@ onMounted(() => {
       </div>
 
       <!-- GRID -->
-      <div v-else class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
-        <GameCard v-for="item in library" :key="item.id" :game="item" @click="openDetails(item)" />
+      <div v-else>
+        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
+
+          <h3 class="text-xl font-semibold">
+            {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Games' }}
+          </h3>
+        </div>
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
+        <GameCard
+          v-for="game in library"
+          :key="game.id"
+          :game="game"
+          @click="openDetails(game)"
+        />
+      </div>
       </div>
 
       <!-- LOAD MORE -->
@@ -216,7 +279,7 @@ onMounted(() => {
         <button
           :disabled="loading"
           class="px-8 py-3 bg-secondary text-secondary-foreground rounded-full font-medium shadow-sm hover:bg-secondary/80 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          @click="fetchLibrary(true)"
+          @click="fetchGame(true)"
         >
           {{ loading ? 'Loading...' : 'Load More' }}
         </button>
