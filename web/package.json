@@ -6,7 +6,7 @@
   "packageManager": "pnpm@10.28.1",
   "scripts": {
     "dev": "vite --mode dev",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && vite build --mode prod",
     "build:dev": "vue-tsc --noEmit && vite build --mode dev",
     "type-check": "vue-tsc --noEmit",
     "preview": "vite preview",

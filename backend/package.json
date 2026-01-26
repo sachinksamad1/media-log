@@ -7,7 +7,7 @@
   "scripts": {
     "seed": "tsx seed/seed.ts",
     "seed:users": "tsx seed/seed-users.ts",
-    "start": "node dist/server.js",
+    "start": "cross-env NODE_ENV=prod node dist/server.js",
     "build": "tsc && tsc-alias",
     "dev": "cross-env NODE_ENV=dev tsx watch src/server.ts",
     "lint": "eslint src",
