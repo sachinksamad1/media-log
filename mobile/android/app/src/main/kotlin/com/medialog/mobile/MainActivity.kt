@@ -1,4 +1,4 @@
-package com.example.mobile
+package com.medialog.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 
