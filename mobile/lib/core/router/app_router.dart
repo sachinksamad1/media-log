@@ -5,6 +5,9 @@ import '../../features/auth/data/auth_repository.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
 import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/media/presentation/screens/media_detail_screen.dart';
+import '../../features/media/presentation/screens/add_media_screen.dart';
+import '../../features/media/domain/media_types.dart';
 import '../shell/main_shell.dart';
 
 part 'app_router.g.dart';
@@ -72,6 +75,20 @@ GoRouter goRouter(GoRouterRef ref) {
       GoRoute(
         path: '/signup',
         builder: (context, state) => const SignupScreen(),
+      ),
+      GoRoute(
+        path: '/media-detail',
+        builder: (context, state) {
+          final media = state.extra as BaseMedia;
+          return MediaDetailScreen(media: media);
+        },
+      ),
+      GoRoute(
+        path: '/add-media',
+        builder: (context, state) {
+          final type = state.extra as MediaType;
+          return AddMediaScreen(mediaType: type);
+        },
       ),
     ],
   );

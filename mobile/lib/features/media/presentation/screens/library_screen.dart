@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../data/media_repository.dart';
+import 'package:go_router/go_router.dart';
 import '../../domain/media_types.dart';
-import '../widgets/media_card.dart';
+import '../widgets/media_dashboard_tab.dart';
 
 class LibraryScreen extends ConsumerStatefulWidget {
   const LibraryScreen({super.key});
@@ -105,155 +105,26 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
           children: _tabs.map((tab) => _buildMediaTab(tab.type)).toList(),
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        icon: const Icon(Icons.add),
-        label: const Text('Add'),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 90),
+        child: FloatingActionButton.extended(
+          onPressed: () {
+            final currentIndex = _tabController.index;
+            final currentType = _tabs[currentIndex].type;
+            context.push('/add-media', extra: currentType);
+          },
+          icon: const Icon(Icons.add),
+          label: const Text('Add'),
+        ),
       ),
     );
   }
 
   Widget _buildMediaTab(MediaType type) {
-    return switch (type) {
-      MediaType.anime => _buildGrid(
-          ref.watch(animeListProvider),
-          Icons.movie_outlined,
-          'No Anime Found',
-          'Add anime to your library',
-          () => ref.invalidate(animeListProvider),
-        ),
-      MediaType.manga => _buildGrid(
-          ref.watch(mangaListProvider),
-          Icons.menu_book_outlined,
-          'No Manga Found',
-          'Add manga to your library',
-          () => ref.invalidate(mangaListProvider),
-        ),
-      MediaType.lightNovel => _buildGrid(
-          ref.watch(lightNovelListProvider),
-          Icons.auto_stories_outlined,
-          'No Light Novels Found',
-          'Add light novels to your library',
-          () => ref.invalidate(lightNovelListProvider),
-        ),
-      MediaType.fiction => _buildGrid(
-          ref.watch(fictionListProvider),
-          Icons.book_outlined,
-          'No Fiction Found',
-          'Add fiction books to your library',
-          () => ref.invalidate(fictionListProvider),
-        ),
-      MediaType.nonFiction => _buildGrid(
-          ref.watch(nonFictionListProvider),
-          Icons.library_books_outlined,
-          'No Non-Fiction Found',
-          'Add non-fiction books to your library',
-          () => ref.invalidate(nonFictionListProvider),
-        ),
-      MediaType.movie => _buildGrid(
-          ref.watch(movieListProvider),
-          Icons.theaters_outlined,
-          'No Movies Found',
-          'Add movies to your library',
-          () => ref.invalidate(movieListProvider),
-        ),
-      MediaType.tvSeries => _buildGrid(
-          ref.watch(tvSeriesListProvider),
-          Icons.tv_outlined,
-          'No TV Series Found',
-          'Add TV series to your library',
-          () => ref.invalidate(tvSeriesListProvider),
-        ),
-      MediaType.game => _buildGrid(
-          ref.watch(gameListProvider),
-          Icons.games_outlined,
-          'No Games Found',
-          'Add games to your library',
-          () => ref.invalidate(gameListProvider),
-        ),
-    };
-  }
-
-  Widget _buildGrid<T extends BaseMedia>(
-    AsyncValue<List<T>> asyncValue,
-    IconData emptyIcon,
-    String emptyMessage,
-    String emptySubMessage,
-    VoidCallback onRetry,
-  ) {
-    final theme = Theme.of(context);
-
-    return asyncValue.when(
-      data: (items) {
-        if (items.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(emptyIcon, size: 64, color: theme.disabledColor),
-                const SizedBox(height: 16),
-                Text(emptyMessage, style: theme.textTheme.titleLarge),
-                const SizedBox(height: 8),
-                Text(
-                  emptySubMessage,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-        return GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.65,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-          ),
-          itemCount: items.length,
-          itemBuilder: (context, index) {
-            return MediaCard(media: items[index]);
-          },
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.error_outline, size: 48, color: theme.colorScheme.error),
-              const SizedBox(height: 16),
-              Text(
-                'Error loading data',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                error.toString(),
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
-                ),
-              ),
-              const SizedBox(height: 16),
-              FilledButton.icon(
-                onPressed: onRetry,
-                icon: const Icon(Icons.refresh),
-                label: const Text('Retry'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    return MediaDashboardTab(type: type);
   }
 }
+
 
 class _MediaTab {
   final MediaType type;

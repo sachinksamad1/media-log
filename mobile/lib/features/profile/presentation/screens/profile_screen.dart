@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/theme/theme_provider.dart';
 import '../../../auth/data/auth_repository.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -10,6 +11,20 @@ class ProfileScreen extends ConsumerWidget {
     final authRepo = ref.watch(authRepositoryProvider);
     final user = authRepo.currentUser;
     final theme = Theme.of(context);
+    final themeMode = ref.watch(themeProvider);
+
+    String themeString;
+    switch (themeMode) {
+      case ThemeMode.system:
+        themeString = 'System';
+        break;
+      case ThemeMode.light:
+        themeString = 'Light';
+        break;
+      case ThemeMode.dark:
+        themeString = 'Dark';
+        break;
+    }
 
     return Scaffold(
       body: CustomScrollView(
@@ -67,8 +82,8 @@ class ProfileScreen extends ConsumerWidget {
                       _MenuItem(
                         icon: Icons.palette_outlined,
                         label: 'Theme',
-                        trailing: 'System',
-                        onTap: () {},
+                        trailing: themeString,
+                        onTap: () => _showThemeSelector(context, ref),
                       ),
                       _MenuItem(
                         icon: Icons.language,
@@ -299,6 +314,54 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+  void _showThemeSelector(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        final currentTheme = ref.read(themeProvider);
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                leading: const Icon(Icons.brightness_auto),
+                title: const Text('System Default'),
+                trailing: currentTheme == ThemeMode.system
+                    ? const Icon(Icons.check)
+                    : null,
+                onTap: () {
+                  ref.read(themeProvider.notifier).setTheme(ThemeMode.system);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.light_mode),
+                title: const Text('Light Mode'),
+                trailing: currentTheme == ThemeMode.light
+                    ? const Icon(Icons.check)
+                    : null,
+                onTap: () {
+                  ref.read(themeProvider.notifier).setTheme(ThemeMode.light);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.dark_mode),
+                title: const Text('Dark Mode'),
+                trailing: currentTheme == ThemeMode.dark
+                    ? const Icon(Icons.check)
+                    : null,
+                onTap: () {
+                  ref.read(themeProvider.notifier).setTheme(ThemeMode.dark);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

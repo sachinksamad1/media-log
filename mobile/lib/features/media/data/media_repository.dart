@@ -13,14 +13,52 @@ import '../game/data/game_model.dart';
 
 part 'media_repository.g.dart';
 
+
+class PaginatedResult<T> {
+  final List<T> items;
+  final String? nextCursor;
+
+  PaginatedResult({required this.items, this.nextCursor});
+}
+
 class MediaRepository {
   final Dio _dio;
 
   MediaRepository(this._dio);
 
-  /// Fetch all items for a specific media type
+  /// Fetch paginated media items
+  Future<PaginatedResult<T>> fetchMedia<T extends BaseMedia>(
+    MediaType type, {
+    int limit = 20,
+    String? cursor,
+    String? status,
+  }) async {
+    final queryParams = <String, dynamic>{'limit': limit};
+    if (cursor != null) queryParams['cursor'] = cursor;
+    if (status != null) queryParams['status'] = status;
+
+    final response = await _dio.get(
+      '/${type.apiPath}',
+      queryParameters: queryParams,
+    );
+
+    final List<dynamic> data = response.data['data'];
+    final meta = response.data['meta'] as Map<String, dynamic>?;
+    final nextCursor = meta?['nextCursor'] as String?;
+
+    return PaginatedResult(
+      items: data.map((json) => _parseMedia<T>(type, json)).toList(),
+      nextCursor: nextCursor,
+    );
+  }
+
+  /// Fetch all items for a specific media type (Legacy helper)
   Future<List<T>> fetchAll<T extends BaseMedia>(MediaType type) async {
-    final response = await _dio.get('/${type.apiPath}');
+    // We can use the new method, but for now let's keep it simple as it was
+    // The backend limits to 20 by default if no limit provided.
+    // If we truly want ALL, we'd need to loop.
+    // But existing code assumed it got a list. Let's rely on default behavior.
+    final response = await _dio.get('/${type.apiPath}?limit=100'); // Bump limit
     final List<dynamic> data = response.data['data'];
     return data.map((json) => _parseMedia<T>(type, json)).toList();
   }

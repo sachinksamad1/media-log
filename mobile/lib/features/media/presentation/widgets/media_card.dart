@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../domain/media_types.dart';
+import '../../../../core/theme/app_colors.dart';
 
 class MediaCard extends StatelessWidget {
   final BaseMedia media;
   final VoidCallback? onTap;
+  final Color? backgroundColor;
 
   const MediaCard({
     super.key,
     required this.media,
     this.onTap,
+    this.backgroundColor,
   });
 
   @override
@@ -20,53 +23,64 @@ class MediaCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+          color: backgroundColor ?? theme.colorScheme.surfaceContainerHighest,
+          // Add border if desired, but usually clean is better for full image cards
         ),
         clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
+          fit: StackFit.expand,
           children: [
-            // Image
-            Expanded(
-              flex: 4,
+            // Background Image
+            media.imageUrl != null
+                ? Image.network(
+                    media.imageUrl!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                        _buildPlaceholder(context),
+                  )
+                : _buildPlaceholder(context),
+
+            // Gradient Overlay for Title
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
               child: Container(
-                width: double.infinity,
+                padding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
                 decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest,
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Colors.transparent, AppColors.navBackground],
+                  ),
                 ),
-                child: media.imageUrl != null
-                    ? Image.network(
-                        media.imageUrl!,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) => 
-                            _buildPlaceholder(context),
-                      )
-                    : _buildPlaceholder(context),
-              ),
-            ),
-            // Info
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      media.title,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w600,
+                child: Text(
+                  media.title,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textWhite,
+                    shadows: [
+                      const Shadow(
+                        offset: Offset(0, 1),
+                        blurRadius: 3.0,
+                        color: AppColors.shadow,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    if (media.userStats?.status != null)
-                      _buildStatusChip(context, media.userStats!.status!),
-                  ],
+                    ],
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
+
+            // Status Chip (Top Right)
+            if (media.userStats?.status != null)
+              Positioned(
+                top: 8,
+                right: 8,
+                child: _buildStatusChip(context, media.userStats!.status!),
+              ),
           ],
         ),
       ),
@@ -110,16 +124,17 @@ class MediaCard extends StatelessWidget {
     final color = _getStatusColor(status);
     
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: AppColors.cardLabelBackground,
         borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: color.withOpacity(0.5), width: 1),
       ),
       child: Text(
         status,
         style: theme.textTheme.labelSmall?.copyWith(
           color: color,
-          fontWeight: FontWeight.w500,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );
@@ -130,21 +145,21 @@ class MediaCard extends StatelessWidget {
       case 'watching':
       case 'reading':
       case 'playing':
-        return Colors.blue;
+        return AppColors.statusActive;
       case 'completed':
-        return Colors.green;
+        return AppColors.statusCompleted;
       case 'on-hold':
       case 'on hold':
-        return Colors.orange;
+        return AppColors.statusOnHold;
       case 'dropped':
-        return Colors.red;
+        return AppColors.statusDropped;
       case 'plan to watch':
       case 'plan to read':
       case 'plan to play':
       case 'planned':
-        return Colors.purple;
+        return AppColors.statusPlanned;
       default:
-        return Colors.grey;
+        return AppColors.statusDefault;
     }
   }
 }
