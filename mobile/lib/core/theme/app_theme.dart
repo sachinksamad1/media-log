@@ -32,7 +32,9 @@ class AppTheme {
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
+        scrolledUnderElevation: 0,
       ),
+
       cardTheme: CardThemeData(
         color: Colors.white,
         elevation: 4,
@@ -75,7 +77,9 @@ class AppTheme {
         backgroundColor: _backgroundColor,
         elevation: 0,
         centerTitle: true,
+        scrolledUnderElevation: 0,
       ),
+
       cardTheme: CardThemeData(
         color: _surfaceColor,
         elevation: 4,

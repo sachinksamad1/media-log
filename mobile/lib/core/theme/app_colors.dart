@@ -2,15 +2,6 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Navigation Icons
-  static const Color navDashboard = Colors.blueAccent;
-  static const Color navSearch = Colors.tealAccent;
-  static const Color navLibrary = Colors.purpleAccent;
-  static const Color navProfile = Colors.pinkAccent;
-
-  // Bottom Navigation Background
-  static final Color navBackground = Colors.black.withOpacity(0.8);
-
   // Status Colors
   static const Color statusActive = Colors.blue;      // Watching, Reading, Playing
   static const Color statusCompleted = Colors.green;

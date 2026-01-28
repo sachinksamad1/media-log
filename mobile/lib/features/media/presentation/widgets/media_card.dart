@@ -51,7 +51,7 @@ class MediaCard extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
-                    colors: [Colors.transparent, AppColors.navBackground],
+                    colors: [Colors.transparent, Colors.black],
                   ),
                 ),
                 child: Text(

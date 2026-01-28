@@ -5,7 +5,7 @@ import '../../features/media/presentation/screens/library_screen.dart';
 import '../../features/media/presentation/screens/search_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 
-import '../theme/app_colors.dart';
+
 
 final selectedTabProvider = StateProvider<int>((ref) => 0);
 
@@ -30,58 +30,36 @@ class MainShell extends ConsumerWidget {
         index: selectedIndex,
         children: _screens,
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.transparent, AppColors.navBackground],
+      bottomNavigationBar: NavigationBar(
+        elevation: 0,
+        selectedIndex: selectedIndex,
+        onDestinationSelected: (index) {
+          ref.read(selectedTabProvider.notifier).state = index;
+        },
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.dashboard_outlined),
+            selectedIcon: Icon(Icons.dashboard),
+            label: 'Dashboard',
           ),
-        ),
-        child: NavigationBar(
-          elevation: 0,
-          selectedIndex: selectedIndex,
-          onDestinationSelected: (index) {
-            ref.read(selectedTabProvider.notifier).state = index;
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(
-                Icons.dashboard_outlined,
-                color: AppColors.navDashboard,
-              ),
-              selectedIcon: Icon(
-                Icons.dashboard,
-                color: AppColors.navDashboard,
-              ),
-              label: 'Dashboard',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.search_outlined, color: AppColors.navSearch),
-              selectedIcon: Icon(Icons.search, color: AppColors.navSearch),
-              label: 'Search',
-            ),
-            NavigationDestination(
-              icon: Icon(
-                Icons.video_library_outlined,
-                color: AppColors.navLibrary,
-              ),
-              selectedIcon: Icon(
-                Icons.video_library,
-                color: AppColors.navLibrary,
-              ),
-              label: 'Library',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.person_outline, color: AppColors.navProfile),
-              selectedIcon: Icon(Icons.person, color: AppColors.navProfile),
-              label: 'Profile',
-            ),
-          ],
-          backgroundColor: Colors.transparent,
-          indicatorColor: theme.colorScheme.primaryContainer,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        ),
+          NavigationDestination(
+            icon: Icon(Icons.search_outlined),
+            selectedIcon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.video_library_outlined),
+            selectedIcon: Icon(Icons.video_library),
+            label: 'Library',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_outline),
+            selectedIcon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+        indicatorColor: theme.colorScheme.primaryContainer,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
       ),
     );
   }
