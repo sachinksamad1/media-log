@@ -32,6 +32,9 @@ const form = reactive<{
   score: number
   volumes: number
   releaseStatus: string
+  readingStats: {
+    currentReadingVolume: number
+  }
   genres: string
   type: string
   format: string
@@ -44,6 +47,9 @@ const form = reactive<{
   score: 0,
   volumes: 0,
   releaseStatus: '',
+  readingStats: {
+    currentReadingVolume: 0,
+  },
   genres: '',
   type: '',
   format: '',
@@ -63,6 +69,7 @@ function syncForm(data: LightNovel) {
   form.score = data.userStats?.score ?? 0
   form.volumes = data.releaseStats?.volumesPublished ?? 0
   form.releaseStatus = data.releaseStats?.releaseStatus ?? 'Ongoing'
+  form.readingStats.currentReadingVolume = data.readingStats?.currentReadingVolume ?? 0
   form.genres = data.genres ? data.genres.join(', ') : ''
   form.type = data.type
   form.format = data.format
@@ -140,6 +147,10 @@ async function handleSave() {
       type: form.type,
       format: form.format,
       origin: form.origin,
+      readingStats: {
+        ...props.lightNovel.readingStats,
+        currentReadingVolume: Number(form.readingStats.currentReadingVolume),
+      },
       userStats: {
         ...props.lightNovel.userStats,
         status: form.status,
@@ -282,6 +293,12 @@ async function handleDelete() {
                   Volumes
                 </div>
                 <div class="font-medium">{{ form.volumes }}</div>
+              </div>
+              <div class="p-3 bg-secondary/30 rounded-lg">
+                <div class="text-xs text-muted-foreground uppercase tracking-wider mb-1">
+                  Completed
+                </div>
+                <div class="font-medium">{{ form.readingStats.currentReadingVolume }}</div>
               </div>
               <div class="p-3 bg-secondary/30 rounded-lg">
                 <div class="text-xs text-muted-foreground uppercase tracking-wider mb-1">
@@ -443,6 +460,16 @@ async function handleDelete() {
                 <label class="text-sm font-medium">Volumes</label>
                 <input
                   v-model="form.volumes"
+                  type="number"
+                  min="0"
+                  class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+                />
+              </div>
+
+              <div class="space-y-2">
+                <label class="text-sm font-medium">Currently Reading</label>
+                <input
+                  v-model="form.readingStats.currentReadingVolume"
                   type="number"
                   min="0"
                   class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"

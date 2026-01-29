@@ -101,7 +101,7 @@ async function handleSave() {
         score: Number(form.score),
       },
       releaseStats: {
-        volumes: Number(form.volumes),
+        volumesPublished: Number(form.volumes),
         releaseStatus: form.releaseStatus,
       },
       genres: form.genre
