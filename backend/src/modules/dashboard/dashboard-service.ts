@@ -1,10 +1,9 @@
 import type { MediaRepository } from '@common/media/media-repository.js';
-import type { BaseMediaType } from '@common/media/media-types.js';
 import type {
-  LibraryStats,
+  BaseMediaType,
+  MediaCategoryStats,
   LibrarySummary,
-  MediaStatus,
-} from '@modules/dashboard/dashboard-types.js';
+} from '@common/media/media-types.js';
 
 export class DashboardService {
   constructor(
@@ -16,11 +15,11 @@ export class DashboardService {
       Object.entries(this.repos).map(async ([key, repo]) => {
         const [total, completed, ongoing] = await Promise.all([
           repo.getCount(userId),
-          repo.getCountByStatus('Completed' as MediaStatus, userId),
-          repo.getCountByStatus('Ongoing' as MediaStatus, userId),
+          repo.getCountByStatus('Completed', userId),
+          repo.getCountByStatus('Ongoing', userId),
         ]);
 
-        const stats: LibraryStats = {
+        const stats: MediaCategoryStats = {
           total,
           completed,
           ongoing,
@@ -31,6 +30,6 @@ export class DashboardService {
       }),
     );
 
-    return Object.fromEntries(summaryEntries);
+    return Object.fromEntries(summaryEntries) as LibrarySummary;
   }
 }

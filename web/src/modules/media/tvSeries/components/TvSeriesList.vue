@@ -74,7 +74,7 @@ async function fetchCarousels() {
   try {
     const [watching, planned] = await Promise.all([
       TvSeriesService.getAll(20, undefined, 'Watching'),
-      TvSeriesService.getAll(20, undefined, 'Plan to Watch')
+      TvSeriesService.getAll(20, undefined, 'Plan to Watch'),
     ])
     watchingLibrary.value = watching.data
     planToWatchLibrary.value = planned.data
@@ -211,30 +211,27 @@ onMounted(() => {
       </div>
 
       <!-- CAROUSELS (Watching & Planned) -->
-      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+      <div
+        v-if="!loading && !error && !isSearching && selectedFilter === 'All'"
+        class="mb-12 space-y-8"
+      >
         <Carousel v-if="watchingLibrary.length > 0" title="Currently Watching">
-          <div 
-            v-for="tvSeries in watchingLibrary" 
-            :key="tvSeries.id" 
+          <div
+            v-for="tvSeries in watchingLibrary"
+            :key="tvSeries.id"
             class="w-[200px] flex-shrink-0 snap-center"
           >
-            <TvSeriesCard
-              :tv-series="tvSeries"
-              @click="openDetails(tvSeries)"
-            />
+            <TvSeriesCard :tv-series="tvSeries" @click="openDetails(tvSeries)" />
           </div>
         </Carousel>
 
         <Carousel v-if="planToWatchLibrary.length > 0" title="Planned to Watch">
-          <div 
-            v-for="tvSeries in planToWatchLibrary" 
-            :key="tvSeries.id" 
+          <div
+            v-for="tvSeries in planToWatchLibrary"
+            :key="tvSeries.id"
             class="w-[200px] flex-shrink-0 snap-center"
           >
-            <TvSeriesCard
-              :tv-series="tvSeries"
-              @click="openDetails(tvSeries)"
-            />
+            <TvSeriesCard :tv-series="tvSeries" @click="openDetails(tvSeries)" />
           </div>
         </Carousel>
       </div>
@@ -258,22 +255,28 @@ onMounted(() => {
         No TV Series found in your library.
       </div>
 
-     <!-- GRID -->
+      <!-- GRID -->
       <div v-else>
-        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
-
+        <div
+          v-if="!loading && !authStore.isInitialLoading && library.length > 0"
+          class="mb-4 px-4 lg:px-0"
+        >
           <h3 class="text-xl font-semibold">
-            {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + (selectedFilter === 'All' ? '' : ' TV Series') }}
+            {{
+              selectedFilter === 'All' && !isSearching
+                ? 'Top Picks'
+                : selectedFilter + (selectedFilter === 'All' ? '' : ' TV Series')
+            }}
           </h3>
         </div>
         <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
-        <TvSeriesCard
-          v-for="tvSeries in library"
-          :key="tvSeries.id"
-          :tv-series="tvSeries"
-          @click="openDetails(tvSeries)"
-        />
-      </div>
+          <TvSeriesCard
+            v-for="tvSeries in library"
+            :key="tvSeries.id"
+            :tv-series="tvSeries"
+            @click="openDetails(tvSeries)"
+          />
+        </div>
       </div>
 
       <!-- LOAD MORE -->

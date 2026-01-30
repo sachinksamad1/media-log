@@ -50,7 +50,7 @@ function openDetails(item: Game) {
 }
 
 function handleUpdate(updated: Game) {
-  fetchGame() 
+  fetchGame()
   selectedGame.value = updated
 }
 
@@ -74,7 +74,7 @@ async function fetchCarousels() {
   try {
     const [playing, planned] = await Promise.all([
       GameService.getAll(20, undefined, 'Playing'),
-      GameService.getAll(20, undefined, 'Planned')
+      GameService.getAll(20, undefined, 'Planned'),
     ])
     playingLibrary.value = playing.data
     plannedLibrary.value = planned.data
@@ -209,30 +209,27 @@ onMounted(() => {
       </div>
 
       <!-- CAROUSELS (Watching & Planned) -->
-      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+      <div
+        v-if="!loading && !error && !isSearching && selectedFilter === 'All'"
+        class="mb-12 space-y-8"
+      >
         <Carousel v-if="playingLibrary.length > 0" title="Currently Playing">
-          <div 
-            v-for="game in playingLibrary" 
-            :key="game.id" 
+          <div
+            v-for="game in playingLibrary"
+            :key="game.id"
             class="w-[200px] flex-shrink-0 snap-center"
           >
-            <GameCard
-              :game="game"
-              @click="openDetails(game)"
-            />
+            <GameCard :game="game" @click="openDetails(game)" />
           </div>
         </Carousel>
 
         <Carousel v-if="plannedLibrary.length > 0" title="Planned to Play">
-          <div 
-            v-for="game in plannedLibrary" 
-            :key="game.id" 
+          <div
+            v-for="game in plannedLibrary"
+            :key="game.id"
             class="w-[200px] flex-shrink-0 snap-center"
           >
-            <GameCard
-              :game="game"
-              @click="openDetails(game)"
-            />
+            <GameCard :game="game" @click="openDetails(game)" />
           </div>
         </Carousel>
       </div>
@@ -258,20 +255,22 @@ onMounted(() => {
 
       <!-- GRID -->
       <div v-else>
-        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
-
+        <div
+          v-if="!loading && !authStore.isInitialLoading && library.length > 0"
+          class="mb-4 px-4 lg:px-0"
+        >
           <h3 class="text-xl font-semibold">
             {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Games' }}
           </h3>
         </div>
         <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
-        <GameCard
-          v-for="game in library"
-          :key="game.id"
-          :game="game"
-          @click="openDetails(game)"
-        />
-      </div>
+          <GameCard
+            v-for="game in library"
+            :key="game.id"
+            :game="game"
+            @click="openDetails(game)"
+          />
+        </div>
       </div>
 
       <!-- LOAD MORE -->

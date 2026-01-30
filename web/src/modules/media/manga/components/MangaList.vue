@@ -77,7 +77,7 @@ async function fetchFeatured() {
   try {
     const [reading, planned] = await Promise.all([
       MangaService.getAll(10, undefined, 'Reading'),
-      MangaService.getAll(10, undefined, 'Planned')
+      MangaService.getAll(10, undefined, 'Planned'),
     ])
     readingList.value = reading.data
     plannedList.value = planned.data
@@ -191,7 +191,9 @@ onMounted(() => {
           />
         </div>
 
-        <div class="flex flex-wrap justify-center items-center gap-2 bg-secondary/50 p-1 rounded-lg">
+        <div
+          class="flex flex-wrap justify-center items-center gap-2 bg-secondary/50 p-1 rounded-lg"
+        >
           <button
             v-for="filter in ['All', 'Completed', 'Planned', 'Reading', 'Dropped', 'On-Hold']"
             :key="filter"
@@ -220,7 +222,10 @@ onMounted(() => {
       </div>
 
       <!-- CAROUSELS (Reading & Planned) -->
-      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+      <div
+        v-if="!loading && !error && !isSearching && selectedFilter === 'All'"
+        class="mb-12 space-y-8"
+      >
         <Carousel v-if="readingList.length > 0" title="Currently Reading">
           <MangaCard
             v-for="manga in readingList"
@@ -252,7 +257,10 @@ onMounted(() => {
 
       <!-- GRID -->
       <div v-else>
-        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
+        <div
+          v-if="!loading && !authStore.isInitialLoading && library.length > 0"
+          class="mb-4 px-4 lg:px-0"
+        >
           <h3 class="text-xl font-semibold">
             {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Manga' }}
           </h3>

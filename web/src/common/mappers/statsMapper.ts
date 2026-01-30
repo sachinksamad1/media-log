@@ -1,24 +1,28 @@
 /**
  * Stats Mapper
- * Maps media types to activity verbs and groups for dashboard stats
+ * Re-exports media type mappings and provides additional utility functions for dashboard stats
  */
 
-// Media type keys as returned by the backend API
-export type MediaTypeKey =
-  | 'anime'
-  | 'manga'
-  | 'movie'
-  | 'game'
-  | 'lightNovel'
-  | 'tvSeries'
-  | 'fiction'
-  | 'nonFiction'
+// Re-export core mappings from media types
+export {
+  type MediaTypeKey,
+  type ActivityVerb,
+  MEDIA_TYPE_TO_ACTIVITY,
+  ACTIVITY_TO_MEDIA_TYPES,
+  getActivityForMediaType,
+  getStatusLabelForMediaType,
+} from '@common/types/media'
 
-// Activity verb categories
-export type ActivityVerb = 'watching' | 'reading' | 'playing'
+// Lowercase activity verb for display purposes
+export type ActivityVerbLower = 'watching' | 'reading' | 'playing'
 
-// Mapping of media types to their activity verbs
-export const MEDIA_TYPE_TO_VERB: Record<MediaTypeKey, ActivityVerb> = {
+/**
+ * Maps media types to their lowercase activity verbs (for display/grouping)
+ */
+export const MEDIA_TYPE_TO_VERB: Record<
+  import('@common/types/media').MediaTypeKey,
+  ActivityVerbLower
+> = {
   anime: 'watching',
   movie: 'watching',
   tvSeries: 'watching',
@@ -29,19 +33,30 @@ export const MEDIA_TYPE_TO_VERB: Record<MediaTypeKey, ActivityVerb> = {
   game: 'playing',
 }
 
-// Grouped media types by activity verb
-export const ACTIVITY_GROUPS: Record<ActivityVerb, MediaTypeKey[]> = {
+/**
+ * Groups media types by their lowercase activity verb
+ */
+export const ACTIVITY_GROUPS: Record<
+  ActivityVerbLower,
+  import('@common/types/media').MediaTypeKey[]
+> = {
   watching: ['anime', 'movie', 'tvSeries'],
   reading: ['manga', 'lightNovel', 'fiction', 'nonFiction'],
   playing: ['game'],
 }
 
-// Get activity verb for a media type
-export function getActivityVerb(mediaType: string): ActivityVerb {
-  return MEDIA_TYPE_TO_VERB[mediaType as MediaTypeKey] ?? 'watching'
+/**
+ * Get lowercase activity verb for a media type (for display)
+ */
+export function getActivityVerb(mediaType: string): ActivityVerbLower {
+  return MEDIA_TYPE_TO_VERB[mediaType as import('@common/types/media').MediaTypeKey] ?? 'watching'
 }
 
-// Get all media types for an activity verb
-export function getMediaTypesForVerb(verb: ActivityVerb): MediaTypeKey[] {
+/**
+ * Get all media types for a lowercase activity verb
+ */
+export function getMediaTypesForVerb(
+  verb: ActivityVerbLower
+): import('@common/types/media').MediaTypeKey[] {
   return ACTIVITY_GROUPS[verb]
 }

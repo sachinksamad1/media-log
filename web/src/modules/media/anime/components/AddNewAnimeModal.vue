@@ -80,7 +80,7 @@ async function handleSave() {
     })
     return
   }
-  
+
   if (form.score < 0 || form.score > 10) {
     toast({
       title: 'Validation Error',
@@ -89,10 +89,10 @@ async function handleSave() {
     })
     return
   }
-  
+
   const yearRegex = /^\d{4}$/
   if (form.airingStarted && !yearRegex.test(form.airingStarted)) {
-      toast({
+    toast({
       title: 'Validation Error',
       description: 'Airing Started must be a 4-digit year',
       variant: 'destructive',
@@ -100,7 +100,7 @@ async function handleSave() {
     return
   }
   if (form.airingEnded && !yearRegex.test(form.airingEnded)) {
-      toast({
+    toast({
       title: 'Validation Error',
       description: 'Airing Ended must be a 4-digit year',
       variant: 'destructive',
@@ -194,7 +194,7 @@ async function handleSave() {
             <img :src="previewUrl" class="w-full h-full object-cover" />
             <button
               class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
-              @click="selectedFile = null; previewUrl = null"
+              @click="((selectedFile = null), (previewUrl = null))"
             >
               ✕
             </button>
@@ -229,7 +229,6 @@ async function handleSave() {
               >
                 <option value="Planned">Planned</option>
                 <option value="Watching">Watching</option>
-                <option value="Ongoing">Ongoing</option>
                 <option value="Completed">Completed</option>
                 <option value="Dropped">Dropped</option>
                 <option value="On-Hold">On-Hold</option>

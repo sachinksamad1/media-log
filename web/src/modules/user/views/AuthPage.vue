@@ -254,14 +254,14 @@ async function handleRecovery() {
                   <a
                     href="#"
                     class="hover:underline hover:text-primary"
-                    @click.prevent="activeTab = 'recovery'; recoveryType = 'password'"
+                    @click.prevent="((activeTab = 'recovery'), (recoveryType = 'password'))"
                   >
                     Forgot Password?
                   </a>
                   <a
                     href="#"
                     class="hover:underline hover:text-primary"
-                    @click.prevent="activeTab = 'recovery'; recoveryType = 'username'"
+                    @click.prevent="((activeTab = 'recovery'), (recoveryType = 'username'))"
                   >
                     Forgot Username?
                   </a>

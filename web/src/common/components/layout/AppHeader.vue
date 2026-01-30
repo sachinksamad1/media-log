@@ -1,7 +1,18 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { useRouter, useRoute, type LocationQueryValue } from 'vue-router'
-import { Search, Bell, User, Menu, LogOut, Settings, Plus, Edit, Trash, CheckCircle } from 'lucide-vue-next'
+import {
+  Search,
+  Bell,
+  User,
+  Menu,
+  LogOut,
+  Settings,
+  Plus,
+  Edit,
+  Trash,
+  CheckCircle,
+} from 'lucide-vue-next'
 import { onClickOutside } from '@vueuse/core'
 import { userActivityService } from '@/modules/user-activity/service'
 import type { UserActivity } from '@/modules/user-activity/types'

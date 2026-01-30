@@ -74,9 +74,7 @@ function handleDelete() {
 // ----------------------------------------------------
 async function fetchCarousel() {
   try {
-    const [planned] = await Promise.all([
-      MovieService.getAll(20, undefined, 'Planned')
-    ])
+    const [planned] = await Promise.all([MovieService.getAll(20, undefined, 'Planned')])
     plannedLibrary.value = planned.data
   } catch (err) {
     console.error('Failed to load library', err)
@@ -209,7 +207,10 @@ onMounted(() => {
       </div>
 
       <!-- CAROUSELS (Planned) -->
-      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+      <div
+        v-if="!loading && !error && !isSearching && selectedFilter === 'All'"
+        class="mb-12 space-y-8"
+      >
         <Carousel v-if="plannedLibrary.length > 0" title="Planned">
           <MovieCard
             v-for="movie in plannedLibrary"
@@ -242,20 +243,24 @@ onMounted(() => {
 
       <!-- GRID -->
       <div v-else>
-        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
-
+        <div
+          v-if="!loading && !authStore.isInitialLoading && library.length > 0"
+          class="mb-4 px-4 lg:px-0"
+        >
           <h3 class="text-xl font-semibold">
-            {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Movies' }}
+            {{
+              selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Movies'
+            }}
           </h3>
         </div>
         <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
-        <MovieCard
-          v-for="movie in library"
-          :key="movie.id"
-          :movie="movie"
-          @click="openDetails(movie)"
-        />
-      </div>
+          <MovieCard
+            v-for="movie in library"
+            :key="movie.id"
+            :movie="movie"
+            @click="openDetails(movie)"
+          />
+        </div>
       </div>
 
       <!-- LOAD MORE -->

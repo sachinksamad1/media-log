@@ -9,7 +9,7 @@ const props = defineProps<{
 const statusClass = computed(() => {
   const status = props.lightNovel.userStats.status
   switch (status) {
-    case 'Complete': 
+    case 'Complete':
     case 'Completed':
       return 'bg-green-500 text-white'
     case 'Planned':

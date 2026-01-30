@@ -38,10 +38,7 @@ export interface StatsApiResponse {
 }
 
 // Category display names and colors
-export const CATEGORY_CONFIG: Record<
-  string,
-  { label: string; color: string; hslVar: string }
-> = {
+export const CATEGORY_CONFIG: Record<string, { label: string; color: string; hslVar: string }> = {
   anime: { label: 'Anime', color: '#f472b6', hslVar: 'var(--category-anime)' },
   manga: { label: 'Manga', color: '#fb923c', hslVar: 'var(--category-manga)' },
   fiction: { label: 'Novels', color: '#4ade80', hslVar: 'var(--category-novel)' },

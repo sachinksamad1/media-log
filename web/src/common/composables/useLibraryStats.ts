@@ -53,6 +53,7 @@ export function useLibraryStats() {
   }
 
   // Media-specific "ongoing" counts using mapper
+  // These represent active consumption: Watching, Reading, Playing
   const watching = computed(() => getOngoingByTypes(ACTIVITY_GROUPS.watching))
   const reading = computed(() => getOngoingByTypes(ACTIVITY_GROUPS.reading))
   const playing = computed(() => getOngoingByTypes(ACTIVITY_GROUPS.playing))
@@ -63,22 +64,29 @@ export function useLibraryStats() {
   const completed = computed(() => allStats.value.reduce((sum, m) => sum + m.completed, 0))
   const total = computed(() => allStats.value.reduce((sum, m) => sum + m.total, 0))
 
+  // Per-category stats access
+  const getCategoryStats = (mediaType: string): MediaStats | null => {
+    return statsResponse.value?.data?.[mediaType] ?? null
+  }
+
   return {
     loading,
     error,
     statsResponse,
 
-    // New media-specific stats
+    // Activity-based stats (Watching, Reading, Playing)
     watching,
     reading,
     playing,
 
-    // Generic stats
+    // Aggregated stats
     ongoing,
     planned,
     completed,
     total,
 
+    // Utility functions
+    getCategoryStats,
     refetch: fetchStats,
   }
 }

@@ -6,7 +6,9 @@ import type { z } from 'zod';
 
 import type { UploadedFile } from '@/common/types/file-types.js';
 
-export class NonFictionService extends MediaService<z.infer<typeof NonFictionSchema>> {
+export class NonFictionService extends MediaService<
+  z.infer<typeof NonFictionSchema>
+> {
   protected repository: NonFictionRepository;
 
   constructor() {

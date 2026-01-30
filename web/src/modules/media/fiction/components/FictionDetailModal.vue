@@ -393,7 +393,6 @@ async function handleDelete() {
                 >
                   <option value="Planned">Planned</option>
                   <option value="Reading">Reading</option>
-                  <option value="Ongoing">Ongoing</option>
                   <option value="Completed">Completed</option>
                   <option value="Dropped">Dropped</option>
                   <option value="On-Hold">On-Hold</option>

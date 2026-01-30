@@ -44,6 +44,7 @@ frontend/.gemini
 DashboardViewDropped.vue
 /notes
 /web/docs
+/.agent
 
 # Mobile
 mobile/.env

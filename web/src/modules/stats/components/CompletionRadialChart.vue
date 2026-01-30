@@ -17,9 +17,7 @@ const props = defineProps<{
 // This prevents small high-value arcs being hidden behind large low-value arcs if overlapping (though here they are concentric/hollow so overlap isn't an issue).
 // Standard rainbow chart usually has largest radius = largest item count or simply sorted.
 // Let's keep the user's sort (descending value).
-const sortedData = computed(() =>
-  [...props.data].sort((a, b) => b.value - a.value)
-)
+const sortedData = computed(() => [...props.data].sort((a, b) => b.value - a.value))
 
 // Create concentric arcs (rainbow style - semi-circles)
 const arcs = computed(() => {
@@ -49,9 +47,9 @@ const arcs = computed(() => {
     // sortedData is Descending (Index 0 = Big Value).
     // So Index 0 -> Max Radius.
     // Index (count-1) -> Min Radius.
-    const reverseIndex = (count - 1) - index
+    const reverseIndex = count - 1 - index
     const radius = baseRadius + reverseIndex * radiusStep
-    
+
     // OR if you prefer smallest ring = highest value ("Bullseye" effect).
     // Let's stick to the previous: Index 0 (High Val) -> Small Radius ("Bullseye").
     // const radius = baseRadius + index * radiusStep
@@ -61,18 +59,18 @@ const arcs = computed(() => {
 
     // Start at Left (180 deg), go Clockwise (Sweep 1) to Right (0 deg)
     const startRad = Math.PI // 180 deg
-    const arcEndRad = Math.PI + (sweepAngle * Math.PI / 180)
+    const arcEndRad = Math.PI + (sweepAngle * Math.PI) / 180
 
     const x1 = centerX + radius * Math.cos(startRad)
     const y1 = centerY + radius * Math.sin(startRad)
-    
+
     const x2 = centerX + radius * Math.cos(arcEndRad)
     const y2 = centerY + radius * Math.sin(arcEndRad)
 
     // Background Arc (Full semi-circle PI to 2PI)
     const bgX2 = centerX + radius * Math.cos(2 * Math.PI)
     const bgY2 = centerY + radius * Math.sin(2 * Math.PI)
-    
+
     // SVG Paths
     const coloredPath = `M ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2}`
     const bgPath = `M ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${bgX2} ${bgY2}`
@@ -131,21 +129,12 @@ const hasData = computed(() => props.data.length > 0)
 
       <!-- Legend -->
       <div class="flex flex-wrap justify-center gap-3 lg:flex-col lg:gap-2">
-        <div
-          v-for="item in sortedData"
-          :key="item.name"
-          class="flex items-center gap-2"
-        >
-          <div
-            class="w-3 h-3 rounded-sm shrink-0"
-            :style="{ backgroundColor: item.color }"
-          ></div>
+        <div v-for="item in sortedData" :key="item.name" class="flex items-center gap-2">
+          <div class="w-3 h-3 rounded-sm shrink-0" :style="{ backgroundColor: item.color }"></div>
           <span class="text-sm text-muted-foreground whitespace-nowrap">
             {{ item.name }}
           </span>
-          <span class="text-sm font-bold">
-            {{ item.value }}%
-          </span>
+          <span class="text-sm font-bold"> {{ item.value }}% </span>
         </div>
       </div>
     </template>

@@ -1,6 +1,8 @@
 import type { MediaRepository } from '@common/media/media-repository.js';
-import type { BaseMediaType } from '@common/media/media-types.js';
-import type { MediaStatus, LibraryStats } from '@modules/dashboard/dashboard-types.js';
+import type {
+  BaseMediaType,
+  MediaCategoryStats,
+} from '@common/media/media-types.js';
 
 export interface StatsSummary {
   // Summary cards data
@@ -25,7 +27,7 @@ export interface StatsSummary {
   completionByCategory: Record<string, number>;
 
   // Detailed stats per category
-  categoryStats: Record<string, LibraryStats>;
+  categoryStats: Record<string, MediaCategoryStats>;
 }
 
 export class StatsService {
@@ -34,7 +36,7 @@ export class StatsService {
   ) {}
 
   async getStatsSummary(userId: string): Promise<StatsSummary> {
-    const categoryStats: Record<string, LibraryStats> = {};
+    const categoryStats: Record<string, MediaCategoryStats> = {};
     const byCategory: Record<string, number> = {};
     const completionByCategory: Record<string, number> = {};
 
@@ -48,13 +50,13 @@ export class StatsService {
       Object.entries(this.repos).map(async ([key, repo]) => {
         const [total, completed, ongoing] = await Promise.all([
           repo.getCount(userId),
-          repo.getCountByStatus('Completed' as MediaStatus, userId),
-          repo.getCountByStatus('Ongoing' as MediaStatus, userId),
+          repo.getCountByStatus('Completed', userId),
+          repo.getCountByStatus('Ongoing', userId),
         ]);
 
         const planned = total - (completed + ongoing);
 
-        const stats: LibraryStats = {
+        const stats: MediaCategoryStats = {
           total,
           completed,
           ongoing,
@@ -65,7 +67,8 @@ export class StatsService {
         byCategory[key] = total;
 
         // Calculate completion rate for category
-        completionByCategory[key] = total > 0 ? Math.round((completed / total) * 100) : 0;
+        completionByCategory[key] =
+          total > 0 ? Math.round((completed / total) * 100) : 0;
 
         totalItems += total;
         totalOngoing += ongoing;
@@ -75,12 +78,14 @@ export class StatsService {
     );
 
     // Calculate averages and rates
-    const completionRate = totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0;
+    const completionRate =
+      totalItems > 0 ? Math.round((totalCompleted / totalItems) * 100) : 0;
 
     // For avg progress, we'd need actual progress data from each item
     // For now, we'll estimate based on completion + half of ongoing
     const estimatedProgress = totalCompleted + totalOngoing * 0.5;
-    const avgProgress = totalItems > 0 ? Math.round((estimatedProgress / totalItems) * 100) : 0;
+    const avgProgress =
+      totalItems > 0 ? Math.round((estimatedProgress / totalItems) * 100) : 0;
 
     return {
       totalItems,

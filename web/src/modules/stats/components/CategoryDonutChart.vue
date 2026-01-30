@@ -101,15 +101,8 @@ const segments = computed(() => {
 
     <!-- Legend -->
     <div class="flex flex-wrap justify-center gap-4 lg:flex-col lg:gap-2">
-      <div
-        v-for="item in segments"
-        :key="item.name"
-        class="flex items-center gap-2"
-      >
-        <div
-          class="w-3 h-3 rounded-sm"
-          :style="{ backgroundColor: item.color }"
-        ></div>
+      <div v-for="item in segments" :key="item.name" class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-sm" :style="{ backgroundColor: item.color }"></div>
         <span class="text-sm text-muted-foreground">{{ item.name }}</span>
       </div>
     </div>

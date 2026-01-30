@@ -6,7 +6,9 @@ import type { z } from 'zod';
 
 import type { UploadedFile } from '@/common/types/file-types.js';
 
-export class FictionService extends MediaService<z.infer<typeof FictionSchema>> {
+export class FictionService extends MediaService<
+  z.infer<typeof FictionSchema>
+> {
   protected repository: FictionRepository;
 
   constructor() {

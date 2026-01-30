@@ -240,7 +240,31 @@ export abstract class MediaRepository<T extends BaseMediaType> {
     return snapshot.data().count;
   }
 
-  async getCountByStatus(status: MediaStatus, userId: string): Promise<number> {
+  async getCountByStatus(
+    status: MediaStatus | 'Ongoing',
+    userId: string,
+  ): Promise<number> {
+    // Handle aggregated 'Ongoing' status - query for all activity verbs
+    if (status === 'Ongoing') {
+      const activityStatuses: MediaStatus[] = [
+        'Watching',
+        'Reading',
+        'Playing',
+      ];
+      const counts = await Promise.all(
+        activityStatuses.map(async (activityStatus) => {
+          const snapshot = await this.collection
+            .where('userId', '==', userId)
+            .where('userStats.status', '==', activityStatus)
+            .count()
+            .get();
+          return snapshot.data().count;
+        }),
+      );
+      return counts.reduce((sum, count) => sum + count, 0);
+    }
+
+    // Query for specific raw status
     const snapshot = await this.collection
       .where('userId', '==', userId)
       .where('userStats.status', '==', status)

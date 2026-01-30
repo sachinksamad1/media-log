@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import {
-  Library,
-  Play,
-  Clock,
-  CheckCircle,
-  TrendingUp,
-  Target,
-} from 'lucide-vue-next'
+import { Library, Play, Clock, CheckCircle, TrendingUp, Target } from 'lucide-vue-next'
 import { useStats } from '../store/useStats'
 import { CATEGORY_CONFIG, STATUS_COLORS } from '../types/types'
 import CategoryDonutChart from '../components/CategoryDonutChart.vue'

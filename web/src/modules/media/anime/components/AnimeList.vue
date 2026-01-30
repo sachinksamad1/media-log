@@ -75,7 +75,7 @@ async function fetchCarousels() {
   try {
     const [watching, planned] = await Promise.all([
       AnimeService.getAll(20, undefined, 'Watching'),
-      AnimeService.getAll(20, undefined, 'Planned')
+      AnimeService.getAll(20, undefined, 'Planned'),
     ])
     watchingLibrary.value = watching.data
     plannedLibrary.value = planned.data
@@ -192,7 +192,9 @@ onMounted(() => {
           />
         </div>
 
-        <div class="flex flex-wrap justify-center items-center gap-2 bg-secondary/50 p-1 rounded-lg">
+        <div
+          class="flex flex-wrap justify-center items-center gap-2 bg-secondary/50 p-1 rounded-lg"
+        >
           <button
             v-for="filter in ['All', 'Completed', 'Planned', 'Watching', 'Dropped', 'On-Hold']"
             :key="filter"
@@ -210,30 +212,27 @@ onMounted(() => {
       </div>
 
       <!-- CAROUSELS (Watching & Planned) -->
-      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+      <div
+        v-if="!loading && !error && !isSearching && selectedFilter === 'All'"
+        class="mb-12 space-y-8"
+      >
         <Carousel v-if="watchingLibrary.length > 0" title="Currently Watching">
-          <div 
-            v-for="anime in watchingLibrary" 
-            :key="anime.id" 
+          <div
+            v-for="anime in watchingLibrary"
+            :key="anime.id"
             class="w-[200px] flex-shrink-0 snap-center"
           >
-            <AnimeCard
-              :anime="anime"
-              @click="openDetails(anime)"
-            />
+            <AnimeCard :anime="anime" @click="openDetails(anime)" />
           </div>
         </Carousel>
 
         <Carousel v-if="plannedLibrary.length > 0" title="Planned to Watch">
-          <div 
-            v-for="anime in plannedLibrary" 
-            :key="anime.id" 
+          <div
+            v-for="anime in plannedLibrary"
+            :key="anime.id"
             class="w-[200px] flex-shrink-0 snap-center"
           >
-            <AnimeCard
-              :anime="anime"
-              @click="openDetails(anime)"
-            />
+            <AnimeCard :anime="anime" @click="openDetails(anime)" />
           </div>
         </Carousel>
       </div>
@@ -250,26 +249,31 @@ onMounted(() => {
       </div>
 
       <!-- EMPTY STATE -->
-      <div v-else-if="!loading && !authStore.isInitialLoading && library.length === 0" class="text-center py-12 text-muted">
+      <div
+        v-else-if="!loading && !authStore.isInitialLoading && library.length === 0"
+        class="text-center py-12 text-muted"
+      >
         No anime found in your library.
       </div>
 
       <!-- GRID -->
       <div v-else>
-        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
-
+        <div
+          v-if="!loading && !authStore.isInitialLoading && library.length > 0"
+          class="mb-4 px-4 lg:px-0"
+        >
           <h3 class="text-xl font-semibold">
             {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Anime' }}
           </h3>
         </div>
         <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
-        <AnimeCard
-          v-for="anime in library"
-          :key="anime.id"
-          :anime="anime"
-          @click="openDetails(anime)"
-        />
-      </div>
+          <AnimeCard
+            v-for="anime in library"
+            :key="anime.id"
+            :anime="anime"
+            @click="openDetails(anime)"
+          />
+        </div>
       </div>
 
       <!-- LOAD MORE -->

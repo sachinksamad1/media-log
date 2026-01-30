@@ -14,7 +14,7 @@ authStore.initializeListener()
   <Transition name="fade">
     <AuthLoader v-if="authStore.isInitialLoading" />
   </Transition>
-  
+
   <div v-if="!authStore.isInitialLoading">
     <AppShell v-if="!route.meta?.hideLayout">
       <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

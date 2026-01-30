@@ -6,7 +6,9 @@ import type { z } from 'zod';
 
 import type { UploadedFile } from '@/common/types/file-types.js';
 
-export class LightNovelService extends MediaService<z.infer<typeof LightNovelSchema>> {
+export class LightNovelService extends MediaService<
+  z.infer<typeof LightNovelSchema>
+> {
   protected repository: LightNovelRepository;
 
   constructor() {

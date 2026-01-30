@@ -65,7 +65,7 @@ function syncForm(data: LightNovel) {
   form.author = data.author
   form.illustrator = data.illustrator
   const rawStatus = data.userStats?.status
-  form.status = rawStatus === 'Ongoing' ? 'Reading' : (rawStatus || 'Planned')
+  form.status = rawStatus === 'Ongoing' ? 'Reading' : rawStatus || 'Planned'
   form.score = data.userStats?.score ?? 0
   form.volumes = data.releaseStats?.volumesPublished ?? 0
   form.releaseStatus = data.releaseStats?.releaseStatus ?? 'Ongoing'

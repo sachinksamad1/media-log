@@ -172,10 +172,7 @@ async function handleSave() {
             <img :src="previewUrl" class="w-full h-full object-cover" />
             <button
               class="absolute top-2 right-2 bg-black/60 text-white rounded-full p-1 hover:bg-black/80"
-              @click="
-                selectedFile = null,
-                previewUrl = null
-              "
+              @click="((selectedFile = null), (previewUrl = null))"
             >
               ✕
             </button>
@@ -282,7 +279,6 @@ async function handleSave() {
               >
                 <option value="Planned">Planned</option>
                 <option value="Reading">Reading</option>
-                <option value="Ongoing">Ongoing</option>
                 <option value="Completed">Completed</option>
                 <option value="Dropped">Dropped</option>
                 <option value="On-Hold">On-Hold</option>

@@ -75,7 +75,7 @@ async function fetchCarousel() {
   try {
     const [reading, planned] = await Promise.all([
       NonFictionService.getAll(20, undefined, 'Reading'),
-      NonFictionService.getAll(20, undefined, 'Planned')
+      NonFictionService.getAll(20, undefined, 'Planned'),
     ])
     readingLibrary.value = reading.data
     plannedLibrary.value = planned.data
@@ -192,7 +192,9 @@ onMounted(() => {
           />
         </div>
 
-        <div class="flex flex-wrap justify-center items-center gap-2 bg-secondary/50 p-1 rounded-lg">
+        <div
+          class="flex flex-wrap justify-center items-center gap-2 bg-secondary/50 p-1 rounded-lg"
+        >
           <button
             v-for="filter in ['All', 'Completed', 'Planned', 'Reading', 'Dropped', 'On-Hold']"
             :key="filter"
@@ -210,30 +212,27 @@ onMounted(() => {
       </div>
 
       <!-- CAROUSELS (Reading & Planned) -->
-      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+      <div
+        v-if="!loading && !error && !isSearching && selectedFilter === 'All'"
+        class="mb-12 space-y-8"
+      >
         <Carousel v-if="readingLibrary.length > 0" title="Currently Reading">
-          <div 
-            v-for="nonFiction in readingLibrary" 
-            :key="nonFiction.id" 
+          <div
+            v-for="nonFiction in readingLibrary"
+            :key="nonFiction.id"
             class="w-[200px] flex-shrink-0 snap-center"
           >
-            <NonFictionCard
-              :non-fiction="nonFiction"
-              @click="openDetails(nonFiction)"
-            />
+            <NonFictionCard :non-fiction="nonFiction" @click="openDetails(nonFiction)" />
           </div>
         </Carousel>
 
         <Carousel v-if="plannedLibrary.length > 0" title="Planned to Read">
-          <div 
-            v-for="nonFiction in plannedLibrary" 
-            :key="nonFiction.id" 
+          <div
+            v-for="nonFiction in plannedLibrary"
+            :key="nonFiction.id"
             class="w-[200px] flex-shrink-0 snap-center"
           >
-            <NonFictionCard
-              :non-fiction="nonFiction"
-              @click="openDetails(nonFiction)"
-            />
+            <NonFictionCard :non-fiction="nonFiction" @click="openDetails(nonFiction)" />
           </div>
         </Carousel>
       </div>
@@ -259,20 +258,24 @@ onMounted(() => {
 
       <!-- GRID -->
       <div v-else>
-        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
-
+        <div
+          v-if="!loading && !authStore.isInitialLoading && library.length > 0"
+          class="mb-4 px-4 lg:px-0"
+        >
           <h3 class="text-xl font-semibold">
-            {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Fiction' }}
+            {{
+              selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Fiction'
+            }}
           </h3>
         </div>
         <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
-        <NonFictionCard
-          v-for="nonFiction in library"
-          :key="nonFiction.id"
-          :non-fiction="nonFiction"
-          @click="openDetails(nonFiction)"
-        />
-      </div>
+          <NonFictionCard
+            v-for="nonFiction in library"
+            :key="nonFiction.id"
+            :non-fiction="nonFiction"
+            @click="openDetails(nonFiction)"
+          />
+        </div>
       </div>
 
       <!-- LOAD MORE -->

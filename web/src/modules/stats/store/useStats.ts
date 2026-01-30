@@ -40,12 +40,12 @@ export function useStats() {
         type: 'total',
       },
       {
-        label: 'Currently Watching',
+        label: 'Ongoing',
         value: stats.value.currentlyWatching,
         type: 'ongoing',
       },
       {
-        label: 'In Backlog',
+        label: 'Planned',
         value: stats.value.inBacklog,
         type: 'planned',
       },

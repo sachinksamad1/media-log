@@ -4,4 +4,3 @@ export { default as MediaCard } from './MediaCard.vue'
 export { default as MediaListView } from './MediaListView.vue'
 export { default as StatsCard } from './StatsCard.vue'
 export { default as Carousel } from './Carousel.vue'
-

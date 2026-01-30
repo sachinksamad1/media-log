@@ -75,7 +75,7 @@ async function fetchCarousels() {
   try {
     const [reading, planned] = await Promise.all([
       LightNovelService.getAll(10, undefined, 'Reading'),
-      LightNovelService.getAll(10, undefined, 'Planned')
+      LightNovelService.getAll(10, undefined, 'Planned'),
     ])
     readingList.value = reading.data
     plannedList.value = planned.data
@@ -220,7 +220,10 @@ onMounted(() => {
       </div>
 
       <!-- CAROUSELS (Reading & Planned) -->
-      <div v-if="!loading && !error && !isSearching && selectedFilter === 'All'" class="mb-12 space-y-8">
+      <div
+        v-if="!loading && !error && !isSearching && selectedFilter === 'All'"
+        class="mb-12 space-y-8"
+      >
         <Carousel v-if="readingList.length > 0" title="Currently Reading">
           <LightNovelCard
             v-for="lightNovel in readingList"
@@ -251,10 +254,17 @@ onMounted(() => {
       </div>
 
       <!-- GRID -->
-       <div v-else>
-        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4 px-4 lg:px-0">
+      <div v-else>
+        <div
+          v-if="!loading && !authStore.isInitialLoading && library.length > 0"
+          class="mb-4 px-4 lg:px-0"
+        >
           <h3 class="text-xl font-semibold">
-            {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Light Novel' }}
+            {{
+              selectedFilter === 'All' && !isSearching
+                ? 'Top Picks'
+                : selectedFilter + ' Light Novel'
+            }}
           </h3>
         </div>
         <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">

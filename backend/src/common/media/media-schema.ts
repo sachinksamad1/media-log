@@ -5,7 +5,6 @@ export const UserStatusEnum = z.enum([
   'Watching',
   'Reading',
   'Playing',
-  'Ongoing',
   'Completed',
   'Dropped',
   'On-Hold',
