@@ -1,18 +1,34 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Play, Clock, CheckCircle, TrendingUp } from 'lucide-vue-next'
+import { Tv, BookOpen, Gamepad2, Clock, CheckCircle, TrendingUp } from 'lucide-vue-next'
 import { useLibraryStats } from '@common/composables/useLibraryStats'
 
-const { ongoing, planned, completed, total } = useLibraryStats()
+const { watching, reading, playing, planned, completed, total } = useLibraryStats()
 
 const stats = computed(() => [
   {
-    label: 'Ongoing',
-    value: ongoing.value,
-    icon: Play,
-    bgColor: 'bg-[hsl(var(--status-ongoing)/10%)]',
-    borderColor: 'border-[hsl(var(--status-ongoing)/20%)]',
-    iconColor: 'text-[hsl(var(--status-ongoing))]',
+    label: 'Watching',
+    value: watching.value,
+    icon: Tv,
+    bgColor: 'bg-[hsl(var(--category-anime)/10%)]',
+    borderColor: 'border-[hsl(var(--category-anime)/20%)]',
+    iconColor: 'text-[hsl(var(--category-anime))]',
+  },
+  {
+    label: 'Reading',
+    value: reading.value,
+    icon: BookOpen,
+    bgColor: 'bg-[hsl(var(--category-manga)/10%)]',
+    borderColor: 'border-[hsl(var(--category-manga)/20%)]',
+    iconColor: 'text-[hsl(var(--category-manga))]',
+  },
+  {
+    label: 'Playing',
+    value: playing.value,
+    icon: Gamepad2,
+    bgColor: 'bg-[hsl(var(--category-game)/10%)]',
+    borderColor: 'border-[hsl(var(--category-game)/20%)]',
+    iconColor: 'text-[hsl(var(--category-game))]',
   },
   {
     label: 'Planned',
@@ -42,7 +58,7 @@ const stats = computed(() => [
 </script>
 
 <template>
-  <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+  <div class="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-6">
     <div
       v-for="stat in stats"
       :key="stat.label"

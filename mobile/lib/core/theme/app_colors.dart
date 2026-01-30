@@ -11,7 +11,7 @@ class AppColors {
   static const Color statusDefault = Colors.grey;
 
   // Media Card UI
-  static final Color cardLabelBackground = Colors.black.withOpacity(0.7);
+  static final Color cardLabelBackground = Colors.black.withValues(alpha: 0.7);
   static const Color textWhite = Colors.white;
   static const Color shadow = Colors.black;
 }

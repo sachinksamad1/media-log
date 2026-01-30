@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 part 'api_client.g.dart';
 
 @riverpod
-Dio dioClient(DioClientRef ref) {
+Dio dioClient(Ref ref) {
   final baseUrl = dotenv.env['API_BASE_URL'];
   
   final dio = Dio(

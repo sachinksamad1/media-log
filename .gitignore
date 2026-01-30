@@ -104,6 +104,7 @@ firebase.json
 .firebaserc
 firebase-debug.log
 firebase-b*.json
+firestore.indexes.json
 
 # Miscellaneous
 *.class

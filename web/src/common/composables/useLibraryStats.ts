@@ -1,6 +1,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { StatsService } from '@common/services/stats.service'
 import type { StatsResponse, MediaStats } from '@common/types/stats'
+import { ACTIVITY_GROUPS } from '@common/mappers/statsMapper'
 
 export function useLibraryStats() {
   const statsResponse = ref<StatsResponse | null>(null)
@@ -44,12 +45,22 @@ export function useLibraryStats() {
     return Object.values(data)
   })
 
+  // Helper to get ongoing count for specific media types
+  const getOngoingByTypes = (types: readonly string[]) => {
+    const data = statsResponse.value?.data
+    if (!data) return 0
+    return types.reduce((sum, type) => sum + (data[type]?.ongoing ?? 0), 0)
+  }
+
+  // Media-specific "ongoing" counts using mapper
+  const watching = computed(() => getOngoingByTypes(ACTIVITY_GROUPS.watching))
+  const reading = computed(() => getOngoingByTypes(ACTIVITY_GROUPS.reading))
+  const playing = computed(() => getOngoingByTypes(ACTIVITY_GROUPS.playing))
+
+  // Generic aggregates (kept for backward compatibility)
   const ongoing = computed(() => allStats.value.reduce((sum, m) => sum + m.ongoing, 0))
-
   const planned = computed(() => allStats.value.reduce((sum, m) => sum + m.planned, 0))
-
   const completed = computed(() => allStats.value.reduce((sum, m) => sum + m.completed, 0))
-
   const total = computed(() => allStats.value.reduce((sum, m) => sum + m.total, 0))
 
   return {
@@ -57,6 +68,12 @@ export function useLibraryStats() {
     error,
     statsResponse,
 
+    // New media-specific stats
+    watching,
+    reading,
+    playing,
+
+    // Generic stats
     ongoing,
     planned,
     completed,

@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'secure_storage_service.g.dart';
@@ -16,9 +17,7 @@ class SecureStorageService {
   final FlutterSecureStorage _storage;
 
   SecureStorageService() : _storage = const FlutterSecureStorage(
-    aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
-    ),
+        aOptions: AndroidOptions(),
     iOptions: IOSOptions(
       accessibility: KeychainAccessibility.first_unlock_this_device,
     ),
@@ -93,6 +92,6 @@ class SecureStorageService {
 }
 
 @riverpod
-SecureStorageService secureStorageService(SecureStorageServiceRef ref) {
+SecureStorageService secureStorageService(Ref ref) {
   return SecureStorageService();
 }

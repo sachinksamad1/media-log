@@ -7,13 +7,14 @@ import '../../features/auth/presentation/screens/signup_screen.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/media/presentation/screens/media_detail_screen.dart';
 import '../../features/media/presentation/screens/add_media_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/media/domain/media_types.dart';
 import '../shell/main_shell.dart';
 
 part 'app_router.g.dart';
 
 @riverpod
-GoRouter goRouter(GoRouterRef ref) {
+GoRouter goRouter(Ref ref) {
   final authState = ref.watch(authStateProvider);
 
   return GoRouter(

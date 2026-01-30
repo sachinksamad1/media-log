@@ -6,7 +6,11 @@ import { userActivityService } from './user-activity.service.js';
 
 export class UserActivityController {
   getRecent = catchAsync(async (req: Request, res: Response) => {
-    const userId = req.user!.uid;
+    if (!req.user) {
+      return ResponseUtil.error(res, 401, 'Unauthorized: User context missing');
+    }
+
+    const userId = req.user.uid;
     const limit = parseInt(req.query.limit as string) || 20;
 
     const activities = await userActivityService.getRecentActivities(

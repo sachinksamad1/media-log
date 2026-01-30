@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/services/secure_storage_service.dart';
 
 part 'auth_repository.g.dart';
@@ -146,19 +147,19 @@ class AuthRepository {
 }
 
 @riverpod
-AuthRepository authRepository(AuthRepositoryRef ref) {
+AuthRepository authRepository(Ref ref) {
   final secureStorage = ref.watch(secureStorageServiceProvider);
   return AuthRepository(FirebaseAuth.instance, secureStorage);
 }
 
 @riverpod
-Stream<User?> authState(AuthStateRef ref) {
+Stream<User?> authState(Ref ref) {
   return ref.watch(authRepositoryProvider).authStateChanges;
 }
 
 /// Provider for checking if user is currently authenticated
 @riverpod
-bool isAuthenticated(IsAuthenticatedRef ref) {
+bool isAuthenticated(Ref ref) {
   final authState = ref.watch(authStateProvider);
   return authState.valueOrNull != null;
 }

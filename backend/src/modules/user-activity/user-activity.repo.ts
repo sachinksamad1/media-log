@@ -17,15 +17,42 @@ export class UserActivityRepository {
   }
 
   async getRecent(userId: string, limit: number = 10): Promise<UserActivity[]> {
-    const snapshot = await this.collection
-      .where('userId', '==', userId)
-      .orderBy('createdAt', 'desc')
-      .limit(limit)
-      .get();
+    try {
+      // NOTE: This query requires a Composite Index in Firestore
+      // Fields: userId (Ascending/Descending), createdAt (Descending)
+      // If this fails with "The query requires an index", follow the link in the backend console.
+      const snapshot = await this.collection
+        .where('userId', '==', userId)
+        .orderBy('createdAt', 'desc')
+        .limit(limit)
+        .get();
 
-    return snapshot.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    })) as UserActivity[];
+      return snapshot.docs.map((doc) => {
+        const data = doc.data();
+        let createdAt = data.createdAt;
+
+        // Convert Firestore Timestamp to Date
+        if (createdAt && typeof createdAt.toDate === 'function') {
+          createdAt = createdAt.toDate();
+        }
+
+        return {
+          ...data,
+          id: doc.id,
+          createdAt,
+        };
+      }) as UserActivity[];
+    } catch (error: unknown) {
+      const err = error as { code?: number; message?: string };
+      if (err?.code === 9 || err?.message?.includes('index')) {
+        // Log the full error to see the index creation link
+        // eslint-disable-next-line no-console
+        console.error('Firestore Index Missing:', error);
+        throw new Error(
+          'Firestore Index Missing. Check backend logs for the creation link.',
+        );
+      }
+      throw error;
+    }
   }
 }
