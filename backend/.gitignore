@@ -4,9 +4,10 @@ node_modules/
 # Build output
 dist/
 
-# Environment files
+# Environment files (NEVER commit production credentials!)
 .env
 .env.dev
+.env.prod
 .env.local
 .env.*.local
 

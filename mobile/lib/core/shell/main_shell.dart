@@ -5,8 +5,6 @@ import '../../features/media/presentation/screens/library_screen.dart';
 import '../../features/media/presentation/screens/search_screen.dart';
 import '../../features/profile/presentation/screens/profile_screen.dart';
 
-
-
 final selectedTabProvider = StateProvider<int>((ref) => 0);
 
 class MainShell extends ConsumerWidget {
@@ -26,10 +24,7 @@ class MainShell extends ConsumerWidget {
 
     return Scaffold(
       extendBody: true,
-      body: IndexedStack(
-        index: selectedIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: selectedIndex, children: _screens),
       bottomNavigationBar: NavigationBar(
         elevation: 0,
         selectedIndex: selectedIndex,

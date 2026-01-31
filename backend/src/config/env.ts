@@ -67,6 +67,16 @@ const config = {
     ),
     storageBucket: getEnvVar('FB_STORAGE_BUCKET', 'fb_storage_bucket'),
   },
+  cors: {
+    allowedOrigins: getEnvVar('CORS_ALLOWED_ORIGINS', 'cors_allowed_origins'),
+    allowPreviewUrls:
+      getEnvVar('CORS_ALLOW_PREVIEW_URLS', 'cors_allow_preview_urls') ===
+      'true',
+    previewPatterns: getEnvVar(
+      'CORS_PREVIEW_PATTERNS',
+      'cors_preview_patterns',
+    ),
+  },
 };
 
 // Basic validation to catch missing variables early

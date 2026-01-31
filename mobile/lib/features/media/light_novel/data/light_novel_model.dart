@@ -17,7 +17,7 @@ class LightNovelReleaseStats {
     this.isCompleted,
   });
 
-  factory LightNovelReleaseStats.fromJson(Map<String, dynamic> json) => 
+  factory LightNovelReleaseStats.fromJson(Map<String, dynamic> json) =>
       _$LightNovelReleaseStatsFromJson(json);
   Map<String, dynamic> toJson() => _$LightNovelReleaseStatsToJson(this);
 }
@@ -67,6 +67,7 @@ class LightNovel implements BaseMedia {
   @override
   MediaType get mediaType => MediaType.lightNovel;
 
-  factory LightNovel.fromJson(Map<String, dynamic> json) => _$LightNovelFromJson(json);
+  factory LightNovel.fromJson(Map<String, dynamic> json) =>
+      _$LightNovelFromJson(json);
   Map<String, dynamic> toJson() => _$LightNovelToJson(this);
 }

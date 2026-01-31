@@ -93,7 +93,7 @@ class MediaCard extends StatelessWidget {
       child: Icon(
         _getMediaIcon(),
         size: 40,
-        color: theme.colorScheme.primary.withOpacity(0.5),
+        color: theme.colorScheme.primary.withValues(alpha: 0.5),
       ),
     );
   }
@@ -122,13 +122,13 @@ class MediaCard extends StatelessWidget {
   Widget _buildStatusChip(BuildContext context, String status) {
     final theme = Theme.of(context);
     final color = _getStatusColor(status);
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: AppColors.cardLabelBackground,
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: color.withOpacity(0.5), width: 1),
+        border: Border.all(color: color.withValues(alpha: 0.5), width: 1),
       ),
       child: Text(
         status,

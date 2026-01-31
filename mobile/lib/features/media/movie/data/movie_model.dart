@@ -9,13 +9,9 @@ class MovieReleaseStats {
   final int? runtime; // in minutes
   final String? rating; // PG, PG-13, R, etc.
 
-  MovieReleaseStats({
-    this.releaseDate,
-    this.runtime,
-    this.rating,
-  });
+  MovieReleaseStats({this.releaseDate, this.runtime, this.rating});
 
-  factory MovieReleaseStats.fromJson(Map<String, dynamic> json) => 
+  factory MovieReleaseStats.fromJson(Map<String, dynamic> json) =>
       _$MovieReleaseStatsFromJson(json);
   Map<String, dynamic> toJson() => _$MovieReleaseStatsToJson(this);
 }

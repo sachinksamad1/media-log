@@ -12,12 +12,13 @@
     "deploy": "firebase deploy",
     "deploy:web": "firebase deploy --only hosting",
     "deploy:backend": "firebase deploy --only functions",
-    "clean": "rd /s /q web/dist backend/dist"
+    "clean": "rimraf web/dist backend/dist"
   },
   "engines": {
-    "node": "20"
+    "node": "24"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "rimraf": "^6.1.2"
   }
 }

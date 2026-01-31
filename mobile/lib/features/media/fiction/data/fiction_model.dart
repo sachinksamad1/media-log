@@ -9,13 +9,9 @@ class FictionReleaseStats {
   final int? pages;
   final int? volumes;
 
-  FictionReleaseStats({
-    this.publishDate,
-    this.pages,
-    this.volumes,
-  });
+  FictionReleaseStats({this.publishDate, this.pages, this.volumes});
 
-  factory FictionReleaseStats.fromJson(Map<String, dynamic> json) => 
+  factory FictionReleaseStats.fromJson(Map<String, dynamic> json) =>
       _$FictionReleaseStatsFromJson(json);
   Map<String, dynamic> toJson() => _$FictionReleaseStatsToJson(this);
 }
@@ -67,6 +63,7 @@ class Fiction implements BaseMedia {
   @override
   MediaType get mediaType => MediaType.fiction;
 
-  factory Fiction.fromJson(Map<String, dynamic> json) => _$FictionFromJson(json);
+  factory Fiction.fromJson(Map<String, dynamic> json) =>
+      _$FictionFromJson(json);
   Map<String, dynamic> toJson() => _$FictionToJson(this);
 }

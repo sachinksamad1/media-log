@@ -1,10 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/media_types.dart';
 import '../../data/media_repository.dart';
-
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -50,10 +48,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     ];
 
     // Filter based on query
-    final filteredMedia = _query.isEmpty 
-        ? <BaseMedia>[] 
-        : allMedia.where((media) => 
-            media.title.toLowerCase().contains(_query.toLowerCase())).toList();
+    final filteredMedia = _query.isEmpty
+        ? <BaseMedia>[]
+        : allMedia
+              .where(
+                (media) =>
+                    media.title.toLowerCase().contains(_query.toLowerCase()),
+              )
+              .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -67,7 +69,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             focusedBorder: InputBorder.none,
             filled: false,
             contentPadding: EdgeInsets.zero,
-            suffixIcon: _query.isNotEmpty 
+            suffixIcon: _query.isNotEmpty
                 ? IconButton(
                     icon: const Icon(Icons.clear),
                     onPressed: () {
@@ -90,105 +92,113 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   Text(
                     'Search across all your media',
                     style: theme.textTheme.bodyLarge?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
                 ],
               ),
             )
           : filteredMedia.isEmpty
-              ? Center(
-                  child: Text(
-                    'No results found for "$_query"',
-                    style: theme.textTheme.bodyLarge,
-                  ),
-                )
-              : ListView.separated(
-                  padding: const EdgeInsets.all(16),
-                  itemCount: filteredMedia.length,
-                  separatorBuilder: (context, index) => const SizedBox(height: 12),
-                  itemBuilder: (context, index) {
-                    final media = filteredMedia[index];
-                    return InkWell(
-                      onTap: () => context.push('/media-detail', extra: media),
-                      borderRadius: BorderRadius.circular(12),
-                      child: Row(
-                        children: [
-                          // Thumbnail
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: SizedBox(
-                              width: 60,
-                              height: 90,
-                              child: media.imageUrl != null
-                                  ? Image.network(
-                                      media.imageUrl!,
-                                      fit: BoxFit.cover,
-                                      errorBuilder: (_, __, ___) => Container(
-                                        color: theme.colorScheme.surfaceContainerHighest,
-                                        child: Center(
-                                          child: Text(media.mediaType.emoji),
-                                        ),
-                                      ),
-                                    )
-                                  : Container(
-                                      color: theme.colorScheme.surfaceContainerHighest,
-                                      child: Center(
-                                          child: Text(media.mediaType.emoji),
-                                        ),
+          ? Center(
+              child: Text(
+                'No results found for "$_query"',
+                style: theme.textTheme.bodyLarge,
+              ),
+            )
+          : ListView.separated(
+              padding: const EdgeInsets.all(16),
+              itemCount: filteredMedia.length,
+              separatorBuilder: (context, index) => const SizedBox(height: 12),
+              itemBuilder: (context, index) {
+                final media = filteredMedia[index];
+                return InkWell(
+                  onTap: () => context.push('/media-detail', extra: media),
+                  borderRadius: BorderRadius.circular(12),
+                  child: Row(
+                    children: [
+                      // Thumbnail
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: SizedBox(
+                          width: 60,
+                          height: 90,
+                          child: media.imageUrl != null
+                              ? Image.network(
+                                  media.imageUrl!,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (_, _, _) => Container(
+                                    color: theme
+                                        .colorScheme
+                                        .surfaceContainerHighest,
+                                    child: Center(
+                                      child: Text(media.mediaType.emoji),
                                     ),
-                            ),
-                          ),
-                          const SizedBox(width: 16),
-                          // Details
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  media.title,
-                                  style: theme.textTheme.titleMedium?.copyWith(
-                                    fontWeight: FontWeight.bold,
                                   ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                                )
+                              : Container(
+                                  color:
+                                      theme.colorScheme.surfaceContainerHighest,
+                                  child: Center(
+                                    child: Text(media.mediaType.emoji),
+                                  ),
                                 ),
-                                const SizedBox(height: 4),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      _getMediaIcon(media.mediaType),
-                                      size: 16,
-                                      color: theme.colorScheme.primary,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      media.mediaType.displayName,
-                                      style: theme.textTheme.bodySmall?.copyWith(
-                                        color: theme.colorScheme.onSurface.withOpacity(0.7),
-                                      ),
-                                    ),
-                                    if (media.userStats?.score != null) ...[
-                                      const SizedBox(width: 12),
-                                      const Icon(Icons.star_rounded, size: 16, color: Colors.amber),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        media.userStats!.score.toString(),
-                                        style: theme.textTheme.bodySmall?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ],
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      // Details
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              media.title,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(
+                                  _getMediaIcon(media.mediaType),
+                                  size: 16,
+                                  color: theme.colorScheme.primary,
                                 ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  media.mediaType.displayName,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.colorScheme.onSurface
+                                        .withValues(alpha: 0.7),
+                                  ),
+                                ),
+                                if (media.userStats?.score != null) ...[
+                                  const SizedBox(width: 12),
+                                  const Icon(
+                                    Icons.star_rounded,
+                                    size: 16,
+                                    color: Colors.amber,
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    media.userStats!.score.toString(),
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
                               ],
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    );
-                  },
-                ),
+                    ],
+                  ),
+                );
+              },
+            ),
     );
   }
 

@@ -19,7 +19,7 @@ class MangaReleaseStats {
     this.isCompleted,
   });
 
-  factory MangaReleaseStats.fromJson(Map<String, dynamic> json) => 
+  factory MangaReleaseStats.fromJson(Map<String, dynamic> json) =>
       _$MangaReleaseStatsFromJson(json);
   Map<String, dynamic> toJson() => _$MangaReleaseStatsToJson(this);
 }

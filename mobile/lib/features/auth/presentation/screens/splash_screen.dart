@@ -7,7 +7,7 @@ class SplashScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -15,9 +15,9 @@ class SplashScreen extends ConsumerWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              theme.colorScheme.primary.withOpacity(0.1),
+              theme.colorScheme.primary.withValues(alpha: 0.1),
               theme.colorScheme.surface,
-              theme.colorScheme.secondary.withOpacity(0.1),
+              theme.colorScheme.secondary.withValues(alpha: 0.1),
             ],
           ),
         ),
@@ -39,7 +39,7 @@ class SplashScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              
+
               // App Name
               Text(
                 'MediaLog',
@@ -52,11 +52,11 @@ class SplashScreen extends ConsumerWidget {
               Text(
                 'Your Personal Media Library',
                 style: theme.textTheme.bodyLarge?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
               const SizedBox(height: 48),
-              
+
               // Loading indicator
               SizedBox(
                 width: 32,

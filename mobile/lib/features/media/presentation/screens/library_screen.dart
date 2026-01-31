@@ -80,23 +80,19 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
             pinned: true,
             title: const Text('Library'),
             actions: [
-              IconButton(
-                icon: const Icon(Icons.search),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: const Icon(Icons.filter_list),
-                onPressed: () {},
-              ),
+              IconButton(icon: const Icon(Icons.search), onPressed: () {}),
+              IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
             ],
             bottom: TabBar(
               controller: _tabController,
               isScrollable: true,
               tabAlignment: TabAlignment.start,
-              tabs: _tabs.map((tab) => Tab(
-                icon: Icon(tab.icon),
-                text: tab.type.displayName,
-              )).toList(),
+              tabs: _tabs
+                  .map(
+                    (tab) =>
+                        Tab(icon: Icon(tab.icon), text: tab.type.displayName),
+                  )
+                  .toList(),
             ),
           ),
         ],
@@ -124,7 +120,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen>
     return MediaDashboardTab(type: type);
   }
 }
-
 
 class _MediaTab {
   final MediaType type;

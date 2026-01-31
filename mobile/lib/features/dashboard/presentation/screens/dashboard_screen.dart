@@ -20,7 +20,7 @@ class DashboardScreen extends ConsumerWidget {
                 Text(
                   'Welcome back,',
                   style: theme.textTheme.titleMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.7),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
                 Text(
@@ -132,8 +132,16 @@ class DashboardScreen extends ConsumerWidget {
                     children: [
                       _buildQuickActionChip(context, Icons.add, 'Add Media'),
                       _buildQuickActionChip(context, Icons.search, 'Search'),
-                      _buildQuickActionChip(context, Icons.shuffle, 'Random Pick'),
-                      _buildQuickActionChip(context, Icons.bar_chart, 'Statistics'),
+                      _buildQuickActionChip(
+                        context,
+                        Icons.shuffle,
+                        'Random Pick',
+                      ),
+                      _buildQuickActionChip(
+                        context,
+                        Icons.bar_chart,
+                        'Statistics',
+                      ),
                     ],
                   ),
                 ],
@@ -148,9 +156,9 @@ class DashboardScreen extends ConsumerWidget {
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Text(
       title,
-      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+      style: Theme.of(
+        context,
+      ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
     );
   }
 
@@ -165,12 +173,9 @@ class DashboardScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: color.withOpacity(0.2),
-          width: 1,
-        ),
+        border: Border.all(color: color.withValues(alpha: 0.2), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,7 +183,7 @@ class DashboardScreen extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.2),
+              color: color.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: color, size: 24),
@@ -194,7 +199,7 @@ class DashboardScreen extends ConsumerWidget {
           Text(
             label,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.7),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
             ),
           ),
         ],
@@ -214,7 +219,7 @@ class DashboardScreen extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -225,11 +230,7 @@ class DashboardScreen extends ConsumerWidget {
               color: theme.colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(
-              icon,
-              color: theme.colorScheme.primary,
-              size: 20,
-            ),
+            child: Icon(icon, color: theme.colorScheme.primary, size: 20),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -239,7 +240,7 @@ class DashboardScreen extends ConsumerWidget {
                 Text(
                   title,
                   style: theme.textTheme.bodySmall?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
                 Text(
@@ -254,7 +255,7 @@ class DashboardScreen extends ConsumerWidget {
           Text(
             time,
             style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.5),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
             ),
           ),
         ],
@@ -262,7 +263,11 @@ class DashboardScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildQuickActionChip(BuildContext context, IconData icon, String label) {
+  Widget _buildQuickActionChip(
+    BuildContext context,
+    IconData icon,
+    String label,
+  ) {
     final theme = Theme.of(context);
     return ActionChip(
       avatar: Icon(icon, size: 18),

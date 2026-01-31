@@ -32,21 +32,14 @@ class MediaGrid<T extends BaseMedia> extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  emptyIcon,
-                  size: 64,
-                  color: theme.disabledColor,
-                ),
+                Icon(emptyIcon, size: 64, color: theme.disabledColor),
                 const SizedBox(height: 16),
-                Text(
-                  emptyMessage,
-                  style: theme.textTheme.titleLarge,
-                ),
+                Text(emptyMessage, style: theme.textTheme.titleLarge),
                 const SizedBox(height: 8),
                 Text(
                   emptySubMessage,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: theme.colorScheme.onSurface.withOpacity(0.6),
+                    color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                 ),
               ],
@@ -95,7 +88,7 @@ class MediaGrid<T extends BaseMedia> extends StatelessWidget {
                 error.toString(),
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurface.withOpacity(0.6),
+                  color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                 ),
               ),
               if (onRefresh != null) ...[

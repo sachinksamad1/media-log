@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -31,7 +30,7 @@ class AuthRepository {
 
   /// Sign in with email and password
   Future<UserCredential> signInWithEmailAndPassword(
-    String email, 
+    String email,
     String password, {
     bool rememberMe = true,
   }) async {
@@ -39,56 +38,59 @@ class AuthRepository {
       email: email,
       password: password,
     );
-    
+
     // Save session to secure storage
     if (credential.user != null) {
       await _saveSession(credential.user!, rememberMe: rememberMe);
     }
-    
+
     return credential;
   }
 
   /// Sign up with email and password
   Future<UserCredential> signUpWithEmailAndPassword(
-    String email, 
+    String email,
     String password,
   ) async {
     final credential = await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
-    
+
     // Save session to secure storage
     if (credential.user != null) {
       await _saveSession(credential.user!, rememberMe: true);
     }
-    
+
     return credential;
   }
 
   /// Sign in with Google
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount googleUser = 
-          await GoogleSignIn.instance.authenticate();
+      final GoogleSignInAccount googleUser = await GoogleSignIn.instance
+          .authenticate();
 
       final GoogleSignInAuthentication googleAuth = googleUser.authentication;
-      
-      final GoogleSignInClientAuthorization clientAuth = 
-          await googleUser.authorizationClient.authorizeScopes([]);
+
+      final GoogleSignInClientAuthorization clientAuth = await googleUser
+          .authorizationClient
+          .authorizeScopes([]);
 
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: clientAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      final userCredential = await _firebaseAuth.signInWithCredential(credential);
-      
+      final userCredential = await _firebaseAuth.signInWithCredential(
+        credential,
+      );
+
       // Save session to secure storage
       if (userCredential.user != null) {
         await _saveSession(userCredential.user!, rememberMe: true);
       }
-      
+
       return userCredential;
     } catch (e) {
       rethrow;
@@ -99,14 +101,14 @@ class AuthRepository {
   Future<void> signOut() async {
     // Clear secure storage session
     await _secureStorage.clearSession();
-    
+
     // Sign out from Google
     try {
       await GoogleSignIn.instance.signOut();
     } catch (_) {
       // Ignore Google sign out errors
     }
-    
+
     // Sign out from Firebase
     await _firebaseAuth.signOut();
   }
@@ -125,9 +127,9 @@ class AuthRepository {
   Future<bool> hasValidSession() async {
     final storedUserId = await _secureStorage.getStoredUserId();
     final currentUser = _firebaseAuth.currentUser;
-    
+
     if (storedUserId == null || currentUser == null) return false;
-    
+
     return storedUserId == currentUser.uid;
   }
 

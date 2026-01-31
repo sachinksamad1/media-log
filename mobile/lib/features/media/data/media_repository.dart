@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../../core/network/api_client.dart';
 import '../domain/media_types.dart';
@@ -12,7 +13,6 @@ import '../tv_series/data/tv_series_model.dart';
 import '../game/data/game_model.dart';
 
 part 'media_repository.g.dart';
-
 
 class PaginatedResult<T> {
   final List<T> items;
@@ -70,13 +70,20 @@ class MediaRepository {
   }
 
   /// Create a new media item
-  Future<T> create<T extends BaseMedia>(MediaType type, Map<String, dynamic> data) async {
+  Future<T> create<T extends BaseMedia>(
+    MediaType type,
+    Map<String, dynamic> data,
+  ) async {
     final response = await _dio.post('/${type.apiPath}', data: data);
     return _parseMedia<T>(type, response.data['data']);
   }
 
   /// Update a media item
-  Future<T> update<T extends BaseMedia>(MediaType type, String id, Map<String, dynamic> data) async {
+  Future<T> update<T extends BaseMedia>(
+    MediaType type,
+    String id,
+    Map<String, dynamic> data,
+  ) async {
     final response = await _dio.patch('/${type.apiPath}/$id', data: data);
     return _parseMedia<T>(type, response.data['data']);
   }
@@ -87,7 +94,10 @@ class MediaRepository {
   }
 
   /// Parse JSON to appropriate media type
-  T _parseMedia<T extends BaseMedia>(MediaType type, Map<String, dynamic> json) {
+  T _parseMedia<T extends BaseMedia>(
+    MediaType type,
+    Map<String, dynamic> json,
+  ) {
     switch (type) {
       case MediaType.anime:
         return Anime.fromJson(json) as T;
@@ -110,55 +120,55 @@ class MediaRepository {
 }
 
 @riverpod
-MediaRepository mediaRepository(MediaRepositoryRef ref) {
+MediaRepository mediaRepository(Ref ref) {
   return MediaRepository(ref.watch(dioClientProvider));
 }
 
 // Type-specific list providers
 @riverpod
-Future<List<Anime>> animeList(AnimeListRef ref) async {
+Future<List<Anime>> animeList(Ref ref) async {
   final repo = ref.watch(mediaRepositoryProvider);
   return repo.fetchAll<Anime>(MediaType.anime);
 }
 
 @riverpod
-Future<List<Manga>> mangaList(MangaListRef ref) async {
+Future<List<Manga>> mangaList(Ref ref) async {
   final repo = ref.watch(mediaRepositoryProvider);
   return repo.fetchAll<Manga>(MediaType.manga);
 }
 
 @riverpod
-Future<List<LightNovel>> lightNovelList(LightNovelListRef ref) async {
+Future<List<LightNovel>> lightNovelList(Ref ref) async {
   final repo = ref.watch(mediaRepositoryProvider);
   return repo.fetchAll<LightNovel>(MediaType.lightNovel);
 }
 
 @riverpod
-Future<List<Fiction>> fictionList(FictionListRef ref) async {
+Future<List<Fiction>> fictionList(Ref ref) async {
   final repo = ref.watch(mediaRepositoryProvider);
   return repo.fetchAll<Fiction>(MediaType.fiction);
 }
 
 @riverpod
-Future<List<NonFiction>> nonFictionList(NonFictionListRef ref) async {
+Future<List<NonFiction>> nonFictionList(Ref ref) async {
   final repo = ref.watch(mediaRepositoryProvider);
   return repo.fetchAll<NonFiction>(MediaType.nonFiction);
 }
 
 @riverpod
-Future<List<Movie>> movieList(MovieListRef ref) async {
+Future<List<Movie>> movieList(Ref ref) async {
   final repo = ref.watch(mediaRepositoryProvider);
   return repo.fetchAll<Movie>(MediaType.movie);
 }
 
 @riverpod
-Future<List<TvSeries>> tvSeriesList(TvSeriesListRef ref) async {
+Future<List<TvSeries>> tvSeriesList(Ref ref) async {
   final repo = ref.watch(mediaRepositoryProvider);
   return repo.fetchAll<TvSeries>(MediaType.tvSeries);
 }
 
 @riverpod
-Future<List<Game>> gameList(GameListRef ref) async {
+Future<List<Game>> gameList(Ref ref) async {
   final repo = ref.watch(mediaRepositoryProvider);
   return repo.fetchAll<Game>(MediaType.game);
 }

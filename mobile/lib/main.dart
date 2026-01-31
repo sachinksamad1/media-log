@@ -42,7 +42,7 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(goRouterProvider);
     final themeMode = ref.watch(themeProvider);
-    
+
     return MaterialApp.router(
       title: 'MediaLog',
       theme: AppTheme.lightTheme,

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -36,11 +35,13 @@ class PaginationState<T> {
 }
 
 // Pagination Notifier
-class PaginationNotifier<T extends BaseMedia> extends StateNotifier<PaginationState<T>> {
+class PaginationNotifier<T extends BaseMedia>
+    extends StateNotifier<PaginationState<T>> {
   final MediaRepository _repo;
   final MediaType _type;
 
-  PaginationNotifier(this._repo, this._type) : super(PaginationState(items: [])) {
+  PaginationNotifier(this._repo, this._type)
+    : super(PaginationState(items: [])) {
     loadNextPage();
   }
 
@@ -72,14 +73,22 @@ class PaginationNotifier<T extends BaseMedia> extends StateNotifier<PaginationSt
 
 // Providers
 // We need a family of providers to store state per tab
-final mediaPaginationProvider = StateNotifierProvider.family<PaginationNotifier<BaseMedia>, PaginationState<BaseMedia>, MediaType>((ref, type) {
-  final repo = ref.watch(mediaRepositoryProvider);
-  return PaginationNotifier(repo, type);
-});
+final mediaPaginationProvider =
+    StateNotifierProvider.family<
+      PaginationNotifier<BaseMedia>,
+      PaginationState<BaseMedia>,
+      MediaType
+    >((ref, type) {
+      final repo = ref.watch(mediaRepositoryProvider);
+      return PaginationNotifier(repo, type);
+    });
 
-final carouselProvider = FutureProvider.family<List<BaseMedia>, MediaType>((ref, type) async {
+final carouselProvider = FutureProvider.family<List<BaseMedia>, MediaType>((
+  ref,
+  type,
+) async {
   final repo = ref.watch(mediaRepositoryProvider);
-  
+
   String activeStatus;
   String plannedStatus;
 
@@ -102,17 +111,24 @@ final carouselProvider = FutureProvider.family<List<BaseMedia>, MediaType>((ref,
       plannedStatus = 'Plan to Play';
       break;
   }
-  
+
   // Fetch Active
-  final activeResult = await repo.fetchMedia(type, status: activeStatus, limit: 10);
-  
+  final activeResult = await repo.fetchMedia(
+    type,
+    status: activeStatus,
+    limit: 10,
+  );
+
   // Fetch Planned
-  final plannedResult = await repo.fetchMedia(type, status: plannedStatus, limit: 10);
+  final plannedResult = await repo.fetchMedia(
+    type,
+    status: plannedStatus,
+    limit: 10,
+  );
 
   // We can also try fetching legacy generic statuses if needed, but sticking to specific for now.
   return [...activeResult.items, ...plannedResult.items];
 });
-
 
 class MediaDashboardTab extends ConsumerWidget {
   final MediaType type;
@@ -127,8 +143,9 @@ class MediaDashboardTab extends ConsumerWidget {
 
     return NotificationListener<ScrollNotification>(
       onNotification: (scrollInfo) {
-        if (scrollInfo.metrics.pixels >= scrollInfo.metrics.maxScrollExtent * 0.8) {
-           ref.read(mediaPaginationProvider(type).notifier).loadNextPage();
+        if (scrollInfo.metrics.pixels >=
+            scrollInfo.metrics.maxScrollExtent * 0.8) {
+          ref.read(mediaPaginationProvider(type).notifier).loadNextPage();
         }
         return false;
       },
@@ -143,7 +160,9 @@ class MediaDashboardTab extends ConsumerWidget {
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Text(
                     _getCarouselTitle(type),
-                    style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -151,26 +170,37 @@ class MediaDashboardTab extends ConsumerWidget {
                   child: carouselAsync.when(
                     data: (items) {
                       if (items.isEmpty) {
-                        return Center(child: Text('No active media', style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey)));
+                        return Center(
+                          child: Text(
+                            'No active media',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        );
                       }
                       return ListView.separated(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         scrollDirection: Axis.horizontal,
                         itemCount: items.length,
-                        separatorBuilder: (_, __) => const SizedBox(width: 12),
+                        separatorBuilder: (_, _) => const SizedBox(width: 12),
                         itemBuilder: (context, index) {
-                           return SizedBox(
-                             width: 140,
-                             child: MediaCard(
-                               media: items[index],
-                               onTap: () => context.push('/media-detail', extra: items[index]),
-                               backgroundColor: Colors.transparent,
-                             ),
-                           );
+                          return SizedBox(
+                            width: 140,
+                            child: MediaCard(
+                              media: items[index],
+                              onTap: () => context.push(
+                                '/media-detail',
+                                extra: items[index],
+                              ),
+                              backgroundColor: Colors.transparent,
+                            ),
+                          );
                         },
                       );
                     },
-                    loading: () => const Center(child: CircularProgressIndicator()),
+                    loading: () =>
+                        const Center(child: CircularProgressIndicator()),
                     error: (e, _) => const Center(child: Icon(Icons.error)),
                   ),
                 ),
@@ -180,7 +210,12 @@ class MediaDashboardTab extends ConsumerWidget {
 
           // Divider
           SliverToBoxAdapter(
-            child: Divider(height: 32, indent: 16, endIndent: 16, color: theme.colorScheme.outline.withOpacity(0.1)),
+            child: Divider(
+              height: 32,
+              indent: 16,
+              endIndent: 16,
+              color: theme.colorScheme.outline.withValues(alpha: 0.1),
+            ),
           ),
 
           // Top Picks Header
@@ -189,26 +224,32 @@ class MediaDashboardTab extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Text(
                 'Top Picks',
-                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
 
           // Paginated Grid
           if (paginationState.items.isEmpty && paginationState.isLoading)
-             const SliverToBoxAdapter(child: Center(child: Padding(
-               padding: EdgeInsets.all(32.0),
-               child: CircularProgressIndicator(),
-             )))
+            const SliverToBoxAdapter(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: CircularProgressIndicator(),
+                ),
+              ),
+            )
           else if (paginationState.items.isEmpty)
-             const SliverToBoxAdapter(
-               child: Center(
-                 child: Padding(
-                   padding: EdgeInsets.all(32.0),
-                   child: Text('No items found'),
-                 ),
-               )
-             )
+            const SliverToBoxAdapter(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(32.0),
+                  child: Text('No items found'),
+                ),
+              ),
+            )
           else
             SliverPadding(
               padding: const EdgeInsets.all(16),
@@ -219,15 +260,15 @@ class MediaDashboardTab extends ConsumerWidget {
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                 ),
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return MediaCard(
-                      media: paginationState.items[index],
-                      onTap: () => context.push('/media-detail', extra: paginationState.items[index]),
-                    );
-                  },
-                  childCount: paginationState.items.length,
-                ),
+                delegate: SliverChildBuilderDelegate((context, index) {
+                  return MediaCard(
+                    media: paginationState.items[index],
+                    onTap: () => context.push(
+                      '/media-detail',
+                      extra: paginationState.items[index],
+                    ),
+                  );
+                }, childCount: paginationState.items.length),
               ),
             ),
 
@@ -239,8 +280,10 @@ class MediaDashboardTab extends ConsumerWidget {
                 child: Center(child: CircularProgressIndicator()),
               ),
             ),
-            
-          const SliverPadding(padding: EdgeInsets.only(bottom: 80)), // Fab space
+
+          const SliverPadding(
+            padding: EdgeInsets.only(bottom: 80),
+          ), // Fab space
         ],
       ),
     );

@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:MediaLog/features/auth/data/auth_repository.dart';
+import 'package:media_log/features/auth/data/auth_repository.dart';
 
 class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
@@ -22,17 +21,19 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     if (_formKey.currentState!.validate()) {
       setState(() => _isLoading = true);
       try {
-        await ref.read(authRepositoryProvider).signUpWithEmailAndPassword(
+        await ref
+            .read(authRepositoryProvider)
+            .signUpWithEmailAndPassword(
               _emailController.text.trim(),
               _passwordController.text.trim(),
             );
         // Navigation is handled by router listening to auth state or manual push pop
-         if (mounted) context.go('/'); // Or pop
+        if (mounted) context.go('/'); // Or pop
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: ${e.toString()}')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
         }
       } finally {
         if (mounted) setState(() => _isLoading = false);
@@ -41,14 +42,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   }
 
   Future<void> _signInWithGoogle() async {
-     setState(() => _isLoading = true);
+    setState(() => _isLoading = true);
     try {
       await ref.read(authRepositoryProvider).signInWithGoogle();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -58,7 +59,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -69,12 +70,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       ),
       extendBodyBehindAppBar: true,
       body: Container(
-         decoration: BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-               theme.colorScheme.surface,
+              theme.colorScheme.surface,
               theme.colorScheme.surface,
               theme.colorScheme.surface,
             ],
@@ -90,7 +91,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                     Icon(
+                    Icon(
                       Icons.person_add_alt_1_rounded,
                       size: 80,
                       color: theme.colorScheme.secondary,
@@ -123,7 +124,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       ),
                       keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                         if (value == null || value.isEmpty) {
+                        if (value == null || value.isEmpty) {
                           return 'Please enter your email';
                         }
                         return null;
@@ -148,7 +149,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       },
                     ),
                     const SizedBox(height: 16),
-                     TextFormField(
+                    TextFormField(
                       controller: _confirmPasswordController,
                       decoration: const InputDecoration(
                         labelText: 'Confirm Password',
@@ -165,9 +166,9 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     const SizedBox(height: 24),
                     FilledButton(
                       onPressed: _isLoading ? null : _signUp,
-                       style: FilledButton.styleFrom(
+                      style: FilledButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                         shape: RoundedRectangleBorder(
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
@@ -176,7 +177,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                           : const Text('Sign Up'),
                     ),
                     const SizedBox(height: 16),
-                     OutlinedButton.icon(
+                    OutlinedButton.icon(
                       onPressed: _isLoading ? null : _signInWithGoogle,
                       icon: const Icon(Icons.g_mobiledata, size: 28),
                       label: const Text('Sign up with Google'),

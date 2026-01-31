@@ -9,7 +9,7 @@ part 'api_client.g.dart';
 @riverpod
 Dio dioClient(Ref ref) {
   final baseUrl = dotenv.env['API_BASE_URL'];
-  
+
   final dio = Dio(
     BaseOptions(
       baseUrl: baseUrl!,
@@ -17,7 +17,7 @@ Dio dioClient(Ref ref) {
       receiveTimeout: const Duration(seconds: 10),
     ),
   );
-  
+
   // Add auth interceptor to include Firebase token
   dio.interceptors.add(
     InterceptorsWrapper(
@@ -38,11 +38,8 @@ Dio dioClient(Ref ref) {
       },
     ),
   );
-  
-  dio.interceptors.add(LogInterceptor(
-    requestBody: true,
-    responseBody: true,
-  ));
+
+  dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
 
   return dio;
 }

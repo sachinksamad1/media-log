@@ -1,4 +1,3 @@
-
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../features/auth/data/auth_repository.dart';
@@ -21,7 +20,7 @@ GoRouter goRouter(Ref ref) {
     initialLocation: '/splash',
     redirect: (context, state) {
       final currentPath = state.uri.path;
-      
+
       // If auth is still loading, stay on splash
       if (authState.isLoading) {
         if (currentPath != '/splash') {
@@ -39,15 +38,16 @@ GoRouter goRouter(Ref ref) {
       }
 
       final isLoggedIn = authState.valueOrNull != null;
-      final isOnAuthPage = currentPath == '/login' || 
-                           currentPath == '/signup' || 
-                           currentPath == '/splash';
+      final isOnAuthPage =
+          currentPath == '/login' ||
+          currentPath == '/signup' ||
+          currentPath == '/splash';
 
       // Not logged in - redirect to login
       if (!isLoggedIn && !isOnAuthPage) {
         return '/login';
       }
-      
+
       // Not logged in but on splash - go to login
       if (!isLoggedIn && currentPath == '/splash') {
         return '/login';
@@ -65,14 +65,8 @@ GoRouter goRouter(Ref ref) {
         path: '/splash',
         builder: (context, state) => const SplashScreen(),
       ),
-      GoRoute(
-        path: '/',
-        builder: (context, state) => const MainShell(),
-      ),
-      GoRoute(
-        path: '/login',
-        builder: (context, state) => const LoginScreen(),
-      ),
+      GoRoute(path: '/', builder: (context, state) => const MainShell()),
+      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
         path: '/signup',
         builder: (context, state) => const SignupScreen(),

@@ -3,10 +3,7 @@ import 'package:flutter/material.dart';
 class CustomErrorWidget extends StatelessWidget {
   final FlutterErrorDetails errorDetails;
 
-  const CustomErrorWidget({
-    super.key,
-    required this.errorDetails,
-  });
+  const CustomErrorWidget({super.key, required this.errorDetails});
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +15,7 @@ class CustomErrorWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.error_outline,
-                color: Colors.red,
-                size: 64,
-              ),
+              const Icon(Icons.error_outline, color: Colors.red, size: 64),
               const SizedBox(height: 16),
               const Text(
                 'Something went wrong!',
@@ -36,10 +29,7 @@ class CustomErrorWidget extends StatelessWidget {
               const Text(
                 'We encountered an unexpected error.',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black54,
-                ),
+                style: TextStyle(fontSize: 16, color: Colors.black54),
               ),
               const SizedBox(height: 24),
               // Show error details in debug mode
@@ -68,7 +58,7 @@ class CustomErrorWidget extends StatelessWidget {
                   // Attempt to go back or restart
                   // For now, we just pop if possible or stay here
                   // Navigator.canPop(context) ? Navigator.pop(context) : null;
-                   // In a real app, maybe restart the app or go to home
+                  // In a real app, maybe restart the app or go to home
                 },
                 child: const Text('Go Back'),
               ),

@@ -9,13 +9,9 @@ class GameReleaseStats {
   final List<String>? platforms;
   final int? playtime; // average playtime in hours
 
-  GameReleaseStats({
-    this.releaseDate,
-    this.platforms,
-    this.playtime,
-  });
+  GameReleaseStats({this.releaseDate, this.platforms, this.playtime});
 
-  factory GameReleaseStats.fromJson(Map<String, dynamic> json) => 
+  factory GameReleaseStats.fromJson(Map<String, dynamic> json) =>
       _$GameReleaseStatsFromJson(json);
   Map<String, dynamic> toJson() => _$GameReleaseStatsToJson(this);
 }

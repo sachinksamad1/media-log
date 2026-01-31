@@ -16,12 +16,13 @@ class StorageKeys {
 class SecureStorageService {
   final FlutterSecureStorage _storage;
 
-  SecureStorageService() : _storage = const FlutterSecureStorage(
+  SecureStorageService()
+    : _storage = const FlutterSecureStorage(
         aOptions: AndroidOptions(),
-    iOptions: IOSOptions(
-      accessibility: KeychainAccessibility.first_unlock_this_device,
-    ),
-  );
+        iOptions: IOSOptions(
+          accessibility: KeychainAccessibility.first_unlock_this_device,
+        ),
+      );
 
   /// Save a value securely
   Future<void> write(String key, String value) async {
@@ -49,7 +50,7 @@ class SecureStorageService {
   }
 
   // Session-specific methods
-  
+
   /// Save session info when user logs in
   Future<void> saveSession({
     required String userId,

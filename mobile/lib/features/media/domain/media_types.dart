@@ -48,6 +48,6 @@ abstract class BaseMedia {
   UserStats? get userStats;
   DateTime? get createdAt;
   DateTime? get updatedAt;
-  
+
   MediaType get mediaType;
 }

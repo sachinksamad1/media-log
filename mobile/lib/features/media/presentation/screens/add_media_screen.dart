@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -18,12 +17,11 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _imageUrlController = TextEditingController();
-  
+
   // Specific fields controllers
   final _studioController = TextEditingController(); // Anime
   final _authorController = TextEditingController(); // Manga/Book
   final _developerController = TextEditingController(); // Game
-  
 
   double _score = 0;
   late String _status;
@@ -58,41 +56,47 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
         return ['Reading', 'Plan to Read', 'Completed', 'Dropped', 'Paused'];
       case MediaType.game:
         return ['Playing', 'Plan to Play', 'Completed', 'Dropped', 'Paused'];
-
     }
   }
 
   String _getDefaultStatus() {
     final options = _getStatusOptions();
-    return options.firstWhere((s) => s.contains('Plan'), orElse: () => options.first);
+    return options.firstWhere(
+      (s) => s.contains('Plan'),
+      orElse: () => options.first,
+    );
   }
-
 
   void _save() async {
     if (_formKey.currentState!.validate()) {
       try {
         final data = {
           'title': _titleController.text,
-          'imageUrl': _imageUrlController.text.isEmpty ? null : _imageUrlController.text,
-          'userStats': {
-            'score': _score > 0 ? _score : null,
-            'status': _status,
-          },
+          'imageUrl': _imageUrlController.text.isEmpty
+              ? null
+              : _imageUrlController.text,
+          'userStats': {'score': _score > 0 ? _score : null, 'status': _status},
         };
 
         // Add specific fields
         switch (widget.mediaType) {
           case MediaType.anime:
-            if (_studioController.text.isNotEmpty) data['studio'] = _studioController.text;
+            if (_studioController.text.isNotEmpty) {
+              data['studio'] = _studioController.text;
+            }
             break;
           case MediaType.manga:
           case MediaType.lightNovel:
           case MediaType.fiction:
           case MediaType.nonFiction:
-            if (_authorController.text.isNotEmpty) data['author'] = _authorController.text;
+            if (_authorController.text.isNotEmpty) {
+              data['author'] = _authorController.text;
+            }
             break;
           case MediaType.game:
-             if (_developerController.text.isNotEmpty) data['developer'] = _developerController.text;
+            if (_developerController.text.isNotEmpty) {
+              data['developer'] = _developerController.text;
+            }
             break;
           default:
             break;
@@ -103,21 +107,29 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
           context.pop();
           // Refresh list
           switch (widget.mediaType) {
-            case MediaType.anime: ref.invalidate(animeListProvider);
-            case MediaType.manga: ref.invalidate(mangaListProvider);
-            case MediaType.lightNovel: ref.invalidate(lightNovelListProvider);
-            case MediaType.fiction: ref.invalidate(fictionListProvider);
-            case MediaType.nonFiction: ref.invalidate(nonFictionListProvider);
-            case MediaType.movie: ref.invalidate(movieListProvider);
-            case MediaType.tvSeries: ref.invalidate(tvSeriesListProvider);
-            case MediaType.game: ref.invalidate(gameListProvider);
+            case MediaType.anime:
+              ref.invalidate(animeListProvider);
+            case MediaType.manga:
+              ref.invalidate(mangaListProvider);
+            case MediaType.lightNovel:
+              ref.invalidate(lightNovelListProvider);
+            case MediaType.fiction:
+              ref.invalidate(fictionListProvider);
+            case MediaType.nonFiction:
+              ref.invalidate(nonFictionListProvider);
+            case MediaType.movie:
+              ref.invalidate(movieListProvider);
+            case MediaType.tvSeries:
+              ref.invalidate(tvSeriesListProvider);
+            case MediaType.game:
+              ref.invalidate(gameListProvider);
           }
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error: $e')),
-          );
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('Error: $e')));
         }
       }
     }
@@ -126,17 +138,20 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Add ${widget.mediaType.displayName}'),
         actions: [
           TextButton(
-            onPressed: _save, 
-            child: Text('Save', style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: theme.colorScheme.primary,
-            ))
+            onPressed: _save,
+            child: Text(
+              'Save',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.primary,
+              ),
+            ),
           ),
         ],
       ),
@@ -151,7 +166,8 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
                 labelText: 'Title',
                 prefixIcon: Icon(Icons.title),
               ),
-              validator: (v) => v == null || v.isEmpty ? 'Title is required' : null,
+              validator: (v) =>
+                  v == null || v.isEmpty ? 'Title is required' : null,
             ),
             const SizedBox(height: 16),
             TextFormField(
@@ -162,10 +178,10 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
               ),
             ),
             const SizedBox(height: 16),
-            
+
             // Type Specific Fields
             if (widget.mediaType == MediaType.anime) ...[
-               TextFormField(
+              TextFormField(
                 controller: _studioController,
                 decoration: const InputDecoration(
                   labelText: 'Studio',
@@ -174,12 +190,12 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
               ),
               const SizedBox(height: 16),
             ],
-            
-            if (widget.mediaType == MediaType.manga || 
+
+            if (widget.mediaType == MediaType.manga ||
                 widget.mediaType == MediaType.lightNovel ||
                 widget.mediaType == MediaType.fiction ||
                 widget.mediaType == MediaType.nonFiction) ...[
-               TextFormField(
+              TextFormField(
                 controller: _authorController,
                 decoration: const InputDecoration(
                   labelText: 'Author',
@@ -190,7 +206,7 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
             ],
 
             if (widget.mediaType == MediaType.game) ...[
-               TextFormField(
+              TextFormField(
                 controller: _developerController,
                 decoration: const InputDecoration(
                   labelText: 'Developer',
@@ -204,20 +220,23 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
             ExpansionTile(
               title: const Text('My Status'),
               initiallyExpanded: _isStatsExpanded,
-              onExpansionChanged: (val) => setState(() => _isStatsExpanded = val),
+              onExpansionChanged: (val) =>
+                  setState(() => _isStatsExpanded = val),
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
                       DropdownButtonFormField<String>(
-                        value: _status,
+                        initialValue: _status,
                         decoration: const InputDecoration(
                           labelText: 'Status',
                           prefixIcon: Icon(Icons.flag),
                         ),
                         items: _getStatusOptions()
-                            .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                            .map(
+                              (s) => DropdownMenuItem(value: s, child: Text(s)),
+                            )
                             .toList(),
                         onChanged: (v) => setState(() => _status = v!),
                       ),

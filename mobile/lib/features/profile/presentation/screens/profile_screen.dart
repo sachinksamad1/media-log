@@ -151,7 +151,8 @@ class ProfileScreen extends ConsumerWidget {
 
   Widget _buildProfileHeader(BuildContext context, dynamic user) {
     final theme = Theme.of(context);
-    final displayName = user?.displayName ?? user?.email?.split('@').first ?? 'User';
+    final displayName =
+        user?.displayName ?? user?.email?.split('@').first ?? 'User';
     final email = user?.email ?? '';
     final photoUrl = user?.photoURL;
 
@@ -182,7 +183,7 @@ class ProfileScreen extends ConsumerWidget {
         Text(
           email,
           style: theme.textTheme.bodyMedium?.copyWith(
-            color: theme.colorScheme.onSurface.withOpacity(0.6),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           ),
         ),
         const SizedBox(height: 12),
@@ -203,7 +204,7 @@ class ProfileScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.5),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -213,13 +214,13 @@ class ProfileScreen extends ConsumerWidget {
           Container(
             width: 1,
             height: 40,
-            color: theme.colorScheme.outline.withOpacity(0.3),
+            color: theme.colorScheme.outline.withValues(alpha: 0.3),
           ),
           _buildStatItem(context, '28', 'Completed'),
           Container(
             width: 1,
             height: 40,
-            color: theme.colorScheme.outline.withOpacity(0.3),
+            color: theme.colorScheme.outline.withValues(alpha: 0.3),
           ),
           _buildStatItem(context, '12', 'In Progress'),
         ],
@@ -241,7 +242,7 @@ class ProfileScreen extends ConsumerWidget {
         Text(
           label,
           style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurface.withOpacity(0.6),
+            color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
           ),
         ),
       ],
@@ -262,14 +263,16 @@ class ProfileScreen extends ConsumerWidget {
           child: Text(
             title,
             style: theme.textTheme.titleSmall?.copyWith(
-              color: theme.colorScheme.onSurface.withOpacity(0.6),
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               fontWeight: FontWeight.w600,
             ),
           ),
         ),
         Container(
           decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.3),
+            color: theme.colorScheme.surfaceContainerHighest.withValues(
+              alpha: 0.3,
+            ),
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -285,17 +288,23 @@ class ProfileScreen extends ConsumerWidget {
                         ? Text(
                             item.trailing!,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurface.withOpacity(0.5),
+                              color: theme.colorScheme.onSurface.withValues(
+                                alpha: 0.5,
+                              ),
                             ),
                           )
                         : Icon(
                             Icons.chevron_right,
-                            color: theme.colorScheme.onSurface.withOpacity(0.3),
+                            color: theme.colorScheme.onSurface.withValues(
+                              alpha: 0.3,
+                            ),
                           ),
                     onTap: item.onTap,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(
-                        top: index == 0 ? const Radius.circular(16) : Radius.zero,
+                        top: index == 0
+                            ? const Radius.circular(16)
+                            : Radius.zero,
                         bottom: index == items.length - 1
                             ? const Radius.circular(16)
                             : Radius.zero,
@@ -306,7 +315,7 @@ class ProfileScreen extends ConsumerWidget {
                     Divider(
                       height: 1,
                       indent: 56,
-                      color: theme.colorScheme.outline.withOpacity(0.1),
+                      color: theme.colorScheme.outline.withValues(alpha: 0.1),
                     ),
                 ],
               );
@@ -316,6 +325,7 @@ class ProfileScreen extends ConsumerWidget {
       ],
     );
   }
+
   void _showThemeSelector(BuildContext context, WidgetRef ref) {
     showModalBottomSheet(
       context: context,

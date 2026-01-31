@@ -21,7 +21,7 @@ class TvSeriesReleaseStats {
     this.network,
   });
 
-  factory TvSeriesReleaseStats.fromJson(Map<String, dynamic> json) => 
+  factory TvSeriesReleaseStats.fromJson(Map<String, dynamic> json) =>
       _$TvSeriesReleaseStatsFromJson(json);
   Map<String, dynamic> toJson() => _$TvSeriesReleaseStatsToJson(this);
 }
@@ -71,6 +71,7 @@ class TvSeries implements BaseMedia {
   @override
   MediaType get mediaType => MediaType.tvSeries;
 
-  factory TvSeries.fromJson(Map<String, dynamic> json) => _$TvSeriesFromJson(json);
+  factory TvSeries.fromJson(Map<String, dynamic> json) =>
+      _$TvSeriesFromJson(json);
   Map<String, dynamic> toJson() => _$TvSeriesToJson(this);
 }

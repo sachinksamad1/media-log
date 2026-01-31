@@ -1,4 +1,5 @@
 import { globalErrorHandler } from '@common/errors/error-handler.js';
+import corsOptions from '@config/cors.js';
 import cors from 'cors';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
@@ -26,7 +27,7 @@ app.use(limiter);
 app.use(morgan('dev'));
 
 // 4. Parsing & CORS
-app.use(cors());
+app.use(cors(corsOptions));
 // Skip JSON parsing for multipart requests - these are handled by fileUploadMiddleware
 app.use(
   express.json({

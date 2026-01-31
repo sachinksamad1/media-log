@@ -9,13 +9,9 @@ class NonFictionReleaseStats {
   final int? pages;
   final int? editions;
 
-  NonFictionReleaseStats({
-    this.publishDate,
-    this.pages,
-    this.editions,
-  });
+  NonFictionReleaseStats({this.publishDate, this.pages, this.editions});
 
-  factory NonFictionReleaseStats.fromJson(Map<String, dynamic> json) => 
+  factory NonFictionReleaseStats.fromJson(Map<String, dynamic> json) =>
       _$NonFictionReleaseStatsFromJson(json);
   Map<String, dynamic> toJson() => _$NonFictionReleaseStatsToJson(this);
 }
@@ -67,6 +63,7 @@ class NonFiction implements BaseMedia {
   @override
   MediaType get mediaType => MediaType.nonFiction;
 
-  factory NonFiction.fromJson(Map<String, dynamic> json) => _$NonFictionFromJson(json);
+  factory NonFiction.fromJson(Map<String, dynamic> json) =>
+      _$NonFictionFromJson(json);
   Map<String, dynamic> toJson() => _$NonFictionToJson(this);
 }
