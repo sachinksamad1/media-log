@@ -1,27 +1,5 @@
-import type { Timestamp } from 'firebase-admin/firestore';
-
-export const formatTimestamp = (date: unknown): string => {
-  if (!date) return new Date().toISOString();
-
-  // If using Firestore Timestamps
-  if (
-    typeof date === 'object' &&
-    date !== null &&
-    'toDate' in date &&
-    typeof (date as Timestamp).toDate === 'function'
-  ) {
-    return (date as Timestamp).toDate().toISOString();
-  }
-
-  // If it's already a JS Date object or a string/number
-  if (
-    typeof date === 'string' ||
-    typeof date === 'number' ||
-    date instanceof Date
-  ) {
-    const d = new Date(date);
-    return isNaN(d.getTime()) ? new Date().toISOString() : d.toISOString();
-  }
-
-  return new Date().toISOString();
-};
+/**
+ * Re-export from shared package for backward compatibility.
+ * New code should import directly from '@media-log/shared-utils'
+ */
+export { toISOString as formatTimestamp } from '@media-log/shared-utils';

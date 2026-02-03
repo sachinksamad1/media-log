@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { MediaBaseSchema, UserStatusEnum } from './media-base.schema';
+import { MediaBaseSchema, UserStatusEnum } from "./media-base.schema.js";
 
 // =============================================================================
 // GAME SCHEMA

@@ -1,2 +1,2 @@
-export * from './date';
-export * from './string';
+export * from "./date.js";
+export * from "./string.js";

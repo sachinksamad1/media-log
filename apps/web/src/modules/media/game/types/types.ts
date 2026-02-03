@@ -1,40 +1,13 @@
-// Game Stats
-export interface GameUserStats {
-  score: number
-  playTime: number
-  status: 'Planned' | 'Playing' | 'Completed' | 'Dropped' | 'On-Hold' | string
-}
+/**
+ * Re-export from shared package for backward compatibility.
+ * New code should import directly from '@media-log/shared-types'
+ */
+export type { GameUserStats, Playthrough, GameDTO as Game } from '@media-log/shared-types'
 
-export interface Playthrough {
-  platformUsed: string
-  isCompleted: boolean
-  achievementsUnlocked?: number
-}
+import type { ApiResponse, ApiMeta } from '@media-log/shared-types'
+import type { GameDTO } from '@media-log/shared-types'
 
-export interface Game {
-  id: string
-  title: string
-  developers: string[]
-  publishers: string[]
-  platforms: string[]
-  genres: string[]
-  playthroughs: Playthrough[]
-  userStats: GameUserStats
-  origin?: string
-  language?: string
-  imageUrl: string
-  releaseDate?: string
-  createdAt?: string
-  updatedAt?: string
-}
-
-export interface GameResponse {
-  success: boolean
-  message: string
-  data: Game[]
-  meta?: {
-    totalItems?: number
-    nextCursor?: string | null
-    count?: number
-  }
+// Game Response
+export interface GameResponse extends ApiResponse<GameDTO[]> {
+  meta?: ApiMeta
 }

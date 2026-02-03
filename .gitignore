@@ -118,6 +118,7 @@ firestore.indexes.json
 .history
 .svn/
 .swiftpm/
+pnpm-lock.yaml.*
 
 # IntelliJ related
 *.iml

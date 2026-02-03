@@ -1,48 +1,23 @@
-// Release Stats
-// Release Stats
-export interface ReleaseStats {
-  chaptersPublished: number
-  volumesPublished: number
-  releaseStatus: 'Ongoing' | 'Completed' | 'Hiatus' | 'Cancelled' | string
-}
+/**
+ * Re-export from shared package for backward compatibility.
+ * New code should import directly from '@media-log/shared-types'
+ */
+export type {
+  MangaReleaseStats as ReleaseStats,
+  MangaReadingStats as ReadingStats,
+  MangaDTO as Manga,
+} from '@media-log/shared-types'
 
-// User Stats
+import type { ApiResponse, ApiMeta } from '@media-log/shared-types'
+import type { MangaDTO } from '@media-log/shared-types'
+
+// User Stats - kept for backward compatibility
 export interface UserStats {
   score: number
   status: 'Planned' | 'Reading' | 'Completed' | 'Dropped' | 'On-Hold' | string
 }
 
-export interface ReadingStats {
-  currentReadingChapter: number
-  currentReadingVolume: number
-}
-
-// Manga Schmea
-export interface Manga {
-  id: string
-  title: string
-  author: string
-  illustrator: string
-  origin: string
-  genres: string[]
-  type: 'Manga' | 'Manhwa' | 'Manhua' | 'One-shot' | 'Doujinshi' | string
-  format: 'Physical' | 'Digital' | 'Magazine' | string
-  releaseStats: ReleaseStats
-  readingStats?: ReadingStats
-  userStats: UserStats
-  imageUrl: string
-  createdAt: string
-  updatedAt: string
-}
-
 // Manga Response
-export interface MangaResponse {
-  success: boolean
-  message: string
-  data: Manga[]
-  meta?: {
-    totalItems: number
-    nextCursor: string | null
-    count?: number
-  }
+export interface MangaResponse extends ApiResponse<MangaDTO[]> {
+  meta?: ApiMeta
 }

@@ -1,45 +1,17 @@
-export interface TvSeriesUserStats {
-  score: number
-  status: 'Planned' | 'Watching' | 'Completed' | 'Dropped' | 'On-Hold' | string
-  watchedEpisodes?: number
-  rewatchCount?: number
-}
+/**
+ * Re-export from shared package for backward compatibility.
+ * New code should import directly from '@media-log/shared-types'
+ */
+export type {
+  TvSeriesUserStats,
+  TvSeriesStats,
+  TvSeriesDTO as TvSeries,
+} from '@media-log/shared-types'
 
-export interface TvSeriesStats {
-  airingYear: string
-  currentSeason: number
-  totalSeasons: number
-  totalEpisodes?: number
-  isCompleted: boolean
-}
+import type { ApiResponse, ApiMeta } from '@media-log/shared-types'
+import type { TvSeriesDTO } from '@media-log/shared-types'
 
-export interface TvSeries {
-  id: string
-  title: string
-  directors: string[]
-  writers: string[]
-  cast: string[]
-  genres: string[]
-  tvSeriesStats: TvSeriesStats
-  language: string
-  origin?: string
-  userStats: TvSeriesUserStats
-  imageUrl: string
-  network?: string
-  studio?: string
-  releaseDate?: string
-  endDate?: string
-  createdAt?: string
-  updatedAt?: string
-}
-
-export interface TvSeriesResponse {
-  success: boolean
-  message: string
-  data: TvSeries[]
-  meta?: {
-    totalItems?: number
-    nextCursor?: string | null
-    count?: number
-  }
+// TV Series Response
+export interface TvSeriesResponse extends ApiResponse<TvSeriesDTO[]> {
+  meta?: ApiMeta
 }

@@ -1,2 +1,2 @@
-export * from './media.types';
-export * from './api.types';
+export * from "./media.types.js";
+export * from "./api.types.js";

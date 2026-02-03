@@ -1,41 +1,22 @@
-export interface VolumeInfo {
-  standalone: boolean
-  seriesName?: string
-  order: number
-  total: number
-  isCompleted: boolean
-}
+/**
+ * Re-export from shared package for backward compatibility.
+ * New code should import directly from '@media-log/shared-types'
+ */
+export type {
+  NonFictionVolume as VolumeInfo,
+  NonFictionDTO as NonFiction,
+} from '@media-log/shared-types'
 
-// User Stats
+import type { ApiResponse, ApiMeta } from '@media-log/shared-types'
+import type { NonFictionDTO } from '@media-log/shared-types'
+
+// User Stats - kept for backward compatibility
 export interface UserStats {
   score: number
   status: 'Planned' | 'Reading' | 'Completed' | 'Dropped' | 'On-Hold' | string
 }
 
-// NonFiction
-export interface NonFiction {
-  id: string
-  title: string
-  author: string
-  origin: string
-  genres: string[]
-  format: 'E-Book' | 'Physical' | string
-  published?: string
-  volumes: VolumeInfo[]
-  userStats: UserStats
-  imageUrl: string
-  createdAt?: string
-  updatedAt?: string
-}
-
 // NonFiction Response
-export interface NonFictionResponse {
-  success: boolean
-  message: string
-  data: NonFiction[]
-  meta?: {
-    totalItems?: number
-    nextCursor?: string | null
-    count?: number
-  }
+export interface NonFictionResponse extends ApiResponse<NonFictionDTO[]> {
+  meta?: ApiMeta
 }

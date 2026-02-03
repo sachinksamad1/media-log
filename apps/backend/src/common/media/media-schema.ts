@@ -1,46 +1,11 @@
-import { z } from 'zod';
-
-export const UserStatusEnum = z.enum([
-  'Planned',
-  'Watching',
-  'Reading',
-  'Playing',
-  'Completed',
-  'Dropped',
-  'On-Hold',
-]);
-
-export const MediaSchema = z.object({
-  id: z.string().optional(),
-  uid: z.string().min(1, 'User ID is required'),
-  title: z.string().min(1, 'Title is required'),
-  genres: z.array(z.string()).optional(),
-  origin: z.string().optional(),
-  language: z.string().optional(),
-
-  // Shared User Stats
-  userStats: z
-    .object({
-      score: z.number().min(0).max(10).default(0),
-      status: UserStatusEnum.default('Planned'),
-    })
-    .default({
-      score: 0,
-      status: 'Planned',
-    }),
-
-  // Centralized Image Handling
-  imageUrl: z.url('Invalid image URL').optional(),
-
-  // Automated Audit Info
-  createdAt: z.preprocess(
-    (arg) => (arg instanceof Date ? arg : new Date()),
-    z.date(),
-  ),
-  updatedAt: z.preprocess(
-    (arg) => (arg instanceof Date ? arg : new Date()),
-    z.date(),
-  ),
-});
-
-export type Media = z.infer<typeof MediaSchema>;
+/**
+ * Re-export from shared package for backward compatibility.
+ * New code should import directly from '@media-log/shared-types'
+ */
+export {
+  UserStatusEnum,
+  MediaBaseSchema as MediaSchema,
+  type MediaBase as Media,
+  type UserStatus,
+  type BaseUserStats,
+} from '@media-log/shared-types';

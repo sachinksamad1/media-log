@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { MediaBaseSchema } from './media-base.schema';
-import { ReleaseStatusEnum } from './manga.schema';
+import { MediaBaseSchema } from "./media-base.schema.js";
+import { ReleaseStatusEnum } from "./manga.schema.js";
 
 // =============================================================================
 // LIGHT NOVEL ENUMS

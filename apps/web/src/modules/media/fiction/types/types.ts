@@ -1,42 +1,23 @@
-// Publication Info
-export interface PublicationInfo {
-  published?: string // Date or string
-  series: string
-  volumes: number
-  status: 'Completed' | 'Ongoing' | 'Hiatus' | string
-}
+/**
+ * Re-export from shared package for backward compatibility.
+ * New code should import directly from '@media-log/shared-types'
+ */
+export type {
+  FictionPublicationInfo as PublicationInfo,
+  FictionReadingStats,
+  FictionDTO as Fiction,
+} from '@media-log/shared-types'
 
-// User Stats
+import type { ApiResponse, ApiMeta } from '@media-log/shared-types'
+import type { FictionDTO } from '@media-log/shared-types'
+
+// User Stats - kept for backward compatibility
 export interface UserStats {
   score: number
   status: 'Planned' | 'Reading' | 'Completed' | 'Dropped' | 'On-Hold' | string
 }
 
-// Fiction
-export interface Fiction {
-  id: string
-  title: string
-  author: string
-  origin: string
-  genres: string[]
-  type: 'Novel' | 'Short Story' | string
-  format: 'E-Book' | 'Physical' | string
-  publicationInfo: PublicationInfo
-  userStats: UserStats
-  readingStats?: { currentReadingVolume: number }
-  imageUrl: string
-  createdAt?: string
-  updatedAt?: string
-}
-
 // Fiction Response
-export interface FictionResponse {
-  success: boolean
-  message: string
-  data: Fiction[]
-  meta?: {
-    totalItems?: number
-    nextCursor?: string | null
-    count?: number
-  }
+export interface FictionResponse extends ApiResponse<FictionDTO[]> {
+  meta?: ApiMeta
 }
