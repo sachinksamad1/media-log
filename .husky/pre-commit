@@ -1,30 +1,21 @@
 pnpm lint-staged
 
-if [ -f .env ]; then
+# Check for sensitive files in the staging area
+staged_files=$(git diff --cached --name-only)
+
+if echo "$staged_files" | grep -q -E "(.env|.env.dev|.env.prod)$"; then
   echo "❌ ERROR: You are trying to commit a .env file!"
-  echo "Please run 'git rm --cached .env' and add it to .gitignore."
+  echo "Please run 'git rm --cached <file>' and add it to .gitignore."
   exit 1
 fi
 
-if [ -f .env.dev ]; then
-  echo "❌ ERROR: You are trying to commit a .env.dev file!"
-  echo "Please run 'git rm --cached .env.dev' and add it to .gitignore."
-  exit 1
-fi
-
-if [ -f .env.prod ]; then
-  echo "❌ ERROR: You are trying to commit a .env.prod file!"
-  echo "Please run 'git rm --cached .env.prod' and add it to .gitignore."
-  exit 1
-fi
-
-if [ -f apps/mobile/google-services.json ]; then
+if echo "$staged_files" | grep -q "google-services.json"; then
   echo "❌ ERROR: You are trying to commit a google-services.json file!"
   echo "Please run 'git rm --cached google-services.json' and add it to .gitignore."
   exit 1
 fi
 
-if [ -f apps/mobile/GoogleService-Info.plist ]; then
+if echo "$staged_files" | grep -q "GoogleService-Info.plist"; then
   echo "❌ ERROR: You are trying to commit a GoogleService-Info.plist file!"
   echo "Please run 'git rm --cached GoogleService-Info.plist' and add it to .gitignore."
   exit 1
