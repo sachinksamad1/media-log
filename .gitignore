@@ -61,6 +61,7 @@ mobile/.env
 .history
 .svn/
 pnpm-lock.yaml.463372962
+google-services.json
 
 # IntelliJ related
 *.iml
