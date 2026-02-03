@@ -18,7 +18,7 @@ const parseOrigins = (): string[] => {
 
   if (!originsEnv.trim()) {
     // Default development origins
-    if (process.env.NODE_ENV !== 'prod') {
+    if (process.env.NODE_ENV !== 'production') {
       return [
         'http://localhost:3000',
         'http://localhost:5173',

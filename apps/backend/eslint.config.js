@@ -8,6 +8,9 @@ import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
+    ignores: ['scripts/**', 'dist/**', 'node_modules/**'],
+  },
+  {
     languageOptions: {
       parserOptions: {
         tsconfigRootDir: import.meta.dirname,

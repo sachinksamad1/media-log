@@ -1,34 +1,52 @@
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 import dotenv from 'dotenv';
+
+// ES module compatible __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const getEnvName = () => {
   if (process.env.NODE_ENV) return process.env.NODE_ENV;
 
-  // Detect Firebase Functions environment
   if (process.env.FUNCTION_TARGET || process.env.K_SERVICE) {
-    return 'prod';
+    return 'production';
   }
 
-  return 'dev';
+  return 'development';
 };
 
 const env = getEnvName();
 const envFile = `.env.${env}`;
-const envPath = path.resolve(process.cwd(), envFile);
 
-if (fs.existsSync(envPath)) {
-  dotenv.config({ path: envPath });
-} else if (env !== 'prod' && fs.existsSync('.env')) {
+// Multiple paths to check for .env file
+const envPathCwd = path.resolve(process.cwd(), envFile);
+const envPathDist = path.resolve(__dirname, '../..', envFile); // dist/.env.production
+const envPathRoot = path.resolve(__dirname, '../../..', envFile); // apps/backend/.env.production
+
+let loadedPath: string | null = null;
+
+if (fs.existsSync(envPathCwd)) {
+  dotenv.config({ path: envPathCwd });
+  loadedPath = envPathCwd;
+} else if (fs.existsSync(envPathDist)) {
+  dotenv.config({ path: envPathDist });
+  loadedPath = envPathDist;
+} else if (fs.existsSync(envPathRoot)) {
+  dotenv.config({ path: envPathRoot });
+  loadedPath = envPathRoot;
+} else if (env !== 'production' && fs.existsSync('.env')) {
   dotenv.config({ path: '.env' });
+  loadedPath = '.env';
 }
 
 // eslint-disable-next-line no-console
 console.log(`[Config] Environment: ${env}`);
-if (fs.existsSync(envPath)) {
+if (loadedPath) {
   // eslint-disable-next-line no-console
-  console.log(`[Config] Loaded configuration from ${envFile}`);
+  console.log(`[Config] Loaded configuration from: ${loadedPath}`);
 } else {
   // eslint-disable-next-line no-console
   console.log(

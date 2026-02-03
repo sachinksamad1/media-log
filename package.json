@@ -15,7 +15,7 @@
     "test": "turbo test",
     "deploy": "firebase deploy",
     "deploy:web": "firebase deploy --only hosting",
-    "deploy:backend": "firebase deploy --only functions",
+    "deploy:backend": "pnpm --filter media-log-backend run deploy",
     "clean": "rimraf apps/web/dist apps/backend/dist",
     "prepare": "husky"
   },

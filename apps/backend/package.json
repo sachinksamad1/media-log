@@ -8,7 +8,7 @@
     "seed": "tsx seed/seed.ts",
     "seed:users": "tsx seed/seed-users.ts",
     "start": "cross-env NODE_ENV=production node dist/server.js",
-    "build": "tsc && tsc-alias",
+    "build": "tsc && tsc-alias && node -e \"const fs=require('fs'); if(fs.existsSync('.env.production')) fs.copyFileSync('.env.production', 'dist/.env.production')\"",
     "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
@@ -21,7 +21,10 @@
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:api": "playwright test --project=api",
-    "test:report": "playwright show-report"
+    "test:report": "playwright show-report",
+    "predeploy": "node scripts/predeploy.js",
+    "postdeploy": "node scripts/postdeploy.js",
+    "deploy": "pnpm build && pnpm predeploy && firebase deploy --only functions && pnpm postdeploy"
   },
   "keywords": [
     "mediaLog",
