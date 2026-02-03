@@ -7,6 +7,13 @@ import prettier from 'eslint-config-prettier'
 import globals from 'globals'
 
 export default [
+  {
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   // Base JS rules
   js.configs.recommended,
 
@@ -26,6 +33,7 @@ export default [
         parser: tseslint.parser,
         ecmaVersion: 'latest',
         sourceType: 'module',
+        tsconfigRootDir: import.meta.dirname,
       },
       globals: {
         ...globals.browser,

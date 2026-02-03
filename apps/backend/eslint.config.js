@@ -7,6 +7,13 @@ import promisePlugin from 'eslint-plugin-promise';
 import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
+  {
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
 
@@ -15,6 +22,7 @@ export default tseslint.config(
     languageOptions: {
       parserOptions: {
         project: ['./tsconfig.eslint.json'],
+        tsconfigRootDir: import.meta.dirname,
         sourceType: 'module',
       },
       globals: {
