@@ -15,6 +15,7 @@ import {
   X,
   Gamepad2,
   MonitorPlay,
+  NotebookText,
 } from 'lucide-vue-next'
 
 const open = defineModel<boolean>('open')
@@ -66,6 +67,7 @@ const categoryItems = [
 
 const bottomItems = [
   { icon: BarChart3, label: 'Stats', href: '/stats' },
+  { icon: NotebookText, label: 'Reports', href: '/reports' },
   { icon: Settings, label: 'Settings', href: '/settings' },
 ]
 </script>
@@ -112,7 +114,7 @@ const bottomItems = [
           v-for="item in navigationItems"
           :key="item.href"
           :to="item.href"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-smooth"
+          class="flex items-center gap-3 px-3 py-2 rounded-lg transition-smooth"
           :class="
             isActive(item.href)
               ? 'bg-primary/10 text-secondary'
@@ -141,7 +143,7 @@ const bottomItems = [
             v-for="item in categoryItems"
             :key="item.href"
             :to="item.href"
-            class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-smooth"
+            class="flex items-center gap-3 px-3 py-2 rounded-lg transition-smooth"
             :class="
               isActive(item.href)
                 ? 'bg-sidebar-accent text-sidebar-accent-foreground'
@@ -164,7 +166,7 @@ const bottomItems = [
         v-for="item in bottomItems"
         :key="item.href"
         :to="item.href"
-        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-smooth"
+        class="flex items-center gap-3 px-3 py-2 rounded-lg transition-smooth"
         :class="
           isActive(item.href)
             ? 'bg-sidebar-accent text-sidebar-accent-foreground'

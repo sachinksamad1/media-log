@@ -7,9 +7,9 @@
   "scripts": {
     "seed": "tsx seed/seed.ts",
     "seed:users": "tsx seed/seed-users.ts",
-    "start": "cross-env NODE_ENV=prod node dist/server.js",
+    "start": "cross-env NODE_ENV=production node dist/server.js",
     "build": "tsc && tsc-alias",
-    "dev": "cross-env NODE_ENV=dev tsx watch src/server.ts",
+    "dev": "cross-env NODE_ENV=development tsx watch src/server.ts",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "typecheck": "tsc --noEmit",

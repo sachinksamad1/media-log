@@ -5,9 +5,10 @@
   "type": "module",
   "packageManager": "pnpm@10.28.1",
   "scripts": {
-    "dev": "vite --mode dev",
-    "build": "vue-tsc --noEmit && vite build --mode prod",
-    "build:dev": "vue-tsc --noEmit && vite build --mode dev",
+    "dev": "vite --mode development",
+    "dev:prod": "vite --mode production",
+    "build": "vue-tsc --noEmit && vite build --mode production",
+    "build:dev": "vue-tsc --noEmit && vite build --mode development",
     "format": "prettier --write src",
     "format:check": "prettier --check src",
     "type-check": "vue-tsc --noEmit",
