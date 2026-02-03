@@ -1,22 +1,5 @@
-import type { MediaDTO } from '@common/media/media-dto.js';
-
-import type { Manga } from '@/modules/media/manga/manga-schema.js';
-
-export interface MangaDTO extends MediaDTO {
-  author: string;
-  illustrator: string;
-  type: string;
-  format: string;
-  releaseStats: {
-    chaptersPublished: number;
-    volumesPublished: number;
-    releaseStatus: string;
-  };
-  readingStats: {
-    currentReadingVolume: number;
-    currentReadingChapter: number;
-  };
-}
+export type { MangaDTO } from '@media-log/shared-types';
+import type { Manga } from '@modules/media/manga/manga-schema.js';
 
 export type CreateMangaDto = Omit<Manga, 'id' | 'createdAt' | 'updatedAt'>;
 export type UpdateMangaDto = Partial<CreateMangaDto>;

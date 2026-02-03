@@ -1,17 +1,17 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 // =============================================================================
 // USER PREFERENCES SCHEMA
 // =============================================================================
 
-export const ThemeEnum = z.enum(['light', 'dark', 'system']);
-export const DefaultViewEnum = z.enum(['grid', 'list', 'compact']);
+export const ThemeEnum = z.enum(["light", "dark", "system"]);
+export const DefaultViewEnum = z.enum(["grid", "list", "compact"]);
 
 export const UserPreferencesSchema = z.object({
-  theme: ThemeEnum.default('system'),
-  accentColor: z.string().default('#3B82F6'),
-  language: z.string().default('en'),
-  defaultView: DefaultViewEnum.default('grid'),
+  theme: ThemeEnum.default("system"),
+  accentColor: z.string().default("#3B82F6"),
+  language: z.string().default("en"),
+  defaultView: DefaultViewEnum.default("grid"),
   itemsPerPage: z.number().int().min(10).max(100).default(20),
 });
 
@@ -31,7 +31,7 @@ export const UserSchema = z.object({
   username: z.string().min(3).max(25).trim(),
   email: z.string().email().toLowerCase(),
   displayName: z.string().optional(),
-  avatarImg: z.string().optional().or(z.literal('')),
+  avatarImg: z.string().optional().or(z.literal("")),
 
   // UI & Personalization
   preferences: UserPreferencesSchema.optional(),

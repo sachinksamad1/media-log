@@ -1,18 +1,5 @@
-import type { MediaDTO } from '@common/media/media-dto.js';
+export type { NonFictionDTO } from '@media-log/shared-types';
 import type { NonFiction } from '@modules/media/non-fiction/non-fiction-schema.js';
-
-export interface NonFictionDTO extends MediaDTO {
-  author?: string;
-  format?: string;
-  published?: string;
-  volumes: {
-    standalone: boolean;
-    seriesName?: string;
-    order: number;
-    total: number;
-    isCompleted: boolean;
-  }[];
-}
 
 export type CreateNonFictionDto = Omit<
   NonFiction,

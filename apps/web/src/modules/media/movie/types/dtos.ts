@@ -1,36 +1,12 @@
+import type { MovieDTO, MovieStats, ApiResponse } from '@media-log/shared-types'
+
+export type MovieStatsDto = MovieStats
+
 export interface MovieUserStatsDto {
   score: number
   status: 'Completed' | 'Planned' | 'Watching' | 'Dropped' | string
-  watchedDate?: string
-  rewatchCount?: number
 }
 
-export interface MovieDto {
-  id: string
-  title: string
-  director?: string
-  cast: string[]
-  genres?: string[]
-  movieStats: {
-    releaseDate?: string
-    runtimeMinutes?: number
-    productionCompany?: string
-  }
-  language?: string
-  origin?: string
-  userStats: MovieUserStatsDto
-  imageUrl: string
-  createdAt: string
-  updatedAt: string
-}
+export type MovieDto = MovieDTO
 
-export interface MovieResponseDto {
-  success: boolean
-  message: string
-  data: MovieDto[]
-  meta?: {
-    totalItems?: number
-    nextCursor?: string | null
-    count?: number
-  }
-}
+export type MovieResponseDto = ApiResponse<MovieDto[]>

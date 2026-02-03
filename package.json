@@ -16,14 +16,38 @@
     "deploy": "firebase deploy",
     "deploy:web": "firebase deploy --only hosting",
     "deploy:backend": "firebase deploy --only functions",
-    "clean": "rimraf apps/web/dist apps/backend/dist"
+    "clean": "rimraf apps/web/dist apps/backend/dist",
+    "prepare": "husky"
   },
   "engines": {
     "node": "24"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
     "rimraf": "^6.1.2",
     "turbo": "^2.8.2"
+  },
+  "lint-staged": {
+    "apps/backend/**/*.{ts,js,mts,cjs}": [
+      "eslint --config apps/backend/eslint.config.js --fix",
+      "prettier --write"
+    ],
+    "apps/web/**/*.{ts,js,vue,mts,cjs}": [
+      "eslint --config apps/web/eslint.config.js --fix",
+      "prettier --write"
+    ],
+    "packages/shared-types/**/*.{ts,js,mts,cjs}": [
+      "eslint --config packages/shared-types/eslint.config.js --fix",
+      "prettier --write"
+    ],
+    "packages/shared-utils/**/*.{ts,js,mts,cjs}": [
+      "eslint --config packages/shared-utils/eslint.config.js --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   }
 }

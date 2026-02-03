@@ -1,9 +1,9 @@
 import { MediaMapper } from '@common/media/media-mapper.js';
 import type { GameDTO } from '@modules/media/game/game-dto.js';
-import type { Games } from '@modules/media/game/game-schema.js';
+import type { Game } from '@modules/media/game/game-schema.js';
 
-export class GameMapper extends MediaMapper<Games, GameDTO> {
-  protected mapSpecializedFields(entity: Games): Partial<GameDTO> {
+export class GameMapper extends MediaMapper<Game, GameDTO> {
+  protected mapSpecializedFields(entity: Game): Partial<GameDTO> {
     return {
       platforms: entity.platforms,
       developers: entity.developers,

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 import { MediaBaseSchema } from "./media-base.schema.js";
 
 // =============================================================================
@@ -6,20 +6,20 @@ import { MediaBaseSchema } from "./media-base.schema.js";
 // =============================================================================
 
 export const MangaTypeEnum = z.enum([
-  'Manga',
-  'Manhwa',
-  'Manhua',
-  'One-shot',
-  'Doujinshi',
+  "Manga",
+  "Manhwa",
+  "Manhua",
+  "One-shot",
+  "Doujinshi",
 ]);
 
-export const MangaFormatEnum = z.enum(['Physical', 'Digital', 'Magazine']);
+export const MangaFormatEnum = z.enum(["Physical", "Digital", "Magazine"]);
 
 export const ReleaseStatusEnum = z.enum([
-  'Ongoing',
-  'Completed',
-  'Hiatus',
-  'Cancelled',
+  "Ongoing",
+  "Completed",
+  "Hiatus",
+  "Cancelled",
 ]);
 
 // =============================================================================
@@ -29,7 +29,7 @@ export const ReleaseStatusEnum = z.enum([
 export const MangaReleaseStatsSchema = z.object({
   chaptersPublished: z.number().int().min(1).default(1),
   volumesPublished: z.number().int().min(1).default(1),
-  releaseStatus: ReleaseStatusEnum.default('Ongoing'),
+  releaseStatus: ReleaseStatusEnum.default("Ongoing"),
 });
 
 export const MangaReadingStatsSchema = z.object({
@@ -40,8 +40,8 @@ export const MangaReadingStatsSchema = z.object({
 export const MangaSchema = MediaBaseSchema.extend({
   author: z.string().optional(),
   illustrator: z.string().optional(),
-  type: MangaTypeEnum.default('Manga'),
-  format: MangaFormatEnum.default('Digital'),
+  type: MangaTypeEnum.default("Manga"),
+  format: MangaFormatEnum.default("Digital"),
   releaseStats: MangaReleaseStatsSchema,
   readingStats: MangaReadingStatsSchema.default({
     currentReadingChapter: 0,

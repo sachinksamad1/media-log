@@ -1,17 +1,8 @@
 export class AppError extends Error {
-  public readonly statusCode: number;
-  public readonly isOperational: boolean;
-
-  constructor(message: string, statusCode: number) {
+  constructor(
+    public override message: string,
+    public statusCode: number = 500,
+  ) {
     super(message);
-
-    this.name = 'AppError'; // Critical for identification
-    this.statusCode = statusCode;
-    this.isOperational = true;
-
-    // V8-safe stack trace capture
-    if (Error.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
-    }
   }
 }

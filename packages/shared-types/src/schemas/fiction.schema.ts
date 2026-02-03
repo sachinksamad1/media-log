@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 import { MediaBaseSchema } from "./media-base.schema.js";
 
 // =============================================================================
@@ -22,14 +22,16 @@ export const FictionSchema = MediaBaseSchema.extend({
   type: z.string().optional(),
   publicationInfo: FictionPublicationInfoSchema.default({
     volumes: 0,
-    status: '',
+    status: "",
   }),
   readingStats: FictionReadingStatsSchema.default({
     currentReadingVolume: 1,
   }),
 });
 
-export type FictionPublicationInfo = z.infer<typeof FictionPublicationInfoSchema>;
+export type FictionPublicationInfo = z.infer<
+  typeof FictionPublicationInfoSchema
+>;
 export type FictionReadingStats = z.infer<typeof FictionReadingStatsSchema>;
 export type Fiction = z.infer<typeof FictionSchema>;
 

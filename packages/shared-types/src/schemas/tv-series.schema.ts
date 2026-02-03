@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 import { MediaBaseSchema } from "./media-base.schema.js";
 
 // =============================================================================
@@ -7,13 +7,15 @@ import { MediaBaseSchema } from "./media-base.schema.js";
 
 export const TvSeriesUserStatsSchema = z.object({
   score: z.number().min(0).max(10).default(0),
-  status: z.enum(['Planned', 'Watching', 'Completed', 'Dropped', 'On-Hold']).default('Planned'),
+  status: z
+    .enum(["Planned", "Watching", "Completed", "Dropped", "On-Hold"])
+    .default("Planned"),
   watchedEpisodes: z.number().int().min(0).default(0),
   rewatchCount: z.number().int().min(0).default(0),
 });
 
 export const TvSeriesStatsSchema = z.object({
-  airingYear: z.string().regex(/^\d{4}$/, 'Must be a 4-digit year'),
+  airingYear: z.string().regex(/^\d{4}$/, "Must be a 4-digit year"),
   currentSeason: z.number().int().min(0).default(1),
   totalSeasons: z.number().int().min(1).default(1),
   totalEpisodes: z.number().int().optional(),
@@ -30,7 +32,7 @@ export const TvSeriesSchema = MediaBaseSchema.extend({
   endDate: z.string().optional(),
   userStats: TvSeriesUserStatsSchema.default({
     score: 0,
-    status: 'Planned',
+    status: "Planned",
     watchedEpisodes: 0,
     rewatchCount: 0,
   }),

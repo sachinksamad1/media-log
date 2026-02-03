@@ -60,6 +60,7 @@ mobile/.env
 .buildlog/
 .history
 .svn/
+pnpm-lock.yaml.463372962
 
 # IntelliJ related
 *.iml

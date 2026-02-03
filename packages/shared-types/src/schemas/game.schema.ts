@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 import { MediaBaseSchema, UserStatusEnum } from "./media-base.schema.js";
 
 // =============================================================================
@@ -13,7 +13,7 @@ export const PlaythroughSchema = z.object({
 
 export const GameUserStatsSchema = z.object({
   score: z.number().min(0).max(10).default(0),
-  status: UserStatusEnum.default('Planned'),
+  status: UserStatusEnum.default("Planned"),
   playTime: z.number().min(0).default(0),
 });
 
@@ -24,7 +24,7 @@ export const GameSchema = MediaBaseSchema.extend({
   releaseDate: z.string().optional(),
   userStats: GameUserStatsSchema.default({
     score: 0,
-    status: 'Planned',
+    status: "Planned",
     playTime: 0,
   }),
   playthroughs: z.array(PlaythroughSchema).default([]),
