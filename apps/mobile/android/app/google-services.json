@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "9229889216",
+    "project_id": "medialibrary-8c6ca",
+    "storage_bucket": "medialibrary-8c6ca.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:9229889216:android:ed673a5172100a8e47c725",
+        "android_client_info": {
+          "package_name": "com.medialog.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "9229889216-rq1vmbui6c1nhoih49cfj0ctsmj06skr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRBtRWVQUhm2IZvp7VXjOmKnXMRZEtmV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "9229889216-rq1vmbui6c1nhoih49cfj0ctsmj06skr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
