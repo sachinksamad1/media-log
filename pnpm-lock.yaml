@@ -26,6 +26,9 @@ importers:
       '@media-log/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
+      '@media-log/shared-utils':
+        specifier: workspace:*
+        version: link:../../packages/shared-utils
       '@types/nodemailer':
         specifier: ^7.0.5
         version: 7.0.9
@@ -153,6 +156,9 @@ importers:
       '@media-log/shared-types':
         specifier: workspace:*
         version: link:../../packages/shared-types
+      '@media-log/shared-utils':
+        specifier: workspace:*
+        version: link:../../packages/shared-utils
       '@tailwindcss/vite':
         specifier: ^4.1.18
         version: 4.1.18(rolldown-vite@7.2.5(@types/node@24.10.10)(jiti@2.6.1)(tsx@4.21.0))
@@ -266,6 +272,25 @@ importers:
         specifier: ^3.24.4
         version: 3.25.76
     devDependencies:
+      rimraf:
+        specifier: ^6.0.0
+        version: 6.1.2
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+
+  packages/shared-utils:
+    dependencies:
+      date-fns:
+        specifier: ^4.1.0
+        version: 4.1.0
+    devDependencies:
+      eslint:
+        specifier: ^9.0.0
+        version: 9.39.2(jiti@2.6.1)
+      prettier:
+        specifier: ^3.0.0
+        version: 3.8.1
       rimraf:
         specifier: ^6.0.0
         version: 6.1.2
