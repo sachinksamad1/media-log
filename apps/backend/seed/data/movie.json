@@ -1,0 +1,70 @@
+[
+  {
+    "title": "Shoplifters",
+    "releaseDate": "2018-06-08T00:00:00Z",
+    "director": "Hirokazu Kore-eda",
+    "cast": ["Lily Franky", "Sakura Ando", "Mayu Matsuoka"],
+    "genre": ["Drama", "Crime"],
+    "origin": "Japan",
+    "language": "Japanese",
+    "movieStats": {
+      "released": "Yes",
+      "releaseDate": "2018-06-08T00:00:00Z",
+      "releaseCountry": "Japan"
+    },
+    "userStats": {
+      "score": 9.5,
+      "status": "Completed"
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "meta": {
+      "createdAt": "2026-01-05T10:00:00Z",
+      "updatedAt": "2026-01-05T10:00:00Z"
+    }
+  },
+  {
+    "title": "Oppenheimer",
+    "releaseDate": "2023-07-21T00:00:00Z",
+    "director": "Christopher Nolan",
+    "cast": ["Cillian Murphy", "Emily Blunt", "Robert Downey Jr."],
+    "genre": ["Biographical", "Drama", "History"],
+    "origin": "USA",
+    "language": "English",
+    "movieStats": {
+      "released": "Yes",
+      "releaseDate": "2023-07-21T00:00:00Z",
+      "releaseCountry": "USA"
+    },
+    "userStats": {
+      "score": 9.0,
+      "status": "Completed"
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "meta": {
+      "createdAt": "2026-01-05T11:00:00Z",
+      "updatedAt": "2026-01-05T11:00:00Z"
+    }
+  },
+  {
+    "title": "Beyond the Spider-Verse",
+    "releaseDate": "2025-01-01T00:00:00Z",
+    "director": "Joaquim Dos Santos",
+    "cast": ["Shameik Moore", "Hailee Steinfeld"],
+    "genre": ["Animation", "Action", "Sci-Fi"],
+    "origin": "USA",
+    "language": "English",
+    "movieStats": {
+      "released": "No",
+      "releaseCountry": "USA"
+    },
+    "userStats": {
+      "score": 0,
+      "status": "Planned"
+    },
+    "imageUrl": "https://placehold.co/600x400.png",
+    "meta": {
+      "createdAt": "2026-01-05T12:00:00Z",
+      "updatedAt": "2026-01-05T12:00:00Z"
+    }
+  }
+]

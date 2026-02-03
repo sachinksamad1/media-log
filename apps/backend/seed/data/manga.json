@@ -1,0 +1,92 @@
+[
+  {
+    "title": "Chainsaw Man",
+    "author": "Tatsuki Fujimoto",
+    "illustrator": "Tatsuki Fujimoto",
+    "origin": "Japan",
+    "genres": ["Action", "Dark Fantasy", "Comedy"],
+    "format": "Digital",
+    "type": "Manga",
+    "releaseStats": {
+      "publishedVolumes": 18,
+      "releaseStatus": "Ongoing"
+    },
+    "userStats": {
+      "score": 9.5,
+      "currentChapter": 160,
+      "currentVolume": 16,
+      "totalVolumes": 18,
+      "readingStatus": "Reading"
+    },
+    "metadata": {
+      "imageUrl": "https://placehold.co/600x400.png"
+    }
+  },
+  {
+    "title": "Solo Leveling",
+    "author": "Chugong",
+    "illustrator": "DUBU",
+    "origin": "South Korea",
+    "genres": ["Action", "Fantasy", "System"],
+    "format": "Digital",
+    "type": "Manhwa",
+    "releaseStats": {
+      "publishedVolumes": 14,
+      "releaseStatus": "Completed"
+    },
+    "userStats": {
+      "score": 8.0,
+      "currentChapter": 179,
+      "currentVolume": 14,
+      "totalVolumes": 14,
+      "readingStatus": "Completed"
+    },
+    "metadata": {
+      "imageUrl": "https://placehold.co/600x400.png"
+    }
+  },
+  {
+    "title": "Look Back",
+    "author": "Tatsuki Fujimoto",
+    "illustrator": "Tatsuki Fujimoto",
+    "origin": "Japan",
+    "genres": ["Drama", "Slice of Life"],
+    "format": "Physical",
+    "type": "One-shot",
+    "releaseStats": {
+      "publishedVolumes": 1,
+      "releaseStatus": "Completed"
+    },
+    "userStats": {
+      "score": 10.0,
+      "currentChapter": 1,
+      "currentVolume": 1,
+      "totalVolumes": 1,
+      "readingStatus": "Completed"
+    },
+    "metadata": {
+      "imageUrl": ""
+    }
+  },
+  {
+    "title": "The Ravages of Time",
+    "author": "Chen Mou",
+    "origin": "China",
+    "genres": ["Historical", "Strategy", "War"],
+    "format": "Magazine",
+    "type": "Manhua",
+    "releaseStats": {
+      "publishedVolumes": 75,
+      "releaseStatus": "Ongoing"
+    },
+    "userStats": {
+      "score": 0,
+      "currentChapter": 0,
+      "currentVolume": 0,
+      "readingStatus": "Planned"
+    },
+    "metadata": {
+      "imageUrl": "https://placehold.co/600x400.png"
+    }
+  }
+]

@@ -3,22 +3,27 @@
   "packageManager": "pnpm@10.28.1",
   "private": true,
   "scripts": {
-    "dev:web": "cd web && pnpm dev",
-    "dev:backend": "cd backend && pnpm dev",
-    "dev": "concurrently \"pnpm dev:web\" \"pnpm dev:backend\"",
-    "build:web": "cd web && pnpm build",
-    "build:backend": "cd backend && pnpm build",
-    "build": "pnpm build:web && pnpm build:backend",
+    "dev": "turbo dev",
+    "dev:web": "turbo dev --filter=media-log-web",
+    "dev:backend": "turbo dev --filter=media-log-backend",
+    "build": "turbo build",
+    "build:web": "turbo build --filter=media-log-web",
+    "build:backend": "turbo build --filter=media-log-backend",
+    "check": "turbo check",
+    "lint": "turbo lint",
+    "format": "turbo format",
+    "test": "turbo test",
     "deploy": "firebase deploy",
     "deploy:web": "firebase deploy --only hosting",
     "deploy:backend": "firebase deploy --only functions",
-    "clean": "rimraf web/dist backend/dist"
+    "clean": "rimraf apps/web/dist apps/backend/dist"
   },
   "engines": {
     "node": "24"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "rimraf": "^6.1.2"
+    "rimraf": "^6.1.2",
+    "turbo": "^2.8.2"
   }
 }
