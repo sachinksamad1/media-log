@@ -81,6 +81,11 @@ export const fileUploadMiddleware = (
   bb.on('close', () => {
     Promise.all(fileWrites)
       .then(() => {
+        // eslint-disable-next-line no-console
+        console.log('FileUpload - Fields received:', Object.keys(fields));
+        // eslint-disable-next-line no-console
+        console.log('FileUpload - FileInfo:', fileInfo ? 'Present' : 'None');
+
         req.body = fields;
 
         // Handle 'data' field manually if it exists (for JSON payload in multipart)

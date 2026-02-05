@@ -15,13 +15,13 @@ export const LightNovelService = {
   },
 
   async create(lightNovel: Partial<LightNovel> | FormData): Promise<LightNovel> {
-    const { data } = await http.post<LightNovelDto>('/light-novel', lightNovel)
-    return LightNovelMapper.toDomain(data)
+    const { data } = await http.post<{ data: LightNovelDto }>('/light-novel', lightNovel)
+    return LightNovelMapper.toDomain(data.data)
   },
 
   async update(id: string, lightNovel: Partial<LightNovel> | FormData): Promise<LightNovel> {
-    const { data } = await http.patch<LightNovelDto>(`/light-novel/${id}`, lightNovel)
-    return LightNovelMapper.toDomain(data)
+    const { data } = await http.patch<{ data: LightNovelDto }>(`/light-novel/${id}`, lightNovel)
+    return LightNovelMapper.toDomain(data.data)
   },
 
   async delete(id: string): Promise<void> {

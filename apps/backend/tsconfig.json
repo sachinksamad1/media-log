@@ -34,7 +34,11 @@
     "esm": true,
     "experimentalSpecifierResolution": "node"
   },
-  "include": ["src/**/*", "scripts/reproduce_issue.ts"],
+  "include": [
+    "src/**/*",
+    "scripts/reproduce_issue.ts",
+    "scripts/debug-request.ts"
+  ],
   "exclude": [
     "node_modules",
     "dist",

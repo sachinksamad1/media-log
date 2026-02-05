@@ -14,6 +14,14 @@ export const validate =
     try {
       let bodyToValidate = req.body;
 
+      // eslint-disable-next-line no-console
+      console.log('Validate Request - Headers:', req.headers['content-type']);
+      // eslint-disable-next-line no-console
+      console.log(
+        'Validate Request - Initial Body keys:',
+        Object.keys(req.body),
+      );
+
       if (
         req.headers['content-type']?.includes('multipart/form-data') &&
         typeof req.body?.data === 'string'

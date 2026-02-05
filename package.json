@@ -1,6 +1,6 @@
 {
   "name": "media-log-monorepo",
-  "packageManager": "pnpm@10.28.1",
+  "packageManager": "pnpm@10.28.2",
   "private": true,
   "scripts": {
     "dev": "turbo dev",
@@ -13,7 +13,6 @@
     "lint": "turbo lint",
     "format": "turbo format",
     "test": "turbo test",
-    "deploy": "firebase deploy",
     "deploy:web": "firebase deploy --only hosting",
     "deploy:backend": "pnpm --filter media-log-backend run deploy",
     "clean": "rimraf apps/web/dist apps/backend/dist",
@@ -29,7 +28,7 @@
     "lint-staged": "^16.2.7",
     "prettier": "^3.8.1",
     "rimraf": "^6.1.2",
-    "turbo": "^2.8.2"
+    "turbo": "^2.8.3"
   },
   "lint-staged": {
     "apps/backend/**/*.{ts,js,mts,cjs}": [

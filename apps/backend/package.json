@@ -65,8 +65,8 @@
   },
   "dependencies": {
     "@google-cloud/functions-framework": "^5.0.0",
-    "@media-log/shared-types": "workspace:*",
-    "@media-log/shared-utils": "workspace:*",
+    "@media-log/shared-types": "file:.tarballs/media-log-shared-types-0.0.1.tgz",
+    "@media-log/shared-utils": "file:.tarballs/media-log-shared-utils-0.0.1.tgz",
     "@types/nodemailer": "^7.0.5",
     "busboy": "^1.6.0",
     "cors": "^2.8.5",

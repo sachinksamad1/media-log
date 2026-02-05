@@ -42,7 +42,7 @@ export const MediaBaseSchema = z.object({
     score: 0,
     status: "Planned",
   }),
-  imageUrl: z.string().url("Invalid image URL").optional(),
+  imageUrl: z.string().optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
 });
