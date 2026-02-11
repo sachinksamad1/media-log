@@ -1,6 +1,6 @@
 {
   "name": "media-log-monorepo",
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@10.29.2",
   "private": true,
   "scripts": {
     "dev": "turbo dev",

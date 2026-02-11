@@ -12,7 +12,7 @@ test.describe('Health Check API', () => {
   }: {
     request: APIRequestContext;
   }) => {
-    const response = await request.get('/health');
+    const response = await request.get('/api/health');
 
     apiExpect.toBeSuccessful(response);
 
@@ -25,7 +25,7 @@ test.describe('Health Check API', () => {
   }: {
     request: APIRequestContext;
   }) => {
-    const response = await request.get('/');
+    const response = await request.get('/check');
 
     // Root might return 200 or redirect, both are acceptable
     expect(response.status()).toBeLessThan(400);

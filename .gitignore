@@ -30,9 +30,10 @@ build/
 
 # Backend
 backend/.env
-.env.dev
+.env.development
 serviceAccountKey.json
-.env.prod
+.env.production
+.env.test
 
 # Frontend
 frontend/.env
@@ -212,3 +213,8 @@ app.*.map.json
 
 # Local History
 .history
+
+# Playwright
+apps/backend/playwright-report/
+apps/backend/test-results/
+apps/backend/blob-report/

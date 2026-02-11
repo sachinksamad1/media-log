@@ -1,5 +1,5 @@
-import type { APIRequestContext } from '@playwright/test';
 import { test as base, expect, request } from '@playwright/test';
+import type { APIRequestContext } from '@playwright/test';
 
 /**
  * Custom test fixtures for the Media Log Backend
@@ -30,11 +30,11 @@ export const test = base.extend<CustomFixtures>({
   // Authenticated API request context
   authenticatedRequest: async ({ baseURL }, use) => {
     const context = await request.newContext({
-      baseURL: baseURL || 'http://localhost:3000/api/v1',
+      baseURL: baseURL || 'http://localhost:3001/api', // Updated default
       extraHTTPHeaders: {
         'Content-Type': 'application/json',
-        // Add your auth token here if needed
-        // 'Authorization': `Bearer ${process.env.TEST_AUTH_TOKEN}`,
+        // Use test token to bypass Firebase Auth in test env
+        Authorization: 'Bearer test-token-123',
       },
     });
 

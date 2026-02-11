@@ -1,11 +1,18 @@
 /// <reference types="node" />
+import path from 'path';
+import { fileURLToPath } from 'url';
+
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-import 'dotenv/config';
+dotenv.config({ path: path.resolve(__dirname, '.env.test') });
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -40,7 +47,8 @@ export default defineConfig({
   /* Shared settings for all the projects below */
   use: {
     /* Base URL to use in actions like `await page.goto('/')` */
-    baseURL: process.env.BASE_URL || 'http://localhost:3000/api/v1',
+    /* Base URL to use in actions like `await page.goto('/')` */
+    baseURL: process.env.BASE_URL || 'http://localhost:3001',
 
     /* Collect trace when retrying the failed test */
     trace: 'on-first-retry',
@@ -99,13 +107,29 @@ export default defineConfig({
   /* Folder for test artifacts such as screenshots, videos, traces, etc. */
   outputDir: 'test-results',
 
-  /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'pnpm run dev',
-    url: 'http://localhost:3000/api/v1/health',
-    reuseExistingServer: !process.env.CI,
-    timeout: 120 * 1000,
-  },
+  /* Run Firebase Emulator + backend server before starting the tests */
+  webServer: [
+    {
+      command:
+        'npx firebase-tools emulators:start --only firestore,auth --project test-project-id',
+      url: 'http://localhost:4000', // Emulator UI
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+      cwd: '../../', // root of monorepo where firebase.json lives
+    },
+    {
+      command: 'cross-env NODE_ENV=test tsx src/server.ts',
+      url: 'http://localhost:3001/check',
+      reuseExistingServer: !process.env.CI,
+      timeout: 120 * 1000,
+      env: {
+        NODE_ENV: 'test',
+        PORT: '3001',
+        FIRESTORE_EMULATOR_HOST: 'localhost:8080',
+        FIREBASE_AUTH_EMULATOR_HOST: 'localhost:9099',
+      },
+    },
+  ],
 
   /* Global timeout for each test */
   timeout: 30000,

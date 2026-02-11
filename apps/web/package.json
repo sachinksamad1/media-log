@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "packageManager": "pnpm@10.28.1",
+  "packageManager": "pnpm@10.29.2",
   "scripts": {
     "dev": "vite --mode development",
     "dev:prod": "vite --mode production",
@@ -19,6 +19,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@internationalized/date": "^3.11.0",
     "@media-log/shared-types": "workspace:*",
     "@media-log/shared-utils": "workspace:*",
     "@tailwindcss/vite": "^4.1.18",

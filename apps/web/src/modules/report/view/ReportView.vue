@@ -19,6 +19,7 @@ import {
 } from '../types/types'
 import ReportTable from '../components/ReportTable.vue'
 import ReportSummaryCards from '../components/ReportSummaryCards.vue'
+import DateRangePicker from '../../../common/components/ui/DateRangePicker.vue'
 
 const store = useReportStore()
 
@@ -135,6 +136,18 @@ function formatDate(dateString: string): string {
           {{ option.label }}
         </option>
       </select>
+
+      <!-- Custom Date Range -->
+      <DateRangePicker
+        v-if="store.filters.timeRange === 'custom'"
+        @update:model-value="
+          (range) => {
+            if (range?.start && range?.end) {
+              store.setCustomDateRange(range.start.toISOString(), range.end.toISOString())
+            }
+          }
+        "
+      />
 
       <!-- Sort -->
       <div class="flex items-center gap-1">

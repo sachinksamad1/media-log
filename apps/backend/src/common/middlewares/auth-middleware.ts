@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
+import type { DecodedIdToken } from 'firebase-admin/auth';
 
 import { ResponseUtil } from '@/common/utils/api-response.js';
 import { catchAsync } from '@/common/utils/catch-async.js';
@@ -19,7 +20,17 @@ export const protect = catchAsync(
 
     try {
       // 2. Verify token with Firebase Admin
-      const decodedToken = await auth.verifyIdToken(token);
+      let decodedToken: DecodedIdToken;
+
+      if (process.env.NODE_ENV === 'test' && token === 'test-token-123') {
+        decodedToken = {
+          uid: 'test-user-id',
+          email: 'test@example.com',
+          email_verified: true,
+        } as unknown as DecodedIdToken;
+      } else {
+        decodedToken = await auth.verifyIdToken(token);
+      }
 
       // 3. Attach UID to the request object for use in Controllers
       req.user = decodedToken;

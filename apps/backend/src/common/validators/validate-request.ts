@@ -12,14 +12,14 @@ export const validate =
   <T extends RequestSchema>(schema: T) =>
   async (req: Request, _res: Response, next: NextFunction) => {
     try {
-      let bodyToValidate = req.body;
+      let bodyToValidate = req.body ?? {};
 
       // eslint-disable-next-line no-console
       console.log('Validate Request - Headers:', req.headers['content-type']);
       // eslint-disable-next-line no-console
       console.log(
         'Validate Request - Initial Body keys:',
-        Object.keys(req.body),
+        Object.keys(bodyToValidate),
       );
 
       if (
@@ -41,10 +41,16 @@ export const validate =
       });
 
       // Assign validated data
-      req.body = parsed.body as Request['body'];
+      if (parsed.body !== undefined) {
+        req.body = parsed.body as Request['body'];
+      }
 
-      Object.assign(req.query, parsed.query);
-      Object.assign(req.params, parsed.params);
+      if (parsed.query) {
+        Object.assign(req.query, parsed.query);
+      }
+      if (parsed.params) {
+        Object.assign(req.params, parsed.params);
+      }
 
       next();
     } catch (error) {
