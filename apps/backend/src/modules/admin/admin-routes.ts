@@ -6,8 +6,20 @@ const router = Router();
 const controller = new AdminController();
 
 /**
- * POST /api/v1/admin/cleanup
- * Use POST for actions that modify or delete server resources
+ * @openapi
+ * /admin/cleanup:
+ *   post:
+ *     summary: Run cleanup tasks
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Cleanup tasks triggered successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden
  */
 router.post('/cleanup', controller.runCleanup);
 

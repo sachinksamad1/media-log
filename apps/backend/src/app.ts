@@ -1,10 +1,12 @@
 import { globalErrorHandler } from '@common/errors/error-handler.js';
 import corsOptions from '@config/cors.js';
+import swaggerSpec from '@config/swagger.js';
 import cors from 'cors';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
 
 import routes from './app.routes.js';
 
@@ -43,6 +45,10 @@ app.use(
 // 5. Routes & Error Handling
 app.use('/check', (req, res) => res.status(200).json({ status: 'OK' }));
 app.use('/api', routes);
+
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use(globalErrorHandler);
 
 export default app;

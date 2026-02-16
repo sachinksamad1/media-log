@@ -1,9 +1,10 @@
 packages:
-  - "apps/*"
-  - "packages/*"
+  - apps/*
+  - packages/*
 
 onlyBuiltDependencies:
   - "@firebase/util"
+  - "@scarf/scarf"
   - esbuild
   - protobufjs
   - sharp

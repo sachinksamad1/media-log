@@ -12,6 +12,20 @@ const statsController = new StatsController(statsService);
 
 router.use(protect);
 
+/**
+ * @openapi
+ * /stats/summary:
+ *   get:
+ *     summary: Get statistics summary
+ *     tags: [Stats]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Statistics summary
+ *       401:
+ *         description: Unauthorized
+ */
 router.get('/summary', statsController.getSummary);
 
 export default router;

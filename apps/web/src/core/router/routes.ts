@@ -56,7 +56,8 @@ const routes: RouteRecordRaw[] = [
   // Redirect /login to /auth for compatibility with guard
   {
     path: '/login',
-    redirect: '/auth',
+    name: 'login',
+    redirect: { name: 'auth' },
   },
   ...animeRoutes,
   ...mangaRoutes,

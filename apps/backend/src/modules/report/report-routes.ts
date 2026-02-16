@@ -13,13 +13,61 @@ const reportController = new ReportController(reportService);
 // All report routes require authentication
 router.use(protect);
 
-// GET /api/reports - Get paginated report data
+/**
+ * @openapi
+ * /reports:
+ *   get:
+ *     summary: Get paginated report data
+ *     tags: [Reports]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: limit
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Paginated report data
+ *       401:
+ *         description: Unauthorized
+ */
 router.get('/', reportController.getReport);
 
-// GET /api/reports/summary - Get quick summary
+/**
+ * @openapi
+ * /reports/summary:
+ *   get:
+ *     summary: Get quick report summary
+ *     tags: [Reports]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Report summary
+ *       401:
+ *         description: Unauthorized
+ */
 router.get('/summary', reportController.getSummary);
 
-// GET /api/reports/export - Export report data
+/**
+ * @openapi
+ * /reports/export:
+ *   get:
+ *     summary: Export report data
+ *     tags: [Reports]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Exported data
+ *       401:
+ *         description: Unauthorized
+ */
 router.get('/export', reportController.exportReport);
 
 export default router;

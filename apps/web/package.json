@@ -16,7 +16,12 @@
     "preview": "vite preview",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
-    "test": "vitest"
+    "test": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@internationalized/date": "^3.11.0",
@@ -41,6 +46,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.58.2",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/test-utils": "^2.4.6",
