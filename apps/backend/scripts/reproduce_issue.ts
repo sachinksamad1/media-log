@@ -25,15 +25,19 @@ req.headers = {
 const bb = busboy({ headers: req.headers });
 
 bb.on('file', (name, file, info) => {
-    // eslint-disable-next-line no-console
-  console.log(`File [${name}]: filename: ${info.filename}, encoding: ${info.encoding}, mimetype: ${info.mimeType}`);
-  file.on('data', (data) => {
-    // eslint-disable-next-line no-console
-    console.log(`File [${name}] got ${data.length} bytes`);
-  }).on('close', () => {
-    // eslint-disable-next-line no-console
-    console.log(`File [${name}] done`);
-  });
+  // eslint-disable-next-line no-console
+  console.log(
+    `File [${name}]: filename: ${info.filename}, encoding: ${info.encoding}, mimetype: ${info.mimeType}`,
+  );
+  file
+    .on('data', (data) => {
+      // eslint-disable-next-line no-console
+      console.log(`File [${name}] got ${data.length} bytes`);
+    })
+    .on('close', () => {
+      // eslint-disable-next-line no-console
+      console.log(`File [${name}] done`);
+    });
 });
 
 bb.on('field', (name, val, _info) => {

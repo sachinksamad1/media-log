@@ -1,7 +1,6 @@
 // import { FictionSchema } from '../../../src/modules/media/fiction/fiction-schema.js';
 // import { seedCollectionWithSchema } from '../../seed-helper.js';
 
-
 // export async function seedFiction() {
 //   console.log('📦 Seeding Fiction...');
 

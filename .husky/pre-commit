@@ -1,9 +1,11 @@
-pnpm lint-staged
+#!/bin/sh
+
+pnpm exec lint-staged
 
 # Check for sensitive files in the staging area
 staged_files=$(git diff --cached --name-only)
 
-if echo "$staged_files" | grep -q -E "(.env|.env.dev|.env.prod)$"; then
+if echo "$staged_files" | grep -q -E "(.env|.env.dev|.env.prod|.env.development|.env.production)$"; then
   echo "❌ ERROR: You are trying to commit a .env file!"
   echo "Please run 'git rm --cached <file>' and add it to .gitignore."
   exit 1

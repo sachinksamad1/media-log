@@ -5,13 +5,13 @@
 
 //   try {
 //     // 1. Create a "Bare Minimum" user to see defaults in action
-//     const newUser = UserSchema.parse({ 
-//       username: "minimal_user", 
-//       email: "min@test.com" 
+//     const newUser = UserSchema.parse({
+//       username: "minimal_user",
+//       email: "min@test.com"
 //     });
 
 //     console.log("✅ Minimal User Created Successfully");
-    
+
 //     // Log with formatting for easy visual inspection
 //     console.log("User Object Structure:", JSON.stringify(newUser, null, 2));
 

@@ -1,7 +1,6 @@
 // import { AnimeSchema } from '../../../src/modules/media/anime/anime-schema.js';
 // import { seedCollectionWithSchema } from '../../seed-helper.js';
 
-
 // export async function seedAnime() {
 //   console.log('📦 Seeding Anime...');
 

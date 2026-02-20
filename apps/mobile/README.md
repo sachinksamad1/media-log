@@ -11,7 +11,7 @@ Your ultimate personal media tracker. Keep track of your Anime, Manga, Books, Mo
   - 🎮 Games
 - **Dashboard**: Get a quick overview of your library stats and recent activity.
 - **Smart Library**: Organized tabs for each media category with "Remember Me" persistent filters.
-- **Secure Authentication**: 
+- **Secure Authentication**:
   - Powered by Firebase Auth.
   - Secure session storage using `flutter_secure_storage`.
   - Supports Email/Password & Google Sign-In.
@@ -37,21 +37,25 @@ Your ultimate personal media tracker. Keep track of your Anime, Manga, Books, Mo
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/media-log.git
    cd media-log/mobile
    ```
 
 2. **Install Dependencies**
+
    ```bash
    flutter pub get
    ```
 
 3. **Environment Setup**
    Create a `.env` file in the root of the `mobile` directory:
+
    ```env
    API_BASE_URL=http://your-backend-ip:3000/api # Replace with your backend IP
    ```
+
    > **Note**: For physical devices, use your computer's local IP (e.g., `192.168.x.x`), not `localhost`.
 
 4. **Firebase Setup**
@@ -62,6 +66,7 @@ Your ultimate personal media tracker. Keep track of your Anime, Manga, Books, Mo
 
 5. **Code Generation**
    Run the build runner to generate Riverpod providers and JSON serialization code:
+
    ```bash
    dart run build_runner build --delete-conflicting-outputs
    ```

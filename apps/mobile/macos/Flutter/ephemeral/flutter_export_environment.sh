@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=D:\Flutter\SDK"
-export "FLUTTER_APPLICATION_PATH=D:\code_repo\projects\mediaLog\media-log\apps\mobile"
+export "FLUTTER_ROOT=/home/sachin/snap/flutter/common/flutter"
+export "FLUTTER_APPLICATION_PATH=/media/data/code_repo/projects/mediaLog/media-log/apps/mobile"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=1.0.0"

@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../domain/media_types.dart';
@@ -16,7 +18,20 @@ class AddMediaScreen extends ConsumerStatefulWidget {
 class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
-  final _imageUrlController = TextEditingController();
+
+  File? _selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      if (mounted) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
+    }
+  }
 
   // Specific fields controllers
   final _studioController = TextEditingController(); // Anime
@@ -36,7 +51,6 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
   @override
   void dispose() {
     _titleController.dispose();
-    _imageUrlController.dispose();
     _studioController.dispose();
     _authorController.dispose();
     _developerController.dispose();
@@ -72,9 +86,6 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
       try {
         final data = {
           'title': _titleController.text,
-          'imageUrl': _imageUrlController.text.isEmpty
-              ? null
-              : _imageUrlController.text,
           'userStats': {'score': _score > 0 ? _score : null, 'status': _status},
         };
 
@@ -102,7 +113,9 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
             break;
         }
 
-        await ref.read(mediaRepositoryProvider).create(widget.mediaType, data);
+        await ref
+            .read(mediaRepositoryProvider)
+            .create(widget.mediaType, data, imageFile: _selectedImage);
         if (mounted) {
           context.pop();
           // Refresh list
@@ -170,11 +183,33 @@ class _AddMediaScreenState extends ConsumerState<AddMediaScreen> {
                   v == null || v.isEmpty ? 'Title is required' : null,
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _imageUrlController,
-              decoration: const InputDecoration(
-                labelText: 'Image URL',
-                prefixIcon: Icon(Icons.image),
+            GestureDetector(
+              onTap: _pickImage,
+              child: Container(
+                height: 200,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surfaceContainerHighest,
+                  borderRadius: BorderRadius.circular(12),
+                  // If image is picked, show it
+                  image: _selectedImage != null
+                      ? DecorationImage(
+                          image: FileImage(_selectedImage!),
+                          fit: BoxFit.cover,
+                        )
+                      : null,
+                ),
+                child: _selectedImage == null
+                    ? const Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.add_photo_alternate, size: 48),
+                            SizedBox(height: 8),
+                            Text('Tap to select image'),
+                          ],
+                        ),
+                      )
+                    : null,
               ),
             ),
             const SizedBox(height: 16),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../domain/media_types.dart';
 import '../../anime/data/anime_model.dart';
 import '../../manga/data/manga_model.dart';
@@ -143,6 +144,13 @@ class MediaDetailScreen extends StatelessWidget {
           ),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.push('/edit-media', extra: media);
+        },
+        child: const Icon(Icons.edit),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
 

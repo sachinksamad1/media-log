@@ -1,220 +1,69 @@
 # Dependencies
 node_modules/
-/jspm_packages/
-/.npm/
+.pnp
+.pnp.js
+.npm/
 
-# Optional npm cache files
-.npm
-.eslintcache
+# Testing
+/coverage/
+apps/backend/playwright-report/
+apps/backend/test-results/
+apps/backend/blob-report/
+
+# Turborepo
+.turbo/
+
+# Build output
+dist/
+build/
+*.tgz
+
+# Misc
+.DS_Store
+*.pem
+
+# Environment Variables & Secrets
+.env
+.env.*
+!.env.example
+*.local
 
 # Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
-
-# OS and Editor files
-.DS_Store
-.idea/
-.vscode/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.vssscc
-
-# Build artifacts
-dist/
-build/
-*.tgz
-
-# Backend
-backend/.env
-.env.development
-serviceAccountKey.json
-.env.production
-.env.test
-
-# Frontend
-frontend/.env
-frontend/.env.development
-frontend/.env.production
-frontend/.gemini
-
-# Misc
-DashboardViewDropped.vue
-/notes
-/web/docs
-/.agent
-
-# Mobile
-mobile/.env
-
-# Miscellaneous
-*.class
-*.lock
+pnpm-debug.log*
+firebase-debug.log
 *.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-pnpm-lock.yaml.463372962
-google-services.json
-
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
-
-# Visual Studio Code related
-.classpath
-.project
-.settings/
-.vscode/*
-
-# Caching of compiled code
-.ccls-cache/
-.dart_tool/
-.packages
-
-# Generated files
-/ios/Flutter/App.framework/
-/ios/Flutter/App.podspec
-/ios/Flutter/Flutter.framework/
-/ios/Flutter/Flutter.podspec
-/ios/Flutter/flutter_assets/
-/ios/Pods/
-/android/.gradle/
-/android/local.properties
-/android/app/build/
-/build/
-
-# IDE-generated files (e.g. by Android Studio, VS Code)
-# and files specific to your local machine (e.g. secrets)
-# Consider using a global ignore file for these
-# e.g. secrets.json
-# e.g. key.properties (for Android signing)
-
-# Do not ignore pubspec.lock, as it ensures consistent package versions across environments
-!pubspec.lock
 
 # Firebase
-.firebase
-firebase.json
+.firebase/
 .firebaserc
-firebase-debug.log
 firebase-b*.json
 firestore.indexes.json
+serviceAccountKey.json
 
-# Miscellaneous
-*.class
-*.log
-*.pyc
-*.swp
-.DS_Store
-.atom/
-.buildlog/
-.history
-.svn/
-.swiftpm/
-pnpm-lock.yaml.*
-
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
+# IDEs
 .idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.swp
+*.suo
+*.sln
 
-# VS Code related
-.vscode/
+# AI/Agent
+/.agent
+/.gemini
+/notes
+debug.md
+debug/
 
-# Flutter/Dart/Pub related
-**/doc/api/
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-/coverage/
-
-# Environment Variables & Secrets (CRITICAL)
-.env
-.env.*
-!.env.example
-/android/app/google-services.json
-ios/Runner/GoogleService-Info.plist
-*.keystore
+# Android/iOS Global Patterns
+# Note: Flutter specific rules are handled in apps/mobile/.gitignore
 local.properties
-
-# Android related
-**/android/**/gradle-wrapper.jar
-**/android/.gradle
-**/android/captures/
-**/android/gradlew
-**/android/gradlew.bat
-**/android/local.properties
-**/android/**/GeneratedPluginRegistrant.java
-
-# Android Secrets
-/android/key.properties
-
-
-# iOS/macOS related
-**/ios/**/*.mode1v3
-**/ios/**/*.mode2v3
-**/ios/**/*.moved-aside
-**/ios/**/*.pbuser
-**/ios/**/*.perspectivev3
-**/ios/**/*sync/
-**/ios/**/.xcode.env.local
-**/ios/**/launch.json
-**/ios/Flutter/App.framework
-**/ios/Flutter/Flutter.framework
-**/ios/Flutter/Generated.xcconfig
-**/ios/Flutter/app.flx
-**/ios/Flutter/app.zip
-**/ios/ServiceDefinitions.json
-**/ios/Runner/GeneratedPluginRegistrant.*
-
-# CocoaPods
-**/ios/Pods/
-**/macos/Pods/
-**/ios/Podfile.lock
-**/macos/Podfile.lock
-
-# Windows related
-**/windows/flutter/generated_plugin_registrant.cc
-**/windows/flutter/generated_plugins.cmake
-**/windows/runner/resources/app_icon.ico
-
-# Linux related
-**/linux/flutter/generated_plugin_registrant.cc
-**/linux/flutter/generated_plugins.cmake
-
-# Web related
-lib/generated_plugin_registrant.dart
-
-# Symbolication related
-app.*.symbols
-
-# Obfuscation related
-app.*.map.json
-
-# Exceptions to above rules
-!/android/app/src/main/AndroidManifest.xml
-
-# Turborepo artifacts
-.turbo/
-
-# Local History
-.history
-
-# Playwright
-apps/backend/playwright-report/
-apps/backend/test-results/
-apps/backend/blob-report/
+google-services.json
+GoogleService-Info.plist
+*.keystore

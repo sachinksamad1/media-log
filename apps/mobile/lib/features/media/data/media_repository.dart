@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -72,9 +74,20 @@ class MediaRepository {
   /// Create a new media item
   Future<T> create<T extends BaseMedia>(
     MediaType type,
-    Map<String, dynamic> data,
-  ) async {
-    final response = await _dio.post('/${type.apiPath}', data: data);
+    Map<String, dynamic> data, {
+    File? imageFile,
+  }) async {
+    dynamic requestData;
+    if (imageFile != null) {
+      requestData = FormData.fromMap({
+        'data': jsonEncode(data),
+        'image': await MultipartFile.fromFile(imageFile.path),
+      });
+    } else {
+      requestData = data;
+    }
+
+    final response = await _dio.post('/${type.apiPath}', data: requestData);
     return _parseMedia<T>(type, response.data['data']);
   }
 
@@ -82,9 +95,23 @@ class MediaRepository {
   Future<T> update<T extends BaseMedia>(
     MediaType type,
     String id,
-    Map<String, dynamic> data,
-  ) async {
-    final response = await _dio.patch('/${type.apiPath}/$id', data: data);
+    Map<String, dynamic> data, {
+    File? imageFile,
+  }) async {
+    dynamic requestData;
+    if (imageFile != null) {
+      requestData = FormData.fromMap({
+        'data': jsonEncode(data),
+        'image': await MultipartFile.fromFile(imageFile.path),
+      });
+    } else {
+      requestData = data;
+    }
+
+    final response = await _dio.patch(
+      '/${type.apiPath}/$id',
+      data: requestData,
+    );
     return _parseMedia<T>(type, response.data['data']);
   }
 

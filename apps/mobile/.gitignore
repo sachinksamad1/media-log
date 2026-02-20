@@ -9,7 +9,6 @@
 .history
 .svn/
 .swiftpm/
-google-services.json
 
 # IntelliJ related
 *.iml
@@ -34,11 +33,13 @@ google-services.json
 .env
 .env.*
 !.env.example
-/android/app/google-services.json
-ios/Runner/GoogleService-Info.plist
 *.keystore
-local.properties
+
+# Firebase & Play Services Secrets
 google-services.json
+**/google-services.json
+GoogleService-Info.plist
+**/GoogleService-Info.plist
 
 # Android related
 **/android/**/gradle-wrapper.jar
@@ -48,10 +49,7 @@ google-services.json
 **/android/gradlew.bat
 **/android/local.properties
 **/android/**/GeneratedPluginRegistrant.java
-
-# Android Secrets
 /android/key.properties
-
 
 # iOS/macOS related
 **/ios/**/*.mode1v3
@@ -96,3 +94,4 @@ app.*.map.json
 
 # Exceptions to above rules
 !/android/app/src/main/AndroidManifest.xml
+.vfox/
