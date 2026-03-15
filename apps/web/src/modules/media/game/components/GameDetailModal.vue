@@ -4,6 +4,7 @@ import { GameService } from '@modules/media/game/api/gameService'
 import type { Game } from '@modules/media/game/types/types'
 import { Check, Play } from 'lucide-vue-next'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import NotesSection from '@/common/components/NotesSection.vue'
 
 const props = defineProps<{
   game: Game | null
@@ -336,6 +337,8 @@ async function handleDelete() {
               <div class="text-muted-foreground">Added to Library</div>
               <div>{{ new Date(game?.createdAt || '').toLocaleDateString() }}</div>
             </div>
+            <!-- Notes Section -->
+            <NotesSection v-if="game?.id" :media-id="game.id" media-type="game" :is-open="isOpen" />
           </div>
 
           <!-- EDIT MODE -->

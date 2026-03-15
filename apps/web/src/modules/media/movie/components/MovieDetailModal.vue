@@ -4,6 +4,7 @@ import { MovieService } from '@modules/media/movie/api/movieService'
 import type { Movie } from '@modules/media/movie/types/types'
 import { Check, Play } from 'lucide-vue-next'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import NotesSection from '@/common/components/NotesSection.vue'
 
 const props = defineProps<{
   movie: Movie | null
@@ -343,6 +344,13 @@ async function handleDelete() {
               <div class="text-muted-foreground">Added to Library</div>
               <div>{{ new Date(movie?.createdAt || '').toLocaleDateString() }}</div>
             </div>
+            <!-- Notes Section -->
+            <NotesSection
+              v-if="movie?.id"
+              :media-id="movie.id"
+              media-type="movie"
+              :is-open="isOpen"
+            />
           </div>
 
           <!-- EDIT MODE -->

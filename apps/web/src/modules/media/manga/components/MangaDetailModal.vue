@@ -4,6 +4,7 @@ import { MangaService } from '@/modules/media/manga/api/manga.service'
 import type { Manga } from '@/modules/media/manga/types/types'
 import { Check, RotateCcw } from 'lucide-vue-next'
 import { useToast } from '@/common/components/ui/toast/use-toast'
+import NotesSection from '@/common/components/NotesSection.vue'
 
 const props = defineProps<{
   manga: Manga | null
@@ -60,8 +61,8 @@ function syncForm(data: Manga) {
   previewUrl.value = null
 
   form.title = data.title
-  form.author = data.author
-  form.illustrator = data.illustrator
+  form.author = data.author ?? ''
+  form.illustrator = data.illustrator ?? ''
   form.status = data.userStats?.status ?? ''
   form.score = data.userStats?.score ?? 0
   form.volumesPublished = data.releaseStats?.volumesPublished ?? 0
@@ -70,8 +71,8 @@ function syncForm(data: Manga) {
   form.readingChapter = data.readingStats?.currentReadingChapter ?? 0
   form.readingVolume = data.readingStats?.currentReadingVolume ?? 0
   form.genre = data.genres ? data.genres.join(', ') : ''
-  form.type = data.type
-  form.format = data.format
+  form.type = data.type ?? ''
+  form.format = data.format ?? ''
 }
 
 watch(
@@ -366,6 +367,13 @@ async function handleDelete() {
               <div class="text-muted-foreground">Added to Library</div>
               <div>{{ new Date(manga?.createdAt || '').toLocaleDateString() }}</div>
             </div>
+            <!-- Notes Section -->
+            <NotesSection
+              v-if="manga?.id"
+              :media-id="manga.id"
+              media-type="manga"
+              :is-open="isOpen"
+            />
           </div>
 
           <!-- EDIT MODE -->

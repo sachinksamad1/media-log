@@ -4,7 +4,16 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "lib": ["ES2022"],
-
+    "types": [
+      "node",
+      "busboy",
+      "cors",
+      "express",
+      "formidable",
+      "morgan",
+      "nodemailer",
+      "uuid"
+    ],
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "forceConsistentCasingInFileNames": true,
@@ -14,9 +23,7 @@
     "noEmitOnError": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
-
     "outDir": "./dist",
-
     "baseUrl": ".",
     "paths": {
       "@media/*": ["src/modules/media/*"],

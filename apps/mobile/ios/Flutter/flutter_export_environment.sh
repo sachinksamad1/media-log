@@ -1,7 +1,7 @@
 #!/bin/sh
 # This is a generated file; do not edit or check into version control.
-export "FLUTTER_ROOT=/home/sachin/snap/flutter/common/flutter"
-export "FLUTTER_APPLICATION_PATH=/media/data/code_repo/projects/mediaLog/media-log/apps/mobile"
+export "FLUTTER_ROOT=/home/sachin/.cache/flutter_sdk"
+export "FLUTTER_APPLICATION_PATH=/media/data/Repos/projects/mediaLog/media-log/apps/mobile"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_TARGET=lib/main.dart"
 export "FLUTTER_BUILD_DIR=build"

@@ -4,6 +4,7 @@ import { TvSeriesService } from '@modules/media/tvSeries/api/tvSeriesService'
 import type { TvSeries } from '@modules/media/tvSeries/types/types'
 import { Check, Play } from 'lucide-vue-next'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import NotesSection from '@/common/components/NotesSection.vue'
 
 const props = defineProps<{
   tvSeries: TvSeries | null
@@ -77,7 +78,7 @@ function syncForm(data: TvSeries) {
   form.releaseDate = data.releaseDate ?? ''
   form.endDate = data.endDate ?? ''
   form.episodes = data.tvSeriesStats?.totalEpisodes ?? 0
-  form.language = data.language
+  form.language = data.language ?? ''
   form.country = data.origin ?? ''
   form.genres = data.genres ? data.genres.join(', ') : ''
   form.cast = data.cast ? data.cast.join(', ') : ''
@@ -158,7 +159,10 @@ async function handleSave() {
       releaseDate: form.releaseDate,
       endDate: form.endDate,
       tvSeriesStats: {
-        ...(props.tvSeries.tvSeriesStats || {}),
+        airingYear: props.tvSeries.tvSeriesStats?.airingYear ?? '',
+        currentSeason: props.tvSeries.tvSeriesStats?.currentSeason ?? 1,
+        totalSeasons: props.tvSeries.tvSeriesStats?.totalSeasons ?? 1,
+        isCompleted: props.tvSeries.tvSeriesStats?.isCompleted ?? false,
         totalEpisodes: Number(form.episodes),
       },
       language: form.language,
@@ -343,6 +347,13 @@ async function handleDelete() {
               <div class="text-muted-foreground">Added to Library</div>
               <div>{{ new Date(tvSeries?.createdAt || '').toLocaleDateString() }}</div>
             </div>
+            <!-- Notes Section -->
+            <NotesSection
+              v-if="tvSeries?.id"
+              :media-id="tvSeries.id"
+              media-type="tvSeries"
+              :is-open="isOpen"
+            />
           </div>
 
           <!-- EDIT MODE -->

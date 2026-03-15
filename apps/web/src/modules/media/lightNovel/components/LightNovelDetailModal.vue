@@ -4,6 +4,7 @@ import { LightNovelService } from '@/modules/media/lightNovel/api/lightNovelServ
 import type { LightNovel } from '@/modules/media/lightNovel/types/types'
 import { Check, RotateCcw } from 'lucide-vue-next'
 import { useToast } from '@/common/components/ui/toast/use-toast'
+import NotesSection from '@/common/components/NotesSection.vue'
 
 const props = defineProps<{
   lightNovel: LightNovel | null
@@ -62,8 +63,8 @@ function syncForm(data: LightNovel) {
   previewUrl.value = null
 
   form.title = data.title
-  form.author = data.author
-  form.illustrator = data.illustrator
+  form.author = data.author ?? ''
+  form.illustrator = data.illustrator ?? ''
   const rawStatus = data.userStats?.status
   form.status = rawStatus === 'Ongoing' ? 'Reading' : rawStatus || 'Planned'
   form.score = data.userStats?.score ?? 0
@@ -71,9 +72,9 @@ function syncForm(data: LightNovel) {
   form.releaseStatus = data.releaseStats?.releaseStatus ?? 'Ongoing'
   form.readingStats.currentReadingVolume = data.readingStats?.currentReadingVolume ?? 0
   form.genres = data.genres ? data.genres.join(', ') : ''
-  form.type = data.type
-  form.format = data.format
-  form.origin = data.origin
+  form.type = data.type ?? ''
+  form.format = data.format ?? ''
+  form.origin = data.origin ?? ''
 }
 
 watch(
@@ -352,6 +353,13 @@ async function handleDelete() {
               <div class="text-muted-foreground">Added to Library</div>
               <div>{{ new Date(lightNovel?.createdAt || '').toLocaleDateString() }}</div>
             </div>
+            <!-- Notes Section -->
+            <NotesSection
+              v-if="lightNovel?.id"
+              :media-id="lightNovel.id"
+              media-type="lightNovel"
+              :is-open="isOpen"
+            />
           </div>
 
           <!-- EDIT MODE -->

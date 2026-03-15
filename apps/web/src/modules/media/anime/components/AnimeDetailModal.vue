@@ -4,6 +4,7 @@ import { AnimeService } from '@/modules/media/anime/api/animeService'
 import type { Anime } from '@/modules/media/anime/types/types'
 import { Check, RotateCcw } from 'lucide-vue-next'
 import { useToast } from '@/common/components/ui/toast/use-toast'
+import NotesSection from '@/common/components/NotesSection.vue'
 
 const props = defineProps<{
   anime: Anime | null
@@ -315,6 +316,13 @@ async function handleDelete() {
               <div class="text-muted-foreground">Last Updated</div>
               <div>{{ new Date(anime?.updatedAt || '').toLocaleDateString() }}</div>
             </div>
+            <!-- Notes Section -->
+            <NotesSection
+              v-if="anime?.id"
+              :media-id="anime.id"
+              media-type="anime"
+              :is-open="isOpen"
+            />
           </div>
 
           <!-- EDIT MODE -->

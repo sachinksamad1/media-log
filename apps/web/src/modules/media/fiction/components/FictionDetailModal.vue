@@ -4,6 +4,7 @@ import { FictionService } from '@modules/media/fiction/api/fictionService'
 import type { Fiction } from '@modules/media/fiction/types/types'
 import { Check, RotateCcw } from 'lucide-vue-next'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import NotesSection from '@/common/components/NotesSection.vue'
 
 const props = defineProps<{
   fiction: Fiction | null
@@ -56,15 +57,15 @@ function syncForm(data: Fiction) {
   previewUrl.value = null
 
   form.title = data.title
-  form.author = data.author
+  form.author = data.author ?? ''
   form.status = data.userStats?.status ?? ''
   form.score = data.userStats?.score ?? 0
   form.volumes = data.publicationInfo?.volumes ?? 0
   form.releaseStatus = data.publicationInfo?.status ?? 'Ongoing'
   form.genre = data.genres ? data.genres.join(', ') : ''
-  form.type = data.type
-  form.format = data.format
-  form.origin = data.origin
+  form.type = data.type ?? ''
+  form.format = data.format ?? ''
+  form.origin = data.origin ?? ''
   form.published = data.publicationInfo?.published
 }
 
@@ -318,6 +319,13 @@ async function handleDelete() {
               <div class="text-muted-foreground">Added to Library</div>
               <div>{{ new Date(fiction?.createdAt || '').toLocaleDateString() }}</div>
             </div>
+            <!-- Notes Section -->
+            <NotesSection
+              v-if="fiction?.id"
+              :media-id="fiction.id"
+              media-type="fiction"
+              :is-open="isOpen"
+            />
           </div>
 
           <!-- EDIT MODE -->

@@ -61,10 +61,41 @@ The backend service for the Media Log application, providing API endpoints for m
 - `pnpm dev`: Starts the development server.
 - `pnpm build`: Compiles TypeScript to JavaScript.
 - `pnpm start`: Runs the built application.
-- `pnpm lint`:/`pnpm lint:fix`: Runs ESLint.
+- `pnpm lint` / `pnpm lint:fix`: Runs ESLint.
 - `pnpm format`: Runs Prettier.
 - `pnpm test`: Runs Playwright tests.
 - `pnpm check`: Runs linting and type checking.
+
+## Running Script Files
+
+Standalone TypeScript scripts are located in the `scripts/` directory. Since `tsx` is installed as a **local devDependency** (not globally), you must run scripts using `npx tsx` or `pnpm exec tsx`:
+
+```bash
+# Using npx
+npx tsx scripts/<script-name>.ts
+
+# Or using pnpm
+pnpm exec tsx scripts/<script-name>.ts
+```
+
+> **Note:** Running `tsx` or `ts-node` directly will fail with `command not found` unless they are installed globally. Always use `npx` or `pnpm exec` to run locally installed tools.
+
+### Available Scripts
+
+| Script                        | Description                                |
+| ----------------------------- | ------------------------------------------ |
+| `scripts/generate-token.ts`   | Generates an authentication token          |
+| `scripts/verify-swagger.ts`   | Verifies the Swagger/OpenAPI configuration |
+| `scripts/fix-search-index.ts` | Fixes search index data                    |
+| `scripts/check-zod.ts`        | Checks Zod schema validations              |
+| `scripts/test-zod.ts`         | Tests Zod schema validations               |
+| `scripts/reproduce_issue.ts`  | Reproduces a specific issue for debugging  |
+
+### Example
+
+```bash
+npx tsx scripts/generate-token.ts
+```
 
 ## API Documentation
 

@@ -4,6 +4,7 @@ import { NonFictionService } from '@modules/media/nonFiction/api/nonFictionServi
 import type { NonFiction } from '@modules/media/nonFiction/types/types'
 import { Check, RotateCcw } from 'lucide-vue-next'
 import { useToast } from '@common/components/ui/toast/use-toast'
+import NotesSection from '@/common/components/NotesSection.vue'
 
 const props = defineProps<{
   nonFiction: NonFiction | null
@@ -58,7 +59,7 @@ function syncForm(data: NonFiction) {
   previewUrl.value = null
 
   form.title = data.title
-  form.author = data.author
+  form.author = data.author ?? ''
   // illustrator removed
   form.status = data.userStats?.status ?? ''
   form.score = data.userStats?.score ?? 0
@@ -73,8 +74,8 @@ function syncForm(data: NonFiction) {
   form.genre = data.genres ? data.genres.join(', ') : ''
   // type is derived from volumes
   form.type = firstVol && !firstVol.standalone ? 'Series' : 'Standalone'
-  form.format = data.format
-  form.origin = data.origin
+  form.format = data.format ?? ''
+  form.origin = data.origin ?? ''
   form.published = data.published
     ? typeof data.published === 'string'
       ? data.published
@@ -348,6 +349,13 @@ async function handleDelete() {
               <div class="text-muted-foreground">Added to Library</div>
               <div>{{ new Date(nonFiction?.createdAt || '').toLocaleDateString() }}</div>
             </div>
+            <!-- Notes Section -->
+            <NotesSection
+              v-if="nonFiction?.id"
+              :media-id="nonFiction.id"
+              media-type="nonFiction"
+              :is-open="isOpen"
+            />
           </div>
 
           <!-- EDIT MODE -->

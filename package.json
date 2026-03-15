@@ -6,9 +6,11 @@
     "dev": "turbo dev",
     "dev:web": "turbo dev --filter=media-log-web",
     "dev:backend": "turbo dev --filter=media-log-backend",
+    "dev:mobile": "turbo dev --filter=media-log-mobile",
     "build": "turbo build",
     "build:web": "turbo build --filter=media-log-web",
     "build:backend": "turbo build --filter=media-log-backend",
+    "build:mobile": "turbo build --filter=media-log-mobile",
     "check": "turbo check",
     "lint": "turbo lint",
     "format": "turbo format",
@@ -19,7 +21,7 @@
     "prepare": "husky"
   },
   "engines": {
-    "node": "24"
+    "node": ">=24"
   },
   "devDependencies": {
     "concurrently": "^9.2.1",

@@ -13,3 +13,6 @@ export * from "./non-fiction.schema.js";
 
 // User schemas
 export * from "./user.schema.js";
+
+// Note schemas
+export * from "./note.schema.js";
