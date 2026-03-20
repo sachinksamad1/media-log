@@ -112,7 +112,8 @@ function prev(status: string) {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="postcss">
+@reference "../../../../style.css";
 .view-btn {
   @apply px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-secondary/50 hover:bg-secondary text-muted-foreground;
 }

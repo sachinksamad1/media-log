@@ -12,4 +12,14 @@ export const searchService = {
     )
     return response.data.data
   },
+
+  async getRandom(type?: string): Promise<GlobalSearchResponse | null> {
+    const params = new URLSearchParams()
+    if (type && type !== 'all') params.append('type', type)
+
+    const response = await http.get<{ data: GlobalSearchResponse }>(
+      `/search/random?${params.toString()}`
+    )
+    return response.data.data
+  },
 }

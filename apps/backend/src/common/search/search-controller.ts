@@ -35,3 +35,31 @@ export const globalSearch = async (req: Request, res: Response) => {
     return ResponseUtil.error(res, 500, 'An error occurred during search');
   }
 };
+
+export const globalRandom = async (req: Request, res: Response) => {
+  const { type } = req.query;
+  const searchService = new GlobalSearchService();
+  const userId = req.user!.uid;
+
+  try {
+    const result = await searchService.getRandom(userId, type as string);
+
+    if (!result) {
+      return ResponseUtil.send(
+        res,
+        200,
+        null, // explicitly null if no result
+        'No items found to pick from',
+      );
+    }
+
+    return ResponseUtil.send(res, 200, result, 'Random item fetched');
+  } catch (error) {
+    console.error('Error fetching random pick:', error);
+    return ResponseUtil.error(
+      res,
+      500,
+      'An error occurred fetching random item',
+    );
+  }
+};

@@ -162,7 +162,7 @@ class MediaDetailScreen extends StatelessWidget {
         if (media.userStats?.score != null)
           Column(
             children: [
-              Icon(Icons.star_rounded, color: Colors.amber, size: 28),
+              const Icon(Icons.star_rounded, color: Colors.amber, size: 28),
               Text(
                 media.userStats!.score.toString(),
                 style: theme.textTheme.titleMedium?.copyWith(

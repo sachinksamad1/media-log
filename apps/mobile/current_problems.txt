@@ -1,0 +1,45 @@
+Analyzing mobile...                                             
+
+  error • Target of URI hasn't been generated: 'package:media_log/features/random_pick/data/models/random_pick_model.g.dart' • lib/features/random_pick/data/models/random_pick_model.dart:3:6 • uri_has_not_been_generated
+  error • Target of URI doesn't exist: 'package:media_log/features/random_pick/data/models/random_pick_model.freezed.dart' • lib/features/random_pick/data/models/random_pick_model.dart:4:6 • uri_does_not_exist
+warning • The annotation 'JsonKey.new' can only be used on fields or getters • lib/features/random_pick/data/models/random_pick_model.dart:13:6 • invalid_annotation_target
+  error • The name '_GlobalSearchResponse' isn't a type and can't be used in a redirected constructor • lib/features/random_pick/data/models/random_pick_model.dart:16:8 • redirect_to_non_class
+  error • The method '_$GlobalSearchResponseFromJson' isn't defined for the type 'GlobalSearchResponse' • lib/features/random_pick/data/models/random_pick_model.dart:19:7 • undefined_method
+  error • Undefined name 'userStatsJson' • lib/features/random_pick/data/models/random_pick_model.dart:23:30 • undefined_identifier
+  error • Undefined name 'userStatsJson' • lib/features/random_pick/data/models/random_pick_model.dart:25:18 • undefined_identifier
+  error • Undefined name 'userStatsJson' • lib/features/random_pick/data/models/random_pick_model.dart:26:19 • undefined_identifier
+  error • The name '_UserStatsResponse' isn't a type and can't be used in a redirected constructor • lib/features/random_pick/data/models/random_pick_model.dart:36:8 • redirect_to_non_class
+  error • The method '_$UserStatsResponseFromJson' isn't defined for the type 'UserStatsResponse' • lib/features/random_pick/data/models/random_pick_model.dart:39:7 • undefined_method
+  error • Target of URI doesn't exist: '../../../core/error/exceptions.dart' • lib/features/random_pick/data/random_pick_repository.dart:5:8 • uri_does_not_exist
+  error • The method 'ServerException' isn't defined for the type 'RandomPickRepository' • lib/features/random_pick/data/random_pick_repository.dart:33:13 • undefined_method
+  error • Target of URI doesn't exist: '../../../core/network/api_client.dart' • lib/features/random_pick/presentation/providers/random_pick_providers.dart:5:8 • uri_does_not_exist
+  error • Target of URI doesn't exist: '../data/models/random_pick_model.dart' • lib/features/random_pick/presentation/providers/random_pick_providers.dart:6:8 • uri_does_not_exist
+  error • Target of URI doesn't exist: '../data/random_pick_repository.dart' • lib/features/random_pick/presentation/providers/random_pick_providers.dart:7:8 • uri_does_not_exist
+  error • Undefined class 'RandomPickRepository' • lib/features/random_pick/presentation/providers/random_pick_providers.dart:12:1 • undefined_class
+  error • Undefined name 'dioClientProvider' • lib/features/random_pick/presentation/providers/random_pick_providers.dart:13:25 • undefined_identifier
+  error • The function 'RandomPickRepository' isn't defined • lib/features/random_pick/presentation/providers/random_pick_providers.dart:14:10 • undefined_function
+  error • The name 'GlobalSearchResponse' isn't a type, so it can't be used as a type argument • lib/features/random_pick/presentation/providers/random_pick_providers.dart:30:12 • non_type_as_type_argument
+  error • The name 'GlobalSearchResponse' isn't a type, so it can't be used as a type argument • lib/features/random_pick/presentation/providers/random_pick_providers.dart:34:10 • non_type_as_type_argument
+  error • The name 'RandomPickRepository' isn't a type, so it can't be used as a type argument • lib/features/random_pick/presentation/providers/random_pick_providers.g.dart:15:25 • non_type_as_type_argument
+  error • The name 'RandomPickRepository' isn't a type, so it can't be used as a type argument • lib/features/random_pick/presentation/providers/random_pick_providers.g.dart:27:58 • non_type_as_type_argument
+  error • The name 'GlobalSearchResponse' isn't a type, so it can't be used as a type argument • lib/features/random_pick/presentation/providers/random_pick_providers.g.dart:53:7 • non_type_as_type_argument
+  error • The name 'GlobalSearchResponse' isn't a type, so it can't be used as a type argument • lib/features/random_pick/presentation/providers/random_pick_providers.g.dart:65:30 • non_type_as_type_argument
+  error • Target of URI doesn't exist: '../data/models/random_pick_model.dart' • lib/features/random_pick/presentation/screens/random_pick_screen.dart:5:8 • uri_does_not_exist
+  error • Undefined name 'randomPickProvider' • lib/features/random_pick/presentation/screens/random_pick_screen.dart:69:39 • undefined_identifier
+warning • The member 'state' can only be used within 'package:riverpod/src/notifier.dart' or a test • lib/features/random_pick/presentation/screens/random_pick_screen.dart:82:63 • invalid_use_of_visible_for_testing_member
+warning • The member 'state' can only be used within instance members of subclasses of 'NotifierBase' • lib/features/random_pick/presentation/screens/random_pick_screen.dart:82:63 • invalid_use_of_protected_member
+  error • Undefined name 'randomPickProvider' • lib/features/random_pick/presentation/screens/random_pick_screen.dart:83:24 • undefined_identifier
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:168:64 • deprecated_member_use
+  error • Undefined name 'randomPickProvider' • lib/features/random_pick/presentation/screens/random_pick_screen.dart:183:40 • undefined_identifier
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:212:46 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:226:50 • deprecated_member_use
+  error • Undefined class 'GlobalSearchResponse' • lib/features/random_pick/presentation/screens/random_pick_screen.dart:239:49 • undefined_class
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:281:40 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:302:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:359:48 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:361:67 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:403:62 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:409:64 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:426:20 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/features/random_pick/presentation/screens/random_pick_screen.dart:431:24 • deprecated_member_use
+

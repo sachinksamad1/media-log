@@ -40,7 +40,7 @@ class MediaRepository {
     if (status != null) queryParams['status'] = status;
 
     final response = await _dio.get(
-      '/${type.apiPath}',
+      type.apiPath,
       queryParameters: queryParams,
     );
 
@@ -60,14 +60,14 @@ class MediaRepository {
     // The backend limits to 20 by default if no limit provided.
     // If we truly want ALL, we'd need to loop.
     // But existing code assumed it got a list. Let's rely on default behavior.
-    final response = await _dio.get('/${type.apiPath}?limit=100'); // Bump limit
+    final response = await _dio.get('${type.apiPath}?limit=100'); // Bump limit
     final List<dynamic> data = response.data['data'];
     return data.map((json) => _parseMedia<T>(type, json)).toList();
   }
 
   /// Fetch a single item by ID
   Future<T> fetchById<T extends BaseMedia>(MediaType type, String id) async {
-    final response = await _dio.get('/${type.apiPath}/$id');
+    final response = await _dio.get('${type.apiPath}/$id');
     return _parseMedia<T>(type, response.data['data']);
   }
 
@@ -87,7 +87,8 @@ class MediaRepository {
       requestData = data;
     }
 
-    final response = await _dio.post('/${type.apiPath}', data: requestData);
+    // ignore: unnecessary_string_interpolations
+    final response = await _dio.post('${type.apiPath}', data: requestData);
     return _parseMedia<T>(type, response.data['data']);
   }
 
@@ -109,7 +110,7 @@ class MediaRepository {
     }
 
     final response = await _dio.patch(
-      '/${type.apiPath}/$id',
+      '${type.apiPath}/$id',
       data: requestData,
     );
     return _parseMedia<T>(type, response.data['data']);
@@ -117,7 +118,7 @@ class MediaRepository {
 
   /// Delete a media item
   Future<void> delete(MediaType type, String id) async {
-    await _dio.delete('/${type.apiPath}/$id');
+    await _dio.delete('${type.apiPath}/$id');
   }
 
   /// Parse JSON to appropriate media type

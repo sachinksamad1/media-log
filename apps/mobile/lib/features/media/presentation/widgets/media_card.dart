@@ -47,7 +47,7 @@ class MediaCard extends StatelessWidget {
               bottom: 0,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(8, 24, 8, 8),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,

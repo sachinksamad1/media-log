@@ -273,4 +273,29 @@ export abstract class MediaRepository<T extends BaseMediaType> {
 
     return snapshot.data().count;
   }
+
+  async getRandom(userId: string): Promise<(T & { id: string }) | null> {
+    // First, try to get items that have a 'Planned' or 'On Hold' status.
+    const snapshot = await this.collection
+      .where('userId', '==', userId)
+      .where('userStats.status', 'in', ['Planned', 'On Hold'])
+      .get();
+
+    if (snapshot.empty) {
+      // Fallback: If no Planned/On Hold items, just get any item for the user.
+      const anySnapshot = await this.collection
+        .where('userId', '==', userId)
+        .get();
+
+      if (anySnapshot.empty) return null;
+
+      const randomIndex = Math.floor(Math.random() * anySnapshot.size);
+      const doc = anySnapshot.docs[randomIndex];
+      return { ...(doc.data() as T), id: doc.id };
+    }
+
+    const randomIndex = Math.floor(Math.random() * snapshot.size);
+    const doc = snapshot.docs[randomIndex];
+    return { ...(doc.data() as T), id: doc.id };
+  }
 }

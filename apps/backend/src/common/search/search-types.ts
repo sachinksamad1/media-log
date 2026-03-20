@@ -20,4 +20,5 @@ export interface SearchableRepository<T extends SearchableMedia> {
     limitCount?: number,
   ): Promise<T[]>;
   getMediaType(): string;
+  getRandom(userId: string): Promise<T | null>;
 }

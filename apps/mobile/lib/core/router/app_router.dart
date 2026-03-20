@@ -9,6 +9,9 @@ import '../../features/media/presentation/screens/add_media_screen.dart';
 import '../../features/media/presentation/screens/edit_media_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/media/domain/media_types.dart';
+import '../../features/stats/presentation/screens/stats_screen.dart';
+import '../../features/report/presentation/screens/report_screen.dart';
+import '../../features/random_pick/presentation/screens/random_pick_screen.dart';
 import '../shell/main_shell.dart';
 
 part 'app_router.g.dart';
@@ -92,6 +95,18 @@ GoRouter goRouter(Ref ref) {
           final media = state.extra as BaseMedia;
           return EditMediaScreen(media: media);
         },
+      ),
+      GoRoute(
+        path: '/stats',
+        builder: (context, state) => const StatsScreen(),
+      ),
+      GoRoute(
+        path: '/reports',
+        builder: (context, state) => const ReportScreen(),
+      ),
+      GoRoute(
+        path: '/random-pick',
+        builder: (context, state) => const RandomPickScreen(),
       ),
     ],
   );

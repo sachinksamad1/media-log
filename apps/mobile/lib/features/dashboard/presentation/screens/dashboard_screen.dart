@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../../../auth/data/auth_repository.dart';
+import '../providers/dashboard_providers.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -9,6 +11,8 @@ class DashboardScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authRepositoryProvider).currentUser;
     final theme = Theme.of(context);
+    final summaryAsync = ref.watch(librarySummaryProvider);
+    final activitiesAsync = ref.watch(userActivityProvider);
 
     return Scaffold(
       body: CustomScrollView(
@@ -40,7 +44,7 @@ class DashboardScreen extends ConsumerWidget {
             ],
           ),
           SliverPadding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 100),
             sliver: SliverToBoxAdapter(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,78 +52,163 @@ class DashboardScreen extends ConsumerWidget {
                   // Stats Overview Cards
                   _buildSectionTitle(context, 'Overview'),
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildStatCard(
-                          context,
-                          icon: Icons.movie_outlined,
-                          label: 'Anime',
-                          value: '12',
-                          color: Colors.purple,
+                  summaryAsync.when(
+                    data: (summary) {
+                      // ignore: unchecked_use_of_nullable_value
+                      final watching =
+                          (summary.anime.ongoing) +
+                          (summary.tvSeries.ongoing) +
+                          (summary.movie.ongoing);
+                      // ignore: unchecked_use_of_nullable_value
+                      final reading =
+                          (summary.manga.ongoing) +
+                          (summary.lightNovel.ongoing) +
+                          (summary.fiction.ongoing) +
+                          (summary.nonFiction.ongoing);
+                      // ignore: unchecked_use_of_nullable_value
+                      final playing = (summary.game.ongoing);
+
+                      // ignore: unchecked_use_of_nullable_value
+                      final completed =
+                          (summary.anime.completed) +
+                          (summary.manga.completed) +
+                          (summary.movie.completed) +
+                          (summary.tvSeries.completed) +
+                          (summary.fiction.completed) +
+                          (summary.nonFiction.completed) +
+                          (summary.lightNovel.completed) +
+                          (summary.game.completed);
+
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildStatCard(
+                                  context,
+                                  icon: Icons.tv_outlined,
+                                  label: 'Watching',
+                                  value: watching.toString(),
+                                  color: Colors.purple,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: _buildStatCard(
+                                  context,
+                                  icon: Icons.menu_book_outlined,
+                                  label: 'Reading',
+                                  value: reading.toString(),
+                                  color: Colors.orange,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildStatCard(
+                                  context,
+                                  icon: Icons.games_outlined,
+                                  label: 'Playing',
+                                  value: playing.toString(),
+                                  color: Colors.green,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: _buildStatCard(
+                                  context,
+                                  icon: Icons.check_circle_outline,
+                                  label: 'Completed',
+                                  value: completed.toString(),
+                                  color: Colors.blue,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      );
+                    },
+                    loading: () => const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(32.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    error: (error, stack) => Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.errorContainer,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        'Failed to load stats: $error',
+                        style: TextStyle(
+                          color: theme.colorScheme.onErrorContainer,
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildStatCard(
-                          context,
-                          icon: Icons.menu_book_outlined,
-                          label: 'Manga',
-                          value: '8',
-                          color: Colors.orange,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildStatCard(
-                          context,
-                          icon: Icons.book_outlined,
-                          label: 'Light Novels',
-                          value: '5',
-                          color: Colors.blue,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _buildStatCard(
-                          context,
-                          icon: Icons.games_outlined,
-                          label: 'Games',
-                          value: '15',
-                          color: Colors.green,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                   const SizedBox(height: 24),
 
                   // Recent Activity
                   _buildSectionTitle(context, 'Recent Activity'),
                   const SizedBox(height: 12),
-                  _buildActivityCard(
-                    context,
-                    title: 'Started watching',
-                    subtitle: 'Attack on Titan Final Season',
-                    icon: Icons.play_arrow_rounded,
-                    time: '2 hours ago',
-                  ),
-                  _buildActivityCard(
-                    context,
-                    title: 'Completed',
-                    subtitle: 'Jujutsu Kaisen Season 2',
-                    icon: Icons.check_circle_outline,
-                    time: 'Yesterday',
-                  ),
-                  _buildActivityCard(
-                    context,
-                    title: 'Added to library',
-                    subtitle: 'One Piece Volume 106',
-                    icon: Icons.add_circle_outline,
-                    time: '3 days ago',
+                  activitiesAsync.when(
+                    data: (activities) {
+                      if (activities.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 24.0),
+                          child: Center(
+                            child: Text(
+                              'No recent activity',
+                              style: theme.textTheme.bodyLarge?.copyWith(
+                                color: theme.colorScheme.onSurface.withValues(
+                                  alpha: 0.5,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+
+                      return Column(
+                        children: activities.map((activity) {
+                          return _buildActivityCard(
+                            context,
+                            title: _getTitleForAction(
+                              activity.action,
+                              activity.resourceType,
+                            ),
+                            subtitle:
+                                activity.resourceTitle ?? 'Unknown Resource',
+                            icon: _getIconForAction(activity.action),
+                            time: _formatTime(activity.createdAt),
+                          );
+                        }).toList(),
+                      );
+                    },
+                    loading: () => const Center(
+                      child: Padding(
+                        padding: EdgeInsets.all(24.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                    error: (error, stack) => Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.errorContainer,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        'Failed to load activity: $error',
+                        style: TextStyle(
+                          color: theme.colorScheme.onErrorContainer,
+                        ),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 24),
 
@@ -130,17 +219,23 @@ class DashboardScreen extends ConsumerWidget {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      _buildQuickActionChip(context, Icons.add, 'Add Media'),
-                      _buildQuickActionChip(context, Icons.search, 'Search'),
                       _buildQuickActionChip(
                         context,
                         Icons.shuffle,
                         'Random Pick',
+                        onTap: () => context.push('/random-pick'),
                       ),
                       _buildQuickActionChip(
                         context,
                         Icons.bar_chart,
                         'Statistics',
+                        onTap: () => context.push('/stats'),
+                      ),
+                      _buildQuickActionChip(
+                        context,
+                        Icons.summarize_outlined,
+                        'Reports',
+                        onTap: () => context.push('/reports'),
                       ),
                     ],
                   ),
@@ -266,14 +361,54 @@ class DashboardScreen extends ConsumerWidget {
   Widget _buildQuickActionChip(
     BuildContext context,
     IconData icon,
-    String label,
-  ) {
+    String label, {
+    VoidCallback? onTap,
+  }) {
     final theme = Theme.of(context);
     return ActionChip(
       avatar: Icon(icon, size: 18),
       label: Text(label),
-      onPressed: () {},
+      onPressed: onTap ?? () {},
       backgroundColor: theme.colorScheme.surfaceContainerHighest,
     );
+  }
+
+  String _formatTime(DateTime time) {
+    final diff = DateTime.now().difference(time);
+    if (diff.inDays > 1) return '${diff.inDays} days ago';
+    if (diff.inDays == 1) return 'Yesterday';
+    if (diff.inHours > 0) return '${diff.inHours} hours ago';
+    if (diff.inMinutes > 0) return '${diff.inMinutes} minutes ago';
+    return 'Just now';
+  }
+
+  IconData _getIconForAction(String action) {
+    switch (action) {
+      case 'CREATE':
+        return Icons.add_circle_outline;
+      case 'UPDATE':
+        return Icons.edit_outlined;
+      case 'DELETE':
+        return Icons.delete_outline;
+      case 'COMPLETE':
+        return Icons.check_circle_outline;
+      default:
+        return Icons.notifications_outlined;
+    }
+  }
+
+  String _getTitleForAction(String action, String resourceType) {
+    switch (action) {
+      case 'CREATE':
+        return 'Added to $resourceType';
+      case 'UPDATE':
+        return 'Updated $resourceType';
+      case 'DELETE':
+        return 'Removed $resourceType';
+      case 'COMPLETE':
+        return 'Completed $resourceType';
+      default:
+        return 'Activity';
+    }
   }
 }

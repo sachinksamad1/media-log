@@ -11,12 +11,12 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: _primaryColor,
-        secondary: const Color(0xFF03DAC6),
-        surface: const Color(0xFFF5F5F5),
-        onSurface: const Color(0xFF1E1E1E),
-        surfaceContainerHighest: const Color(0xFFE0E0E0),
+        secondary: Color(0xFF03DAC6),
+        surface: Color(0xFFF5F5F5),
+        onSurface: Color(0xFF1E1E1E),
+        surfaceContainerHighest: Color(0xFFE0E0E0),
       ),
       scaffoldBackgroundColor: Colors.white,
       textTheme: GoogleFonts.outfitTextTheme(
@@ -63,9 +63,9 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      colorScheme: ColorScheme.dark(
+      colorScheme: const ColorScheme.dark(
         primary: _primaryColor,
-        secondary: const Color(0xFF03DAC6),
+        secondary: Color(0xFF03DAC6),
         surface: _surfaceColor,
         onSurface: _onSurfaceColor,
       ),

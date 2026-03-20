@@ -7,7 +7,7 @@ part of 'secure_storage_service.dart';
 // **************************************************************************
 
 String _$secureStorageServiceHash() =>
-    r'28ef5a96de61720fa06a7ba59ceb572a1791b078';
+    r'0295e42b0c2763787b4b230961936eabcd0d0877';
 
 /// See also [secureStorageService].
 @ProviderFor(secureStorageService)

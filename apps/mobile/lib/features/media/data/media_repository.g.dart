@@ -6,7 +6,7 @@ part of 'media_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mediaRepositoryHash() => r'6e30c29f6840bb7c5566d842ab3f4080d5dba9d7';
+String _$mediaRepositoryHash() => r'befbb9a15d7f6133bba8837c1e54e60289a55a7d';
 
 /// See also [mediaRepository].
 @ProviderFor(mediaRepository)
@@ -23,7 +23,7 @@ final mediaRepositoryProvider = AutoDisposeProvider<MediaRepository>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef MediaRepositoryRef = AutoDisposeProviderRef<MediaRepository>;
-String _$animeListHash() => r'141c9ff6236a29753696518e940265165f766ef1';
+String _$animeListHash() => r'06904109315b2880af72ca2a61dd6dc39348a7f7';
 
 /// See also [animeList].
 @ProviderFor(animeList)
@@ -40,7 +40,7 @@ final animeListProvider = AutoDisposeFutureProvider<List<Anime>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef AnimeListRef = AutoDisposeFutureProviderRef<List<Anime>>;
-String _$mangaListHash() => r'beacc1ff935c46423711d851b5a6318b79a633ca';
+String _$mangaListHash() => r'885248dd8793c593bec681bbff2d1a70e29e3614';
 
 /// See also [mangaList].
 @ProviderFor(mangaList)
@@ -57,7 +57,7 @@ final mangaListProvider = AutoDisposeFutureProvider<List<Manga>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef MangaListRef = AutoDisposeFutureProviderRef<List<Manga>>;
-String _$lightNovelListHash() => r'51f8823a3134a5bb4272bc65c748a0a499a2e83d';
+String _$lightNovelListHash() => r'd1965a41ee9d99f83aceddf3542b36d7b492c625';
 
 /// See also [lightNovelList].
 @ProviderFor(lightNovelList)
@@ -75,7 +75,7 @@ final lightNovelListProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef LightNovelListRef = AutoDisposeFutureProviderRef<List<LightNovel>>;
-String _$fictionListHash() => r'f0e6565d7965aa9084797d06b302c1a73a8fba7a';
+String _$fictionListHash() => r'7f840ee8598283810a79f69cac150f381e470d30';
 
 /// See also [fictionList].
 @ProviderFor(fictionList)
@@ -92,7 +92,7 @@ final fictionListProvider = AutoDisposeFutureProvider<List<Fiction>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef FictionListRef = AutoDisposeFutureProviderRef<List<Fiction>>;
-String _$nonFictionListHash() => r'd498fef7e16c2840bc048cc808cac939466b3c00';
+String _$nonFictionListHash() => r'8463b889576e1ac7e99687b79dabceb4c9bd6906';
 
 /// See also [nonFictionList].
 @ProviderFor(nonFictionList)
@@ -110,7 +110,7 @@ final nonFictionListProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef NonFictionListRef = AutoDisposeFutureProviderRef<List<NonFiction>>;
-String _$movieListHash() => r'6627d847834bee1d9121bdf1df3e0150c4896fd6';
+String _$movieListHash() => r'571c48da7c670d8c017a2903d006439d590ed429';
 
 /// See also [movieList].
 @ProviderFor(movieList)
@@ -127,7 +127,7 @@ final movieListProvider = AutoDisposeFutureProvider<List<Movie>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef MovieListRef = AutoDisposeFutureProviderRef<List<Movie>>;
-String _$tvSeriesListHash() => r'a2001c8ffc0dc7c58cb8eecaac7cb78ba58e5953';
+String _$tvSeriesListHash() => r'1c844dadbc5d1acb12a7e00ec99a9105a913a4b4';
 
 /// See also [tvSeriesList].
 @ProviderFor(tvSeriesList)
@@ -144,7 +144,7 @@ final tvSeriesListProvider = AutoDisposeFutureProvider<List<TvSeries>>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef TvSeriesListRef = AutoDisposeFutureProviderRef<List<TvSeries>>;
-String _$gameListHash() => r'31a4d2be4c828ed9c12c0cf8bb3f4716e38ff83c';
+String _$gameListHash() => r'b233b1a1ddb5f69120184119edc9c9ccc67ebeb4';
 
 /// See also [gameList].
 @ProviderFor(gameList)

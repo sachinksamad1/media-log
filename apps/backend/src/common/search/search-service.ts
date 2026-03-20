@@ -100,4 +100,60 @@ export class GlobalSearchService {
     const all = await Promise.all(searches);
     return all.flat();
   }
+
+  async getRandom(
+    userId: string,
+    type?: string,
+  ): Promise<GlobalSearchResponse | null> {
+    if (type) {
+      const repo = this.repositories[type.toLowerCase()];
+      if (!repo) return null;
+
+      const randomItem = await repo.getRandom(userId);
+      if (!randomItem) return null;
+
+      return {
+        id: randomItem.id,
+        title: randomItem.title,
+        imageUrl: randomItem.imageUrl ?? '',
+        createdAt: this.formatDate(randomItem.createdAt),
+        updatedAt: this.formatDate(randomItem.updatedAt),
+        userStats: {
+          score: randomItem.userStats?.score ?? 0,
+          status: randomItem.userStats?.status ?? 'Planned',
+        },
+        mediaType: repo.getMediaType(),
+      };
+    }
+
+    // Pick a random repository first to keep the search bounded,
+    // rather than extracting all from all repos
+    const repoKeys = Object.keys(this.repositories);
+
+    // We shuffle keys and try them one by one until we get a hit
+    // to ensure we bounce back if the first random repo is empty
+    const shuffledKeys = repoKeys.sort(() => 0.5 - Math.random());
+
+    for (const key of shuffledKeys) {
+      const repo = this.repositories[key];
+      const randomItem = await repo.getRandom(userId);
+
+      if (randomItem) {
+        return {
+          id: randomItem.id,
+          title: randomItem.title,
+          imageUrl: randomItem.imageUrl ?? '',
+          createdAt: this.formatDate(randomItem.createdAt),
+          updatedAt: this.formatDate(randomItem.updatedAt),
+          userStats: {
+            score: randomItem.userStats?.score ?? 0,
+            status: randomItem.userStats?.status ?? 'Planned',
+          },
+          mediaType: repo.getMediaType(),
+        };
+      }
+    }
+
+    return null; // The user has no items across any repository
+  }
 }

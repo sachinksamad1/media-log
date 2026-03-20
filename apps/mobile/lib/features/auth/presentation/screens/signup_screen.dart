@@ -193,7 +193,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Already have an account? ",
+                          'Already have an account? ',
                           style: TextStyle(color: theme.colorScheme.onSurface),
                         ),
                         TextButton(

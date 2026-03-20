@@ -26,7 +26,7 @@ const statusClass = computed(() => {
 })
 
 const volumesText = computed(() => {
-  const count = props.nonFiction.volumes?.length || 0
+  const count = props.nonFiction.volumes?.length || 1
   return `${count} Volume${count !== 1 ? 's' : ''}`
 })
 </script>
