@@ -8,6 +8,7 @@ import {
   Shuffle,
   BarChart2,
   FileText,
+  Sparkles,
 } from 'lucide-vue-next'
 import { useAuthStore } from '@/core/stores/useAuthStore'
 import { useDashboardStore } from './store/dashboard.store'
@@ -134,6 +135,21 @@ const recentActivity = computed(() => {
           <span class="font-bold text-sm tracking-tight text-center">Reports</span>
           <div
             class="absolute inset-0 bg-gradient-to-br from-violet-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
+          ></div>
+        </router-link>
+
+        <router-link
+          to="/recommendations"
+          class="group relative flex flex-col items-center gap-3 p-6 rounded-3xl border bg-card hover:bg-emerald-500/5 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-emerald-500/20 overflow-hidden active:scale-95"
+        >
+          <div
+            class="p-4 rounded-2xl bg-emerald-500/10 text-emerald-500 group-hover:scale-110 transition-transform duration-500 ring-4 ring-transparent group-hover:ring-emerald-500/5"
+          >
+            <Sparkles class="w-6 h-6" />
+          </div>
+          <span class="font-bold text-sm tracking-tight text-center">Recommendations</span>
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"
           ></div>
         </router-link>
       </div>

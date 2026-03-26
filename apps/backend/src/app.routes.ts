@@ -10,6 +10,7 @@ import moviesRoutes from '@modules/media/movie/movie-routes.js';
 import nonFictionRoutes from '@modules/media/non-fiction/non-fiction-routes.js';
 import tvSeriesRoutes from '@modules/media/tv-series/tv-series-routes.js';
 import noteRoutes from '@modules/notes/note-routes.js';
+import { recommendationsRouter } from '@modules/recommendations/recommendations-routes.js';
 import reportRoutes from '@modules/report/report-routes.js';
 import statsRoutes from '@modules/stats/stats-routes.js';
 import { userActivityRouter } from '@modules/user-activity/user-activity.routes.js';
@@ -53,5 +54,7 @@ router.use('/users', usersRoutes);
 router.use('/user-activity', userActivityRouter);
 // Notes Routes
 router.use('/notes', noteRoutes);
+// Recommendations Routes
+router.use('/recommendations', recommendationsRouter);
 
 export default router;

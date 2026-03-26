@@ -52,6 +52,12 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/modules/random-pick/views/RandomPickView.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/recommendations',
+    name: 'recommendations',
+    component: () => import('@/modules/recommendations/views/RecommendationsView.vue'),
+    meta: { requiresAuth: true },
+  },
 
   {
     path: '/auth',

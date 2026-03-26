@@ -8,9 +8,9 @@ import {
   Menu,
   LogOut,
   Settings,
-  Plus,
-  Edit,
-  Trash,
+  PlusCircle,
+  RefreshCw,
+  Trash2,
   CheckCircle,
 } from 'lucide-vue-next'
 import { onClickOutside } from '@vueuse/core'
@@ -209,25 +209,25 @@ const handleLogout = async () => {
                   <div class="mt-1">
                     <div
                       v-if="item.action === 'CREATE'"
-                      class="w-8 h-8 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center"
+                      class="w-8 h-8 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center"
                     >
-                      <Plus class="w-4 h-4" />
+                      <PlusCircle class="w-4 h-4" />
                     </div>
                     <div
                       v-else-if="item.action === 'UPDATE'"
-                      class="w-8 h-8 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center"
+                      class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center"
                     >
-                      <Edit class="w-4 h-4" />
+                      <RefreshCw class="w-4 h-4" />
                     </div>
                     <div
                       v-else-if="item.action === 'DELETE'"
                       class="w-8 h-8 rounded-full bg-red-500/10 text-red-500 flex items-center justify-center"
                     >
-                      <Trash class="w-4 h-4" />
+                      <Trash2 class="w-4 h-4" />
                     </div>
                     <div
                       v-else-if="item.action === 'COMPLETE'"
-                      class="w-8 h-8 rounded-full bg-purple-500/10 text-purple-500 flex items-center justify-center"
+                      class="w-8 h-8 rounded-full bg-green-500/10 text-green-500 flex items-center justify-center"
                     >
                       <CheckCircle class="w-4 h-4" />
                     </div>
