@@ -32,15 +32,15 @@ Media Log is currently in an active transition phase, evolving from a robust MVP
 
 We are migrating our current stack toward NestJS and Nuxt 3. This move will introduce enterprise-level design patterns, Server-Side Rendering (SSR) for better performance, and a more scalable foundation to support thousands of concurrent users.
 
-**2. Cross-Platform Accessibility**
+**2. Cross-Platform Accessibility (PWA)**
 
-A dedicated Mobile Application is in the planning stages. This will expand the Media Log experience beyond the browser, incorporating native features like:
+The dedicated Flutter Mobile Application has been **deprecated** and moved to the `legacy` branch. Instead, we are focusing on providing a first-class **Progressive Web App (PWA)** experience through the Vue.js frontend. This will offer:
 
-- Offline Mode: Access your library without a data connection.
+- **Universal Accessibility**: No app store barrier; simply "Add to Home Screen" on any device.
 
-- Barcode Scanning: Rapidly add physical books or Blu-rays by scanning their codes.
+- **Offline Support**: Core features will be accessible without a stable internet connection.
 
-- Native Alerts: Push notifications for newly released chapters or episodes.
+- **Native Feel**: Optimized UI for mobile browsers with standalone application mode.
 
 **3. AI & Social Ecosystem**
 
@@ -54,8 +54,8 @@ Future releases will integrate intelligence and community features to transform 
 
 | Layer           | Technologies (Current)                   | Technologies (Future) |
 | --------------- | ---------------------------------------- | --------------------- |
-| Frontend        | Vue.js 3, Vite, TailwindCSS, TypeScript  | Nuxt.js               |
-| Mobile App      | Flutter                                  | Flutter               |
+| Frontend        | Vue.js 3, Vite, TailwindCSS, TypeScript  | Nuxt.js (with PWA Support) |
+| Mobile App      | Flutter (Deprecated - see legacy branch) | Progressive Web App (PWA) |
 | Backend         | Node.js, Express, TypeScript, Zod        | Nest.js               |
 | Database        | Firebase Firestore                       | May Change            |
 | Infrastructure  | Firebase Hosting, Google Cloud Functions | May Change            |
@@ -67,16 +67,17 @@ This repository uses a monorepo approach to keep the frontend and backend synchr
 
 ```
 media-log/
-├── backend/            # Express API (Cloud Functions)
-│   ├── src/
-│   │   ├── modules/    # Domain-driven logic (users, media, etc.)
-│   │   ├── config/     # Environment and DB config
-│   │   └── firebase.ts # Deployment entry point
-├── mobile/                # Flutter App (Coming Soon)
-├── web/                # Vue.js Frontend (Firebase Hosting)
-│   ├── src/
-│   │   ├── components/
-│   │   └── services/   # API communication layer
+├── apps/
+│   ├── backend/        # Express API (Cloud Functions)
+│   │   ├── src/
+│   │   │   ├── modules/    # Domain-driven logic (users, media, etc.)
+│   │   │   ├── config/     # Environment and DB config
+│   │   │   └── firebase.ts # Deployment entry point
+│   ├── web/            # Vue.js Frontend (with PWA support)
+│   │   ├── src/
+│   │   │   ├── components/
+│   │   │   └── services/   # API communication layer
+│   └── mobile/         # (Legacy) Flutter App - MOVED to legacy branch
 ├── firebase.json       # Root deployment configuration
 └── pnpm-workspace.yaml # Monorepo workspace settings
 ```
@@ -118,7 +119,8 @@ pnpm run dev
 ## 🗺️ Roadmap
 
 - [ ] SaaS Migration: Transitioning to Nuxt and NestJS for enterprise-grade features.
-- [ ] Mobile Integration: Building a dedicated Flutter/React Native application.
+- [ ] PWA Integration: Transforming the web app into a robust Progressive Web App.
+- [x] Legacy Mobile: Move Flutter app to its own branch (Completed).
 - [ ] AI Recommendations: Personalised suggestions based on viewing history.
 - [ ] Public Profiles: Allow users to share their media logs with the community.
 

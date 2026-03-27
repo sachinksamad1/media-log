@@ -11,6 +11,7 @@ The frontend web application for MediaLog, built to provide a rich user interfac
 - **State Management:** Pinia
 - **Routing:** Vue Router
 - **Icons:** Lucide Vue Next
+- **PWA Ready:** Progressive Web App support for offline access and mobile-first experience (Development in progress).
 - **HTTP Client:** Axios
 - **UI Components:** Radix Vue & Headless UI patterns
 
