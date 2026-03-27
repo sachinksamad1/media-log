@@ -52,14 +52,14 @@ Future releases will integrate intelligence and community features to transform 
 
 ## 🛠️ Tech Stack
 
-| Layer           | Technologies (Current)                   | Technologies (Future) |
-| --------------- | ---------------------------------------- | --------------------- |
+| Layer           | Technologies (Current)                   | Technologies (Future)      |
+| --------------- | ---------------------------------------- | -------------------------- |
 | Frontend        | Vue.js 3, Vite, TailwindCSS, TypeScript  | Nuxt.js (with PWA Support) |
-| Mobile App      | Flutter (Deprecated - see legacy branch) | Progressive Web App (PWA) |
-| Backend         | Node.js, Express, TypeScript, Zod        | Nest.js               |
-| Database        | Firebase Firestore                       | May Change            |
-| Infrastructure  | Firebase Hosting, Google Cloud Functions | May Change            |
-| Package Manager | PNPM                                     | -                     |
+| Mobile App      | Flutter (Deprecated - see legacy branch) | Progressive Web App (PWA)  |
+| Backend         | Node.js, Express, TypeScript, Zod        | Nest.js                    |
+| Database        | Firebase Firestore                       | May Change                 |
+| Infrastructure  | Firebase Hosting, Google Cloud Functions | May Change                 |
+| Package Manager | PNPM                                     | -                          |
 
 ## 📂 Project Structure:
 
@@ -120,7 +120,7 @@ pnpm run dev
 
 - [ ] SaaS Migration: Transitioning to Nuxt and NestJS for enterprise-grade features.
 - [ ] PWA Integration: Transforming the web app into a robust Progressive Web App.
-- [x] Legacy Mobile: Move Flutter app to its own branch (Completed).
+- [x] Legacy Mobile: Moved Flutter app to its own branch (Completed).
 - [ ] AI Recommendations: Personalised suggestions based on viewing history.
 - [ ] Public Profiles: Allow users to share their media logs with the community.
 
