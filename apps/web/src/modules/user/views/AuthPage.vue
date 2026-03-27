@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/core/stores/useAuthStore'
 import { z } from 'zod'
 
-import { Chrome, Loader2 } from 'lucide-vue-next'
+import { Loader2 } from 'lucide-vue-next'
 import { useToast } from '@/common/components/ui/toast/use-toast'
 import {
   Card,
@@ -45,7 +45,6 @@ const recoveryForm = ref({ email: '' })
 
 /* Loading */
 const isLoading = ref(false)
-const isGoogleLoading = ref(false)
 
 /* Form Models (ISOLATED) */
 const signInForm = ref({
@@ -162,22 +161,6 @@ async function handleSignUp() {
   }
 }
 
-async function handleGoogleSignIn() {
-  isGoogleLoading.value = true
-  try {
-    await authStore.googleLogin()
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : 'Google sign in failed'
-    toast({
-      title: 'Google sign in failed',
-      description: message,
-      variant: 'destructive',
-    })
-  } finally {
-    isGoogleLoading.value = false
-  }
-}
-
 async function handleRecovery() {
   try {
     emailSchema.parse(recoveryForm.value.email)
@@ -267,7 +250,7 @@ async function handleRecovery() {
                   </a>
                 </div>
 
-                <Button class="w-full" :disabled="isLoading">
+                <Button class="w-full border border-primary" :disabled="isLoading">
                   <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
                   Sign In
                 </Button>
@@ -286,7 +269,7 @@ async function handleRecovery() {
                   placeholder="Confirm Password"
                 />
 
-                <Button class="w-full" :disabled="isLoading">
+                <Button class="w-full border border-primary" :disabled="isLoading">
                   <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
                   Sign Up
                 </Button>
@@ -328,7 +311,7 @@ async function handleRecovery() {
               <form class="space-y-4" @submit.prevent="handleRecovery">
                 <Input v-model="recoveryForm.email" placeholder="Enter your email" />
 
-                <Button class="w-full" :disabled="isLoading">
+                <Button class="w-full border border-primary" :disabled="isLoading">
                   <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
                   Send {{ recoveryType === 'password' ? 'Reset Link' : 'My Username' }}
                 </Button>
@@ -341,14 +324,6 @@ async function handleRecovery() {
               </div>
             </TabsContent>
           </Tabs>
-
-          <div class="my-6 border-t" />
-
-          <Button variant="outline" class="w-full" @click="handleGoogleSignIn">
-            <Loader2 v-if="isGoogleLoading" class="mr-2 h-4 w-4 animate-spin" />
-            <Chrome v-else class="mr-2 h-4 w-4" />
-            Google
-          </Button>
         </CardContent>
       </Card>
     </div>

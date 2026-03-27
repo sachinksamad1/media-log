@@ -5,8 +5,10 @@ packages:
 onlyBuiltDependencies:
   - "@firebase/util"
   - "@scarf/scarf"
+  - core-js
   - esbuild
   - protobufjs
+  - re2
   - sharp
   - unrs-resolver
   - vue-demi

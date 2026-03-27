@@ -28,7 +28,7 @@
     "test:unit:watch": "vitest watch",
     "predeploy": "node scripts/predeploy.js",
     "postdeploy": "node scripts/postdeploy.js",
-    "deploy": "pnpm build && pnpm predeploy && firebase deploy --only functions && pnpm postdeploy"
+    "deploy": "pnpm build && pnpm predeploy && pnpm exec firebase deploy --only functions && pnpm postdeploy"
   },
   "keywords": [
     "mediaLog",
@@ -73,8 +73,8 @@
   },
   "dependencies": {
     "@google-cloud/functions-framework": "^5.0.0",
-    "@media-log/shared-types": "workspace:*",
-    "@media-log/shared-utils": "workspace:*",
+    "@media-log/shared-types": "file:.tarballs/media-log-shared-types-1.0.0.tgz",
+    "@media-log/shared-utils": "file:.tarballs/media-log-shared-utils-0.0.1.tgz",
     "@tensorflow/tfjs": "^4.22.0",
     "@types/nodemailer": "^7.0.5",
     "busboy": "^1.6.0",

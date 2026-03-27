@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig(() => {
   return {
@@ -14,7 +15,38 @@ export default defineConfig(() => {
         },
       },
     },
-    plugins: [vueDevTools(), vue(), tailwindcss()],
+    plugins: [
+      vueDevTools(),
+      vue(),
+      tailwindcss(),
+      VitePWA({
+        strategies: 'injectManifest',
+        srcDir: 'src',
+        filename: 'sw.ts',
+        registerType: 'autoUpdate',
+        injectRegister: 'auto',
+        manifest: {
+          name: 'MediaLog',
+          short_name: 'MediaLog',
+          theme_color: '#ffffff',
+          background_color: '#ffffff',
+          display: 'standalone',
+          icons: [
+            {
+              src: 'pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: 'pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+              purpose: 'any maskable',
+            },
+          ],
+        },
+      }),
+    ],
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),

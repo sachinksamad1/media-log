@@ -136,6 +136,7 @@ export class GlobalSearchService {
 
     for (const key of shuffledKeys) {
       const repo = this.repositories[key];
+      if (!repo) continue;
       const randomItem = await repo.getRandom(userId);
 
       if (randomItem) {

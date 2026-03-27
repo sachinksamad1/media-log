@@ -42,6 +42,7 @@ firebase-debug.log
 firebase-b*.json
 firestore.indexes.json
 serviceAccountKey.json
+firebase.json
 
 # IDEs
 .idea/

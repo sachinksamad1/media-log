@@ -291,11 +291,13 @@ export abstract class MediaRepository<T extends BaseMediaType> {
 
       const randomIndex = Math.floor(Math.random() * anySnapshot.size);
       const doc = anySnapshot.docs[randomIndex];
+      if (!doc) return null;
       return { ...(doc.data() as T), id: doc.id };
     }
 
     const randomIndex = Math.floor(Math.random() * snapshot.size);
     const doc = snapshot.docs[randomIndex];
+    if (!doc) return null;
     return { ...(doc.data() as T), id: doc.id };
   }
 }

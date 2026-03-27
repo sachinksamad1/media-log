@@ -1,6 +1,6 @@
 import { db } from '@config/firebase.js';
 import type { MediaBase } from '@media-log/shared-types';
-import * as tf from '@tensorflow/tfjs';
+import type * as tfTypes from '@tensorflow/tfjs';
 
 const MEDIA_COLLECTIONS = [
   'anime',
@@ -21,6 +21,9 @@ export class RecommendationsService {
     userId: string,
     limitCount: number = 10,
   ): Promise<Array<MediaBase & { score: number }>> {
+    // Lazy load tfjs to avoid initialization timeout
+    const tf = await import('@tensorflow/tfjs');
+
     // 1. Fetch ALL user's media from all collections
     const userMediaItems: MediaBase[] = [];
 
@@ -108,8 +111,10 @@ export class RecommendationsService {
         const candidateNormVal = Number(candidateNorm.dataSync()[0]);
 
         if (userNormVal > 0 && candidateNormVal > 0) {
-          const denom = (userNorm as tf.Tensor).mul(candidateNorm as tf.Tensor);
-          const divResult = (dotProduct as tf.Tensor).div(denom);
+          const denom = (userNorm as tfTypes.Tensor).mul(
+            candidateNorm as tfTypes.Tensor,
+          );
+          const divResult = (dotProduct as tfTypes.Tensor).div(denom);
           const scoreVal = divResult.dataSync()[0];
           score = scoreVal !== undefined ? Number(scoreVal) : 0;
           denom.dispose();
