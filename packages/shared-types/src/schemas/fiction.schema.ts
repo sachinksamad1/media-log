@@ -45,6 +45,7 @@ export interface FictionDTO {
   genres: string[];
   origin?: string;
   language?: string;
+  collectionName?: string;
   author?: string;
   format?: string;
   type?: string;

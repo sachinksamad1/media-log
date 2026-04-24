@@ -38,6 +38,7 @@ const form = reactive<{
   score: number
   watchedEpisodes: number
   rewatchCount: number
+  collectionName: string
 }>({
   title: '',
   director: '',
@@ -55,6 +56,7 @@ const form = reactive<{
   score: 0,
   watchedEpisodes: 0,
   rewatchCount: 0,
+  collectionName: '',
 })
 
 function handleFileSelect(event: Event) {
@@ -83,6 +85,7 @@ function resetForm() {
   form.score = 0
   form.watchedEpisodes = 0
   form.rewatchCount = 0
+  form.collectionName = ''
   selectedFile.value = null
   previewUrl.value = null
 }
@@ -136,6 +139,7 @@ async function handleSave() {
         .split(',')
         .map((s) => s.trim())
         .filter((s) => s),
+      collectionName: form.collectionName,
     }
 
     let createData: Partial<TvSeries> | FormData = payload
@@ -213,6 +217,15 @@ async function handleSave() {
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               placeholder="Enter title"
               autofocus
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium">Collection / Sub-category</label>
+            <input
+              v-model="form.collectionName"
+              class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              placeholder="e.g. Breaking Bad Universe, HBO Classics"
             />
           </div>
 

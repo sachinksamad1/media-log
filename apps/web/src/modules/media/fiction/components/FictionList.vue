@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { FictionService } from '@modules/media/fiction/api/fictionService'
 import { useAuthStore } from '@core/stores/useAuthStore'
 import type { Fiction } from '@modules/media/fiction/types/types'
@@ -23,6 +23,16 @@ const hasMore = ref(true)
 const selectedFilter = ref('All')
 const searchQuery = ref('')
 const isSearching = ref(false)
+
+const groupedLibrary = computed(() => {
+  const groups: Record<string, Fiction[]> = {}
+  library.value.forEach((item) => {
+    const key = item.collectionName || 'Other'
+    if (!groups[key]) groups[key] = []
+    groups[key].push(item)
+  })
+  return groups
+})
 
 // Modal State
 const selectedFiction = ref<Fiction | null>(null)
@@ -284,15 +294,34 @@ onMounted(() => {
             }}
           </h3>
         </div>
-        <div
-          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
-        >
-          <FictionCard
-            v-for="fiction in library"
-            :key="fiction.id"
-            :fiction="fiction"
-            @click="openDetails(fiction)"
-          />
+
+        <div v-for="(groupList, groupName) in groupedLibrary" :key="groupName" class="mb-8">
+          <h4
+            v-if="groupName !== 'Other' || Object.keys(groupedLibrary).length > 1"
+            class="text-lg font-bold mb-4 flex items-center gap-2"
+          >
+            <span
+              v-if="groupName !== 'Other'"
+              class="w-1.5 h-1.5 rounded-full bg-[hsl(var(--category-fiction))]"
+            ></span>
+            {{
+              groupName === 'Other'
+                ? Object.keys(groupedLibrary).length > 1
+                  ? 'Uncategorized'
+                  : ''
+                : groupName
+            }}
+          </h4>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
+          >
+            <FictionCard
+              v-for="fiction in groupList"
+              :key="fiction.id"
+              :fiction="fiction"
+              @click="openDetails(fiction)"
+            />
+          </div>
         </div>
       </div>
 

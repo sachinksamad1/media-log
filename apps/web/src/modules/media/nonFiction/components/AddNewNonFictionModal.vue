@@ -34,6 +34,7 @@ const form = reactive<{
   format: string
   origin: string
   published: string // YYYY-MM-DD or string
+  collectionName: string
 }>({
   title: '',
   author: '',
@@ -47,6 +48,7 @@ const form = reactive<{
   format: 'Physical',
   origin: '',
   published: '',
+  collectionName: '',
 })
 
 function handleFileSelect(event: Event) {
@@ -69,6 +71,7 @@ function resetForm() {
   form.type = 'Series'
   form.format = 'Physical'
   form.origin = ''
+  form.collectionName = ''
   selectedFile.value = null
   previewUrl.value = null
 }
@@ -96,6 +99,7 @@ async function handleSave() {
       format: form.format,
       origin: form.origin,
       published: form.published,
+      collectionName: form.collectionName,
       userStats: {
         status: form.status,
         score: Number(form.score),
@@ -190,6 +194,15 @@ async function handleSave() {
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               placeholder="Enter title"
               autofocus
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium">Collection / Sub-category</label>
+            <input
+              v-model="form.collectionName"
+              class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              placeholder="e.g. World War II History, Science & Tech"
             />
           </div>
 

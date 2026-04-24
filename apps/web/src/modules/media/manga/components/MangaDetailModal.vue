@@ -39,6 +39,7 @@ const form = reactive<{
   genre: string
   type: string
   format: string
+  collectionName: string
 }>({
   title: '',
   author: '',
@@ -53,6 +54,7 @@ const form = reactive<{
   genre: '',
   type: '',
   format: '',
+  collectionName: '',
 })
 
 // Sync props to form when opened
@@ -73,6 +75,7 @@ function syncForm(data: Manga) {
   form.genre = data.genres ? data.genres.join(', ') : ''
   form.type = data.type ?? ''
   form.format = data.format ?? ''
+  form.collectionName = data.collectionName ?? ''
 }
 
 watch(
@@ -143,6 +146,7 @@ async function handleSave() {
       title: form.title,
       author: form.author,
       illustrator: form.illustrator,
+      collectionName: form.collectionName,
       type: form.type,
       format: form.format,
       userStats: {
@@ -265,6 +269,12 @@ async function handleDelete() {
               >
                 {{ manga?.type }}
               </span>
+              <span
+                v-if="manga?.collectionName"
+                class="px-2 py-0.5 rounded bg-primary/20 border border-primary/30 backdrop-blur-sm"
+              >
+                {{ manga.collectionName }}
+              </span>
               <span v-if="!isEditing" class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm">
                 {{ form.status }}
               </span>
@@ -383,6 +393,15 @@ async function handleDelete() {
               <input
                 v-model="form.title"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-medium">Collection / Sub-category</label>
+              <input
+                v-model="form.collectionName"
+                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+                placeholder="e.g. Dark, Action Series"
               />
             </div>
 

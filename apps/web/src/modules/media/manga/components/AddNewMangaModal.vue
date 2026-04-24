@@ -35,6 +35,7 @@ const form = reactive<{
   genre: string
   type: string
   format: string
+  collectionName: string
 }>({
   title: '',
   author: '',
@@ -49,6 +50,7 @@ const form = reactive<{
   genre: '',
   type: 'Manga',
   format: 'Digital',
+  collectionName: '',
 })
 
 function handleFileSelect(event: Event) {
@@ -74,6 +76,7 @@ function resetForm() {
   form.genre = ''
   form.type = 'Manga'
   form.format = 'Digital'
+  form.collectionName = ''
   selectedFile.value = null
   previewUrl.value = null
 }
@@ -99,6 +102,7 @@ async function handleSave() {
       title: form.title,
       author: form.author,
       illustrator: form.illustrator,
+      collectionName: form.collectionName,
       type: form.type,
       format: form.format,
       userStats: {
@@ -197,6 +201,15 @@ async function handleSave() {
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               placeholder="Enter manga title"
               autofocus
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium">Collection / Sub-category</label>
+            <input
+              v-model="form.collectionName"
+              class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              placeholder="e.g. Dark, Action Series"
             />
           </div>
 

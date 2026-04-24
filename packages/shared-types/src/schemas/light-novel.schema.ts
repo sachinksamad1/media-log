@@ -58,6 +58,7 @@ export interface LightNovelDTO {
   genres: string[];
   origin?: string;
   language?: string;
+  collectionName?: string;
   author?: string;
   illustrator?: string;
   type: string;

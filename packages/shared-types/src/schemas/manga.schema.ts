@@ -66,6 +66,7 @@ export interface MangaDTO {
   author?: string;
   illustrator?: string;
   origin?: string;
+  collectionName?: string;
   genres: string[];
   type: string;
   format: string;

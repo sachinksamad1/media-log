@@ -38,6 +38,7 @@ export interface AnimeDTO {
   genres: string[];
   origin?: string;
   language?: string;
+  collectionName?: string;
   releaseStats?: AnimeReleaseStats;
   userStats: {
     score: number;

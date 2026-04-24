@@ -33,6 +33,7 @@ export interface NonFictionDTO {
   genres: string[];
   origin?: string;
   language?: string;
+  collectionName?: string;
   author?: string;
   format?: string;
   published?: string;

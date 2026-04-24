@@ -44,6 +44,7 @@ export interface GameDTO {
   genres: string[];
   origin?: string;
   language?: string;
+  collectionName?: string;
   platforms: string[];
   developers: string[];
   publishers: string[];

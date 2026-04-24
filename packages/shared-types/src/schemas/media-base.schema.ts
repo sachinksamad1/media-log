@@ -38,6 +38,7 @@ export const MediaBaseSchema = z.object({
   genres: z.array(z.string()).optional(),
   origin: z.string().optional(),
   language: z.string().optional(),
+  collectionName: z.string().optional(),
   userStats: BaseUserStatsSchema.default({
     score: 0,
     status: "Planned",

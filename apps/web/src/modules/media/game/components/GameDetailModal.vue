@@ -37,6 +37,7 @@ const form = reactive<{
   playTime: number
   language: string
   origin: string
+  collectionName: string
 }>({
   title: '',
   developers: '',
@@ -49,6 +50,7 @@ const form = reactive<{
   playTime: 0,
   language: '',
   origin: '',
+  collectionName: '',
 })
 
 // Sync props to form when opened
@@ -67,6 +69,7 @@ function syncForm(data: Game) {
   form.platforms = data.platforms ? data.platforms.join(', ') : ''
   form.language = data.language ?? ''
   form.origin = data.origin ?? ''
+  form.collectionName = data.collectionName ?? ''
 }
 
 watch(
@@ -159,6 +162,7 @@ async function handleSave() {
         .split(',')
         .map((s) => s.trim())
         .filter((s) => s),
+      collectionName: form.collectionName,
     }
 
     let updateData: Partial<Game> | FormData = payload
@@ -257,6 +261,12 @@ async function handleDelete() {
               >
                 {{ p }}
               </span>
+              <span
+                v-if="game?.collectionName"
+                class="px-2 py-0.5 rounded bg-primary/20 border border-primary/30 backdrop-blur-sm"
+              >
+                {{ game.collectionName }}
+              </span>
               <span v-if="!isEditing" class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm">
                 {{ form.status }}
               </span>
@@ -348,6 +358,15 @@ async function handleDelete() {
               <input
                 v-model="form.title"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-medium">Collection / Sub-category</label>
+              <input
+                v-model="form.collectionName"
+                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+                placeholder="e.g. Zelda Series, Indie Gems"
               />
             </div>
 

@@ -36,6 +36,7 @@ const form = reactive<{
   score: number
   watchedDate: string
   rewatchCount: number
+  collectionName: string
 }>({
   title: '',
   director: '',
@@ -51,6 +52,7 @@ const form = reactive<{
   score: 0,
   watchedDate: '',
   rewatchCount: 0,
+  collectionName: '',
 })
 
 function handleFileSelect(event: Event) {
@@ -77,6 +79,7 @@ function resetForm() {
   form.score = 0
   form.watchedDate = ''
   form.rewatchCount = 0
+  form.collectionName = ''
   selectedFile.value = null
   previewUrl.value = null
 }
@@ -120,6 +123,7 @@ async function handleSave() {
         .split(',')
         .map((s) => s.trim())
         .filter((s) => s),
+      collectionName: form.collectionName,
     }
 
     let createData: Partial<Movie> | FormData = payload
@@ -197,6 +201,15 @@ async function handleSave() {
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               placeholder="Enter title"
               autofocus
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium">Collection / Sub-category</label>
+            <input
+              v-model="form.collectionName"
+              class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              placeholder="e.g. Marvel Cinematic Universe, Studio Ghibli"
             />
           </div>
 

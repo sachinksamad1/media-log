@@ -36,6 +36,7 @@ const form = reactive<{
   airingEnded: string
   isReleaseCompleted: boolean
   genre: string
+  collectionName: string
 }>({
   title: '',
   imageUrl: '',
@@ -47,6 +48,7 @@ const form = reactive<{
   airingEnded: '',
   isReleaseCompleted: false,
   genre: '',
+  collectionName: '',
 })
 
 // Sync props to form when opened
@@ -63,6 +65,7 @@ function syncForm(data: Anime) {
   form.airingEnded = data.releaseStats?.airingEnded ?? ''
   form.isReleaseCompleted = data.releaseStats?.isCompleted ?? false
   form.genre = data.genres ? data.genres.join(', ') : ''
+  form.collectionName = data.collectionName ?? ''
 }
 
 watch(
@@ -131,6 +134,7 @@ async function handleSave() {
   try {
     const payload: Partial<Anime> = {
       title: form.title,
+      collectionName: form.collectionName,
       // userStats and releaseStats logic...
       userStats: {
         ...props.anime.userStats,
@@ -245,6 +249,12 @@ async function handleDelete() {
               >
                 {{ anime?.origin || 'Anime' }}
               </span>
+              <span
+                v-if="anime?.collectionName"
+                class="px-2 py-0.5 rounded bg-primary/20 border border-primary/30 backdrop-blur-sm"
+              >
+                {{ anime.collectionName }}
+              </span>
               <span v-if="!isEditing" class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm">
                 {{ form.status }}
               </span>
@@ -332,6 +342,15 @@ async function handleDelete() {
               <input
                 v-model="form.title"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-medium">Collection / Sub-category</label>
+              <input
+                v-model="form.collectionName"
+                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+                placeholder="e.g. Action Series, Classics"
               />
             </div>
 

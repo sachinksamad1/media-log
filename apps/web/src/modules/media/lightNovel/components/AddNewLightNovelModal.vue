@@ -33,6 +33,7 @@ const form = reactive<{
   type: string
   format: string
   origin: string
+  collectionName: string
 }>({
   title: '',
   author: '',
@@ -45,6 +46,7 @@ const form = reactive<{
   type: 'Series',
   format: 'Light Novel',
   origin: 'Japan',
+  collectionName: '',
 })
 
 function handleFileSelect(event: Event) {
@@ -68,6 +70,7 @@ function resetForm() {
   form.type = 'Series'
   form.format = 'Light Novel'
   form.origin = 'Japan'
+  form.collectionName = ''
   selectedFile.value = null
   previewUrl.value = null
 }
@@ -96,6 +99,7 @@ async function handleSave() {
       type: form.type,
       format: form.format,
       origin: form.origin,
+      collectionName: form.collectionName,
       userStats: {
         status: form.status,
         score: Number(form.score),
@@ -185,6 +189,15 @@ async function handleSave() {
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               placeholder="Enter title"
               autofocus
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium">Collection / Sub-category</label>
+            <input
+              v-model="form.collectionName"
+              class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              placeholder="e.g. Isekai Classics, Toaru Universe"
             />
           </div>
 

@@ -38,6 +38,7 @@ const form = reactive<{
   format: string
   origin: string
   published: string
+  collectionName: string
 }>({
   title: '',
   author: '',
@@ -51,6 +52,7 @@ const form = reactive<{
   format: '',
   origin: '',
   published: '',
+  collectionName: '',
 })
 
 // Sync props to form when opened
@@ -81,6 +83,7 @@ function syncForm(data: NonFiction) {
       ? data.published
       : new Date(data.published).toISOString().split('T')[0]
     : ''
+  form.collectionName = data.collectionName ?? ''
 }
 
 watch(
@@ -155,6 +158,7 @@ async function handleSave() {
       format: form.format,
       origin: form.origin,
       published: form.published,
+      collectionName: form.collectionName,
       userStats: {
         ...props.nonFiction.userStats,
         status: form.status,
@@ -275,6 +279,12 @@ async function handleDelete() {
               >
                 {{ form.type }}
               </span>
+              <span
+                v-if="nonFiction?.collectionName"
+                class="px-2 py-0.5 rounded bg-primary/20 border border-primary/30 backdrop-blur-sm"
+              >
+                {{ nonFiction.collectionName }}
+              </span>
               <span v-if="!isEditing" class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm">
                 {{ form.status }}
               </span>
@@ -365,6 +375,15 @@ async function handleDelete() {
               <input
                 v-model="form.title"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-medium">Collection / Sub-category</label>
+              <input
+                v-model="form.collectionName"
+                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+                placeholder="e.g. World War II History, Science & Tech"
               />
             </div>
 

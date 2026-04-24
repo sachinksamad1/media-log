@@ -31,6 +31,7 @@ const form = reactive<{
   airingEnded: string
   isReleaseCompleted: boolean
   genres: string
+  collectionName: string
 }>({
   title: '',
   status: 'Planned',
@@ -41,6 +42,7 @@ const form = reactive<{
   airingEnded: '',
   isReleaseCompleted: false,
   genres: '',
+  collectionName: '',
 })
 
 function handleFileSelect(event: Event) {
@@ -62,6 +64,7 @@ function resetForm() {
   form.airingEnded = ''
   form.isReleaseCompleted = false
   form.genres = ''
+  form.collectionName = ''
   selectedFile.value = null
   previewUrl.value = null
 }
@@ -112,6 +115,7 @@ async function handleSave() {
   try {
     const payload: Partial<Anime> = {
       title: form.title,
+      collectionName: form.collectionName,
       userStats: {
         status: form.status,
         score: Number(form.score),
@@ -207,6 +211,15 @@ async function handleSave() {
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               placeholder="Enter anime title"
               autofocus
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium">Collection / Sub-category</label>
+            <input
+              v-model="form.collectionName"
+              class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              placeholder="e.g. Dark, Action Series"
             />
           </div>
 

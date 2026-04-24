@@ -30,8 +30,8 @@ const form = reactive<{
   releaseStatus: string
   genre: string
   type: string
-  format: string
   origin: string
+  collectionName: string
 }>({
   title: '',
   author: '',
@@ -43,6 +43,7 @@ const form = reactive<{
   type: 'Series',
   format: 'Physical',
   origin: 'USA',
+  collectionName: '',
 })
 
 function handleFileSelect(event: Event) {
@@ -65,6 +66,7 @@ function resetForm() {
   form.type = 'Series'
   form.format = 'Physical'
   form.origin = 'USA'
+  form.collectionName = ''
   selectedFile.value = null
   previewUrl.value = null
 }
@@ -92,6 +94,7 @@ async function handleSave() {
       type: form.type,
       format: form.format,
       origin: form.origin,
+      collectionName: form.collectionName,
       userStats: {
         status: form.status,
         score: Number(form.score),
@@ -182,6 +185,15 @@ async function handleSave() {
               class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
               placeholder="Enter title"
               autofocus
+            />
+          </div>
+
+          <div class="space-y-2">
+            <label class="text-sm font-medium">Collection / Sub-category</label>
+            <input
+              v-model="form.collectionName"
+              class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              placeholder="e.g. Brandon Sanderson Universe"
             />
           </div>
 

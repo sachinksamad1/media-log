@@ -40,6 +40,7 @@ const form = reactive<{
   type: string
   format: string
   origin: string
+  collectionName: string
 }>({
   title: '',
   author: '',
@@ -55,6 +56,7 @@ const form = reactive<{
   type: '',
   format: '',
   origin: '',
+  collectionName: '',
 })
 
 // Sync props to form when opened
@@ -75,6 +77,7 @@ function syncForm(data: LightNovel) {
   form.type = data.type ?? ''
   form.format = data.format ?? ''
   form.origin = data.origin ?? ''
+  form.collectionName = data.collectionName ?? ''
 }
 
 watch(
@@ -148,6 +151,7 @@ async function handleSave() {
       type: form.type,
       format: form.format,
       origin: form.origin,
+      collectionName: form.collectionName,
       readingStats: {
         ...props.lightNovel.readingStats,
         currentReadingVolume: Number(form.readingStats.currentReadingVolume),
@@ -267,6 +271,12 @@ async function handleDelete() {
               >
                 {{ lightNovel?.type }}
               </span>
+              <span
+                v-if="lightNovel?.collectionName"
+                class="px-2 py-0.5 rounded bg-primary/20 border border-primary/30 backdrop-blur-sm"
+              >
+                {{ lightNovel.collectionName }}
+              </span>
               <span v-if="!isEditing" class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm">
                 {{ form.status }}
               </span>
@@ -369,6 +379,15 @@ async function handleDelete() {
               <input
                 v-model="form.title"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-medium">Collection / Sub-category</label>
+              <input
+                v-model="form.collectionName"
+                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+                placeholder="e.g. Isekai Classics, Toaru Universe"
               />
             </div>
 

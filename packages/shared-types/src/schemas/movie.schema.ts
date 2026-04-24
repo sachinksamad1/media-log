@@ -32,6 +32,7 @@ export interface MovieDTO {
   genres: string[];
   origin?: string;
   language?: string;
+  collectionName?: string;
   director?: string;
   producer?: string;
   studio?: string;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { MangaService } from '@modules/media/manga/api/manga.service'
 import { useAuthStore } from '@/core/stores/useAuthStore'
 import type { Manga } from '@modules/media/manga/types/types'
@@ -23,6 +23,16 @@ const hasMore = ref(true)
 const selectedFilter = ref('All')
 const searchQuery = ref('')
 const isSearching = ref(false)
+
+const groupedLibrary = computed(() => {
+  const groups: Record<string, Manga[]> = {}
+  library.value.forEach((manga) => {
+    const key = manga.collectionName || 'Other'
+    if (!groups[key]) groups[key] = []
+    groups[key].push(manga)
+  })
+  return groups
+})
 
 // Modal State
 const selectedManga = ref<Manga | null>(null)
@@ -282,15 +292,34 @@ onMounted(() => {
             {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Manga' }}
           </h3>
         </div>
-        <div
-          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
-        >
-          <MangaCard
-            v-for="manga in library"
-            :key="manga.id"
-            :manga="manga"
-            @click="openDetails(manga)"
-          />
+
+        <div v-for="(groupList, groupName) in groupedLibrary" :key="groupName" class="mb-8">
+          <h4
+            v-if="groupName !== 'Other' || Object.keys(groupedLibrary).length > 1"
+            class="text-lg font-bold mb-4 flex items-center gap-2"
+          >
+            <span
+              v-if="groupName !== 'Other'"
+              class="w-1.5 h-1.5 rounded-full bg-[hsl(var(--category-manga))]"
+            ></span>
+            {{
+              groupName === 'Other'
+                ? Object.keys(groupedLibrary).length > 1
+                  ? 'Uncategorized'
+                  : ''
+                : groupName
+            }}
+          </h4>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
+          >
+            <MangaCard
+              v-for="manga in groupList"
+              :key="manga.id"
+              :manga="manga"
+              @click="openDetails(manga)"
+            />
+          </div>
         </div>
       </div>
 

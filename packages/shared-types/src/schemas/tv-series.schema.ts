@@ -53,6 +53,7 @@ export interface TvSeriesDTO {
   genres: string[];
   origin?: string;
   language?: string;
+  collectionName?: string;
   directors: string[];
   writers: string[];
   cast: string[];

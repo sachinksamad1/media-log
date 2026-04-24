@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { AnimeService } from '@/modules/media/anime/api/animeService'
 import { useAuthStore } from '@/core/stores/useAuthStore'
 import type { Anime } from '@/modules/media/anime/types/types'
@@ -23,6 +23,16 @@ const hasMore = ref(true)
 const selectedFilter = ref('All')
 const searchQuery = ref('')
 const isSearching = ref(false)
+
+const groupedLibrary = computed(() => {
+  const groups: Record<string, Anime[]> = {}
+  library.value.forEach((anime) => {
+    const key = anime.collectionName || 'Other'
+    if (!groups[key]) groups[key] = []
+    groups[key].push(anime)
+  })
+  return groups
+})
 
 // Modal State
 const selectedAnime = ref<Anime | null>(null)
@@ -283,15 +293,34 @@ onMounted(() => {
             {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Anime' }}
           </h3>
         </div>
-        <div
-          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
-        >
-          <AnimeCard
-            v-for="anime in library"
-            :key="anime.id"
-            :anime="anime"
-            @click="openDetails(anime)"
-          />
+
+        <div v-for="(groupList, groupName) in groupedLibrary" :key="groupName" class="mb-8">
+          <h4
+            v-if="groupName !== 'Other' || Object.keys(groupedLibrary).length > 1"
+            class="text-lg font-bold mb-4 flex items-center gap-2"
+          >
+            <span
+              v-if="groupName !== 'Other'"
+              class="w-1.5 h-1.5 rounded-full bg-[hsl(var(--category-anime))]"
+            ></span>
+            {{
+              groupName === 'Other'
+                ? Object.keys(groupedLibrary).length > 1
+                  ? 'Uncategorized'
+                  : ''
+                : groupName
+            }}
+          </h4>
+          <div
+            class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
+          >
+            <AnimeCard
+              v-for="anime in groupList"
+              :key="anime.id"
+              :anime="anime"
+              @click="openDetails(anime)"
+            />
+          </div>
         </div>
       </div>
 

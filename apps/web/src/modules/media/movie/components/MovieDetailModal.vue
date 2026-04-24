@@ -40,6 +40,7 @@ const form = reactive<{
   score: number
   watchedDate: string
   rewatchCount: number
+  collectionName: string
 }>({
   title: '',
   director: '',
@@ -55,6 +56,7 @@ const form = reactive<{
   score: 0,
   watchedDate: '',
   rewatchCount: 0,
+  collectionName: '',
 })
 
 // Sync props to form when opened
@@ -77,6 +79,7 @@ function syncForm(data: Movie) {
 
   form.genres = data.genres ? data.genres.join(', ') : ''
   form.cast = data.cast ? data.cast.join(', ') : ''
+  form.collectionName = data.collectionName ?? ''
 }
 
 watch(
@@ -155,6 +158,7 @@ async function handleSave() {
       },
       origin: form.origin || undefined,
       language: form.language || undefined,
+      collectionName: form.collectionName,
 
       userStats: {
         ...props.movie.userStats,
@@ -267,6 +271,12 @@ async function handleDelete() {
               >
                 {{ c }}
               </span>
+              <span
+                v-if="movie?.collectionName"
+                class="px-2 py-0.5 rounded bg-primary/20 border border-primary/30 backdrop-blur-sm"
+              >
+                {{ movie.collectionName }}
+              </span>
               <span v-if="!isEditing" class="px-2 py-0.5 rounded bg-white/20 backdrop-blur-sm">
                 {{ form.status }}
               </span>
@@ -360,6 +370,15 @@ async function handleDelete() {
               <input
                 v-model="form.title"
                 class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label class="text-sm font-medium">Collection / Sub-category</label>
+              <input
+                v-model="form.collectionName"
+                class="w-full px-3 py-2 rounded-md bg-background border border-input focus:ring-1 focus:ring-ring"
+                placeholder="e.g. Marvel Cinematic Universe, Studio Ghibli"
               />
             </div>
 
