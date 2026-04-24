@@ -166,43 +166,65 @@ onMounted(() => {
 
 <template>
   <div class="min-h-screen bg-background text-foreground w-full">
-    <div class="mx-auto w-full max-w-7xl px-2 lg:px-4 py-2">
+    <div class="mx-auto w-full max-w-7xl px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
       <!-- HEADER / FILTERS -->
-      <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
-        <div class="flex items-center gap-4">
-          <h3 class="text-xl font-semibold text-[hsl(var(--category-movie))]">Movie Library</h3>
+      <div class="flex flex-col gap-6 mb-10">
+        <!-- Top Row: Title & Action -->
+        <div class="flex items-center justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
+            <h1 class="text-3xl font-extrabold tracking-tight text-[hsl(var(--category-movie))]">
+              Movie Library
+            </h1>
+            <div class="flex items-center gap-2 text-sm text-muted-foreground">
+              <span
+                class="w-1.5 h-1.5 rounded-full bg-[hsl(var(--category-movie))] animate-pulse"
+              ></span>
+              {{ isSearching ? 'Search results' : selectedFilter }}
+            </div>
+          </div>
+
           <button
-            class="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:opacity-90 transition-opacity flex items-center gap-1"
+            class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold transition-all rounded-xl bg-primary text-primary-foreground hover:ring-4 hover:ring-primary/10 hover:opacity-90 active:scale-95 shadow-lg shadow-primary/10"
             @click="isAddModalOpen = true"
           >
-            <span>+</span> Add Movie
+            <span class="text-lg leading-none">+</span>
+            <span class="hidden sm:inline">Add Movie</span>
+            <span class="sm:hidden text-xs">Add</span>
           </button>
         </div>
 
-        <!-- SEARCH BAR -->
-        <div class="relative w-full sm:max-w-xs order-last sm:order-none mt-4 sm:mt-0">
-          <Search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <input
-            v-model="searchQuery"
-            class="w-full pl-9 pr-4 py-2 bg-secondary/30 border border-transparent focus:border-primary focus:bg-background rounded-lg outline-none transition-all placeholder:text-muted-foreground text-sm"
-            placeholder="Search movies..."
-          />
-        </div>
+        <!-- Bottom Row: Search & Filters -->
+        <div class="flex flex-col lg:flex-row items-stretch lg:items-center gap-4">
+          <!-- Search Bar -->
+          <div class="relative group flex-shrink-0 lg:w-[320px]">
+            <Search
+              class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-[hsl(var(--category-movie))] transition-colors"
+            />
+            <input
+              v-model="searchQuery"
+              class="w-full pl-10 pr-4 py-2.5 bg-secondary/30 hover:bg-secondary/50 border border-transparent focus:border-[hsl(var(--category-movie))]/30 focus:bg-background rounded-xl outline-none transition-all placeholder:text-muted-foreground text-sm shadow-sm"
+              placeholder="Search in your library..."
+            />
+          </div>
 
-        <div class="flex items-center gap-2 bg-secondary/50 p-1 rounded-lg">
-          <button
-            v-for="filter in ['All', 'Completed', 'Planned']"
-            :key="filter"
-            class="px-4 py-1.5 rounded-md text-sm font-medium transition-all"
-            :class="
-              selectedFilter === filter
-                ? 'bg-background shadow-sm text-foreground'
-                : 'text-muted-foreground hover:text-foreground'
-            "
-            @click="setFilter(filter)"
+          <!-- Filter Pills -->
+          <div
+            class="flex items-center gap-1.5 p-1 bg-secondary/40 backdrop-blur-sm rounded-xl overflow-x-auto no-scrollbar scroll-smooth"
           >
-            {{ filter }}
-          </button>
+            <button
+              v-for="filter in ['All', 'Completed', 'Planned']"
+              :key="filter"
+              class="px-4 py-1.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap active:scale-95"
+              :class="
+                selectedFilter === filter
+                  ? 'bg-background shadow-md text-foreground ring-1 ring-black/5'
+                  : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
+              "
+              @click="setFilter(filter)"
+            >
+              {{ filter }}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -216,7 +238,7 @@ onMounted(() => {
             v-for="movie in plannedLibrary"
             :key="movie.id"
             :movie="movie"
-            class="min-w-[200px] w-[200px]"
+            class="min-w-[150px] w-[150px] sm:min-w-[180px] sm:w-[180px] lg:min-w-[200px] lg:w-[200px]"
             @click="openDetails(movie)"
           />
         </Carousel>
@@ -243,17 +265,16 @@ onMounted(() => {
 
       <!-- GRID -->
       <div v-else>
-        <div
-          v-if="!loading && !authStore.isInitialLoading && library.length > 0"
-          class="mb-4 px-4 lg:px-0"
-        >
+        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4">
           <h3 class="text-xl font-semibold">
             {{
               selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Movies'
             }}
           </h3>
         </div>
-        <div class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6">
+        <div
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
+        >
           <MovieCard
             v-for="movie in library"
             :key="movie.id"
@@ -292,3 +313,13 @@ onMounted(() => {
     />
   </div>
 </template>
+
+<style scoped>
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>

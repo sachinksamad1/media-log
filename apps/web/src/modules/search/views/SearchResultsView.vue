@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { searchService } from '../api/searchService'
 import type { GlobalSearchResponse } from '../types'
 import MediaCard from '@/common/components/ui/MediaCard.vue'
-import type { MediaItem, MediaType, MediaStatus } from '@/common/types/media'
+import type { MediaItem, MediaTypeKey, MediaStatus } from '@/common/types/media'
 
 const route = useRoute()
 const results = ref<GlobalSearchResponse[]>([])
@@ -40,7 +40,7 @@ watch(
 const mapToMediaItem = (item: GlobalSearchResponse): MediaItem => ({
   id: item.id,
   title: item.title,
-  type: item.mediaType as MediaType,
+  type: item.mediaType as MediaTypeKey,
   status: (item.userStats.status || 'planned') as MediaStatus,
   coverUrl: item.imageUrl,
   rating: item.userStats.score,
@@ -64,7 +64,10 @@ const mapToMediaItem = (item: GlobalSearchResponse): MediaItem => ({
       No results found.
     </div>
 
-    <div v-else class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+    <div
+      v-else
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-6"
+    >
       <MediaCard v-for="item in results" :key="item.id" :item="mapToMediaItem(item)" />
     </div>
   </div>

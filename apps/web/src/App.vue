@@ -17,9 +17,7 @@ authStore.initializeListener()
 
   <div v-if="!authStore.isInitialLoading">
     <AppShell v-if="!route.meta?.hideLayout">
-      <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <RouterView />
-      </div>
+      <RouterView />
     </AppShell>
     <RouterView v-else />
     <Toaster />

@@ -17,9 +17,10 @@ export const useRandomPickStore = defineStore('random-pick', {
       try {
         const filter = type || this.currentFilter
         this.result = await searchService.getRandom(filter)
-      } catch (err: any) {
-        this.error = err.message || 'Failed to fetch random pick'
-        console.error('Error fetching random pick:', err)
+      } catch (err: unknown) {
+        const error = err as Error
+        this.error = error.message || 'Failed to fetch random pick'
+        console.warn('Error fetching random pick:', err)
       } finally {
         this.loading = false
       }

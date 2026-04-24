@@ -55,6 +55,7 @@ export const globalRandom = async (req: Request, res: Response) => {
 
     return ResponseUtil.send(res, 200, result, 'Random item fetched');
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching random pick:', error);
     return ResponseUtil.error(
       res,

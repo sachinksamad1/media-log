@@ -51,25 +51,25 @@ onMounted(() => {
 
 <template>
   <div class="py-4 space-y-2 group/carousel relative">
-    <div v-if="title" class="px-4 lg:px-0 mb-4">
+    <div v-if="title" class="mb-4">
       <h3 class="text-xl font-semibold text-[hsl(var(--category))]">{{ title }}</h3>
     </div>
 
     <div class="relative group">
-      <!-- Left Arrow -->
+      <!-- Left Arrow — visible on hover (desktop) or always visible on touch when scrollable -->
       <button
         v-show="showLeftArrow"
-        class="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 hover:bg-background p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0 -ml-4"
+        class="absolute left-1 sm:left-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 hover:bg-background p-1.5 sm:p-2 rounded-full shadow-lg border border-border/50 transition-all sm:opacity-0 sm:group-hover:opacity-100 sm:-ml-3"
         aria-label="Scroll left"
         @click="scroll('left')"
       >
-        <ChevronLeft class="w-6 h-6" />
+        <ChevronLeft class="w-4 h-4 sm:w-6 sm:h-6" />
       </button>
 
       <!-- Scroll Container -->
       <div
         ref="scrollContainer"
-        class="flex gap-4 overflow-x-auto pb-4 px-4 lg:px-0 scrollbar-hide snap-x snap-mandatory"
+        class="flex gap-3 sm:gap-4 overflow-x-auto pb-4 px-1 scrollbar-hide snap-x snap-mandatory scroll-smooth"
         style="scrollbar-width: none; -ms-overflow-style: none"
       >
         <slot />
@@ -78,11 +78,11 @@ onMounted(() => {
       <!-- Right Arrow -->
       <button
         v-show="showRightArrow"
-        class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-background/80 hover:bg-background p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity disabled:opacity-0 -mr-4"
+        class="absolute right-1 sm:right-0 top-1/2 -translate-y-1/2 z-10 bg-background/90 hover:bg-background p-1.5 sm:p-2 rounded-full shadow-lg border border-border/50 transition-all sm:opacity-0 sm:group-hover:opacity-100 sm:-mr-3"
         aria-label="Scroll right"
         @click="scroll('right')"
       >
-        <ChevronRight class="w-6 h-6" />
+        <ChevronRight class="w-4 h-4 sm:w-6 sm:h-6" />
       </button>
     </div>
   </div>

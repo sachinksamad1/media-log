@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, type Component } from 'vue'
 import {
   Shuffle,
   RotateCcw,
@@ -33,7 +33,7 @@ const categories = [
 ]
 
 function getIcon(name: string) {
-  const icons: Record<string, any> = {
+  const icons: Record<string, Component> = {
     Tv,
     BookOpen,
     Book,
@@ -75,7 +75,7 @@ function formatDate(dateStr: string) {
 </script>
 
 <template>
-  <div class="p-6 max-w-5xl mx-auto space-y-8 min-h-[80vh] flex flex-col">
+  <div class="p-3 sm:p-6 max-w-5xl mx-auto space-y-6 sm:space-y-8 min-h-[80vh] flex flex-col">
     <!-- Header -->
     <div class="text-center space-y-2">
       <h1 class="text-4xl font-bold tracking-tight">Random Pick</h1>

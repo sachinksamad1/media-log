@@ -27,7 +27,7 @@ const getRelevanceColor = (score: number) => {
 </script>
 
 <template>
-  <div class="p-6 max-w-7xl mx-auto space-y-10">
+  <div class="p-3 sm:p-6 max-w-7xl mx-auto space-y-6 sm:space-y-10">
     <!-- Hero Header -->
     <header
       class="relative space-y-4 pt-10 overflow-hidden rounded-3xl bg-primary/5 p-12 border border-primary/10 shadow-[0_32px_120px_rgba(59,130,246,0.02)]"

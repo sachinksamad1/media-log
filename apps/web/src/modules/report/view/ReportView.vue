@@ -45,7 +45,7 @@ function formatDate(dateString: string): string {
 </script>
 
 <template>
-  <div class="p-6 space-y-6">
+  <div class="p-3 sm:p-6 space-y-6">
     <!-- Header -->
     <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
       <div>

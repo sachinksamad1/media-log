@@ -31,8 +31,9 @@ export const useRecommendationsStore = defineStore('recommendations', {
       try {
         const response = await recommendationService.getRecommendations(limit)
         this.recommendations = response.data
-      } catch (err: any) {
-        this.error = err.message || 'Failed to fetch recommendations'
+      } catch (err: unknown) {
+        const error = err as Error
+        this.error = error.message || 'Failed to fetch recommendations'
         console.error('Error fetching recommendations:', err)
       } finally {
         this.loading = false

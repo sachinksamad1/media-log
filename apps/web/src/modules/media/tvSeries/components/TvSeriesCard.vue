@@ -23,7 +23,7 @@ const statusClass = computed(() => {
 })
 
 const seasonsText = computed(() => {
-  const total = props.tvSeries.tvSeriesStats.totalSeasons
+  const total = props.tvSeries.tvSeriesStats?.totalSeasons ?? 0
   return `${total} Season${total !== 1 ? 's' : ''}`
 })
 </script>
@@ -33,7 +33,7 @@ const seasonsText = computed(() => {
     class="group bg-card border border-border rounded-xl overflow-hidden shadow-card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
   >
     <!-- Image Container -->
-    <div class="relative w-full h-[260px] overflow-hidden">
+    <div class="relative w-full aspect-[2/3] overflow-hidden">
       <img
         :src="tvSeries.imageUrl"
         :alt="tvSeries.title"

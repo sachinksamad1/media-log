@@ -36,7 +36,7 @@ const platformText = computed(() => {
     class="group bg-card border border-border rounded-xl overflow-hidden shadow-card hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
   >
     <!-- Image Container -->
-    <div class="relative w-full h-[260px] overflow-hidden">
+    <div class="relative w-full aspect-[2/3] overflow-hidden">
       <img
         :src="game.imageUrl"
         :alt="game.title"

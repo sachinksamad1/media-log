@@ -68,7 +68,7 @@ function prev(status: string) {
       <!-- GRID -->
       <div
         v-if="viewMode === 'grid'"
-        class="grid grid-cols-[repeat(auto-fill,minmax(180px,1fr))] gap-6"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
       >
         <slot v-for="item in grouped[status] ?? []" name="card" :item="item" />
       </div>
@@ -93,7 +93,7 @@ function prev(status: string) {
             <div
               v-for="item in grouped[status] ?? []"
               :key="item.id"
-              class="min-w-[180px] w-[180px]"
+              class="min-w-[150px] w-[150px] sm:min-w-[180px] sm:w-[180px]"
             >
               <slot name="card" :item="item" />
             </div>
@@ -127,10 +127,10 @@ function prev(status: string) {
 }
 
 .carousel-btn.left {
-  @apply -left-4;
+  @apply left-1 sm:-left-4;
 }
 
 .carousel-btn.right {
-  @apply -right-4;
+  @apply right-1 sm:-right-4;
 }
 </style>

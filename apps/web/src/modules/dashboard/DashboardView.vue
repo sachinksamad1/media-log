@@ -79,7 +79,7 @@ const recentActivity = computed(() => {
 </script>
 
 <template>
-  <div class="p-6 max-w-7xl mx-auto space-y-8">
+  <div class="p-3 sm:p-6 max-w-7xl mx-auto space-y-6 sm:space-y-8">
     <!-- Header -->
     <div>
       <h2 class="text-lg text-muted-foreground">Welcome back,</h2>
@@ -92,7 +92,7 @@ const recentActivity = computed(() => {
         Quick Actions
         <div class="absolute -bottom-1 left-0 w-1/3 h-1 bg-primary/30 rounded-full"></div>
       </h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
         <router-link
           to="/random-pick"
           class="group relative flex flex-col items-center gap-3 p-6 rounded-3xl border bg-card hover:bg-primary/5 transition-all duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-primary/20 overflow-hidden active:scale-95"

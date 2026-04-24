@@ -532,11 +532,13 @@ async function handleDelete() {
         </div>
 
         <!-- Footer Actions -->
-        <div class="p-4 border-t border-border bg-secondary/10 flex justify-end gap-3">
-          <div v-if="!isEditing" class="flex gap-3">
+        <div
+          class="p-4 border-t border-border bg-secondary/10 flex flex-col sm:flex-row justify-end gap-2 sm:gap-3"
+        >
+          <div v-if="!isEditing" class="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <button
               v-if="form.status !== 'Completed'"
-              class="px-5 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-colors flex items-center gap-2"
+              class="w-full sm:w-auto px-5 py-2 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-colors flex items-center justify-center gap-2"
               :disabled="saving"
               @click="toggleStatus"
             >
@@ -545,7 +547,7 @@ async function handleDelete() {
             </button>
             <button
               v-else
-              class="px-5 py-2 rounded-lg border border-green-200 text-green-700 hover:bg-green-50 transition-colors flex items-center gap-2"
+              class="w-full sm:w-auto px-5 py-2 rounded-lg border border-green-200 text-green-700 hover:bg-green-50 transition-colors flex items-center justify-center gap-2"
               :disabled="saving"
               @click="toggleStatus"
             >
@@ -553,29 +555,29 @@ async function handleDelete() {
               <span>Mark Ongoing</span>
             </button>
             <button
-              class="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
+              class="w-full sm:w-auto px-5 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity"
               @click="isEditing = true"
             >
               Edit Details
             </button>
           </div>
-          <div v-else class="flex gap-3">
+          <div v-else class="flex flex-col sm:flex-row gap-2 sm:gap-3">
             <button
-              class="px-4 py-2 rounded-lg border border-input hover:bg-accent hover:text-accent-foreground transition-colors"
+              class="w-full sm:w-auto px-4 py-2 rounded-lg border border-input hover:bg-accent hover:text-accent-foreground transition-colors"
               :disabled="saving || isDeleting"
               @click="cancelEdit"
             >
               Cancel
             </button>
             <button
-              class="px-4 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-colors"
+              class="w-full sm:w-auto px-4 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-colors"
               :disabled="saving || isDeleting"
               @click="handleDelete"
             >
               {{ isDeleting ? 'Deleting...' : 'Delete' }}
             </button>
             <button
-              class="px-5 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center gap-2"
+              class="w-full sm:w-auto px-5 py-2 rounded-lg bg-primary text-primary-foreground font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
               :disabled="saving || isDeleting"
               @click="handleSave"
             >

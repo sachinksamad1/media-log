@@ -164,6 +164,7 @@ const handleLogout = async () => {
         <!-- Search -->
         <button
           class="md:hidden text-muted-foreground hover:text-foreground hover:bg-secondary p-2 rounded-md"
+          @click="router.push('/search')"
         >
           <Search class="h-5 w-5" />
         </button>

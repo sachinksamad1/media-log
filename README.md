@@ -84,36 +84,91 @@ media-log/
 
 ## 🏁 Getting Started
 
-Prerequisites
+### Prerequisites
 
-- Node (v25+)
-- PNPM (npm install -g pnpm)
-- Firebase CLI (npm install -g firebase-tools)
+- **Node.js (v20+)**: We recommend using [vfox](https://vfox.luma.cc/) for version management.
+  ```bash
+  vfox install nodejs@22 # or latest
+  vfox use nodejs
+  ```
+- **PNPM**: Use [Corepack](https://nodejs.org/api/corepack.html) (built-in with Node) to manage PNPM:
+  ```bash
+  corepack enable
+  corepack prepare pnpm@latest --activate
+  ```
+- **Firebase CLI**:
+  ```bash
+  pnpm add -g firebase-tools
+  ```
 
-Installation
+### Installation
 
 1. Clone the repository:
 
-```
-https://github.com/sachinksamad1/media-log.git
-```
+   ```bash
+   git clone https://github.com/sachinksamad1/media-log.git
+   cd media-log
+   ```
 
 2. Install dependencies:
 
-```
-pnpm install
+   ```bash
+   pnpm install
+   ```
+
+3. Environment Setup:
+   - Create `.env` files in `apps/web/` and `apps/backend/` based on their respective `.env.example` templates.
+
+### Local Development
+
+Run the entire monorepo in development mode:
+
+```bash
+pnpm dev
 ```
 
-3. Environment Setup: Create `.env` files in both `web/` and `backend/` directories based on the provided `.env.example` templates.
-4. Local Development
-   Run both the frontend and backend:
+Or run specific apps:
 
+```bash
+# Frontend only
+pnpm run dev:web
+
+# Backend only
+pnpm run dev:backend
 ```
-# frontend
-pnpm run dev
 
-# frontend
-pnpm run dev
+### 🚀 Deployment
+
+The project is configured for **Firebase Cloud Functions** (Backend) and **Firebase Hosting** (Frontend).
+
+1. **Login to Firebase**:
+
+   ```bash
+   pnpm exec firebase login
+   ```
+
+2. **Deploy Everything**:
+
+   ```bash
+   pnpm run deploy
+   ```
+
+3. **Deploy Specific Apps**:
+
+   ```bash
+   # Frontend only (builds automatically)
+   pnpm run deploy:web
+
+   # Backend only (handles workspace dependencies automatically)
+   pnpm run deploy:backend
+   ```
+
+### 🧪 Local Testing (Emulators)
+
+Test the production-like environment locally:
+
+```bash
+pnpm exec firebase emulators:start
 ```
 
 ## 🗺️ Roadmap
