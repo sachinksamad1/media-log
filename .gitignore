@@ -5,7 +5,7 @@ node_modules/
 .npm/
 
 # Testing
-/coverage/
+coverage/
 apps/backend/playwright-report/
 apps/backend/test-results/
 apps/backend/blob-report/
@@ -18,9 +18,17 @@ dist/
 build/
 *.tgz
 
+# Cache directories
+.cache/
+.next/
+.nuxt/
+.svelte-kit/
+
 # Misc
 .DS_Store
 *.pem
+*.user
+*.userprefs
 
 # Environment Variables & Secrets
 .env
@@ -42,15 +50,11 @@ firebase-debug.log
 firebase-b*.json
 firestore.indexes.json
 serviceAccountKey.json
-firebase.json
 
 # IDEs
 .idea/
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
+!.vscode/
 *.swp
 *.suo
 *.sln

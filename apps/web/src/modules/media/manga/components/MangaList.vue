@@ -8,7 +8,7 @@ import AddNewMangaModal from '@modules/media/manga/components/AddNewMangaModal.v
 import MangaCard from '@modules/media/manga/components/MangaCard.vue'
 import Carousel from '@common/components/ui/Carousel.vue'
 import { watchDebounced } from '@vueuse/core'
-import { Search } from 'lucide-vue-next'
+import { Search, ChevronDown } from 'lucide-vue-next'
 
 // ----------------------------------------------------
 // STATE
@@ -21,18 +21,57 @@ const error = ref<string | null>(null)
 const nextCursor = ref<string | null>(null)
 const hasMore = ref(true)
 const selectedFilter = ref('All')
+const selectedCategory = ref('All')
+const selectedGenre = ref('All')
 const searchQuery = ref('')
 const isSearching = ref(false)
+const isCategoryOpen = ref(false)
+const isGenreOpen = ref(false)
+
+const categoryOptions = computed(() => {
+  const cats = new Set<string>()
+  library.value.forEach((a) => {
+    if (a.collectionName) cats.add(a.collectionName)
+  })
+  return ['All', ...Array.from(cats).sort()]
+})
+
+const genreOptions = computed(() => {
+  const genres = new Set<string>()
+  library.value.forEach((a) => {
+    ;(a.genres || []).forEach((g) => genres.add(g))
+  })
+  return ['All', ...Array.from(genres).sort()]
+})
+
+const filteredLibrary = computed(() => {
+  return library.value.filter((a) => {
+    const catMatch = selectedCategory.value === 'All' || a.collectionName === selectedCategory.value
+    const genreMatch =
+      selectedGenre.value === 'All' || (a.genres || []).includes(selectedGenre.value)
+    return catMatch && genreMatch
+  })
+})
 
 const groupedLibrary = computed(() => {
   const groups: Record<string, Manga[]> = {}
-  library.value.forEach((manga) => {
+  filteredLibrary.value.forEach((manga) => {
     const key = manga.collectionName || 'Other'
     if (!groups[key]) groups[key] = []
     groups[key].push(manga)
   })
   return groups
 })
+
+function setCategory(cat: string) {
+  selectedCategory.value = cat
+  isCategoryOpen.value = false
+}
+
+function setGenre(genre: string) {
+  selectedGenre.value = genre
+  isGenreOpen.value = false
+}
 
 // Modal State
 const selectedManga = ref<Manga | null>(null)
@@ -237,6 +276,102 @@ onMounted(() => {
               {{ filter }}
             </button>
           </div>
+
+          <!-- Category & Genre Dropdowns -->
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <div class="relative" @blur.capture="isCategoryOpen = false">
+              <button
+                class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-all bg-secondary/40 hover:bg-secondary/60 border"
+                :class="
+                  selectedCategory !== 'All'
+                    ? 'border-[hsl(var(--category-manga))]/40 text-[hsl(var(--category-manga))]'
+                    : 'border-transparent text-muted-foreground'
+                "
+                @click.stop="
+                  isCategoryOpen = !isCategoryOpen
+                  isGenreOpen = false
+                "
+              >
+                <span class="hidden sm:inline">Category:</span>
+                <span class="max-w-[90px] truncate">{{ selectedCategory }}</span>
+                <ChevronDown
+                  class="w-3.5 h-3.5 transition-transform"
+                  :class="{ 'rotate-180': isCategoryOpen }"
+                />
+              </button>
+              <Transition name="dropdown">
+                <div
+                  v-if="isCategoryOpen"
+                  class="absolute z-50 top-full mt-1.5 left-0 min-w-[160px] bg-popover border border-border rounded-xl shadow-xl overflow-hidden"
+                >
+                  <button
+                    v-for="cat in categoryOptions"
+                    :key="cat"
+                    class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-secondary/50"
+                    :class="
+                      selectedCategory === cat
+                        ? 'font-semibold text-[hsl(var(--category-manga))]'
+                        : 'text-foreground'
+                    "
+                    @click="setCategory(cat)"
+                  >
+                    {{ cat === 'All' ? 'All Categories' : cat }}
+                  </button>
+                </div>
+              </Transition>
+            </div>
+            <div class="relative" @blur.capture="isGenreOpen = false">
+              <button
+                class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm font-medium transition-all bg-secondary/40 hover:bg-secondary/60 border"
+                :class="
+                  selectedGenre !== 'All'
+                    ? 'border-[hsl(var(--category-manga))]/40 text-[hsl(var(--category-manga))]'
+                    : 'border-transparent text-muted-foreground'
+                "
+                @click.stop="
+                  isGenreOpen = !isGenreOpen
+                  isCategoryOpen = false
+                "
+              >
+                <span class="hidden sm:inline">Genre:</span>
+                <span class="max-w-[90px] truncate">{{ selectedGenre }}</span>
+                <ChevronDown
+                  class="w-3.5 h-3.5 transition-transform"
+                  :class="{ 'rotate-180': isGenreOpen }"
+                />
+              </button>
+              <Transition name="dropdown">
+                <div
+                  v-if="isGenreOpen"
+                  class="absolute z-50 top-full mt-1.5 left-0 min-w-[160px] max-h-60 overflow-y-auto bg-popover border border-border rounded-xl shadow-xl"
+                >
+                  <button
+                    v-for="genre in genreOptions"
+                    :key="genre"
+                    class="w-full text-left px-4 py-2 text-sm transition-colors hover:bg-secondary/50"
+                    :class="
+                      selectedGenre === genre
+                        ? 'font-semibold text-[hsl(var(--category-manga))]'
+                        : 'text-foreground'
+                    "
+                    @click="setGenre(genre)"
+                  >
+                    {{ genre === 'All' ? 'All Genres' : genre }}
+                  </button>
+                </div>
+              </Transition>
+            </div>
+            <button
+              v-if="selectedCategory !== 'All' || selectedGenre !== 'All'"
+              class="text-xs text-muted-foreground hover:text-destructive transition-colors px-2 py-1.5 rounded-lg hover:bg-destructive/10"
+              @click="
+                selectedCategory = 'All'
+                selectedGenre = 'All'
+              "
+            >
+              Clear
+            </button>
+          </div>
         </div>
       </div>
 
@@ -279,15 +414,22 @@ onMounted(() => {
 
       <!-- EMPTY STATE -->
       <div
-        v-if="!loading && !authStore.isInitialLoading && library.length === 0"
+        v-if="!loading && !authStore.isInitialLoading && filteredLibrary.length === 0"
         class="text-center py-12 text-muted"
       >
-        No manga found in your library.
+        {{
+          library.length === 0
+            ? 'No manga found in your library.'
+            : 'No manga match the selected filters.'
+        }}
       </div>
 
       <!-- GRID -->
       <div v-else>
-        <div v-if="!loading && !authStore.isInitialLoading && library.length > 0" class="mb-4">
+        <div
+          v-if="!loading && !authStore.isInitialLoading && filteredLibrary.length > 0"
+          class="mb-4"
+        >
           <h3 class="text-xl font-semibold">
             {{ selectedFilter === 'All' && !isSearching ? 'Top Picks' : selectedFilter + ' Manga' }}
           </h3>
@@ -360,5 +502,16 @@ onMounted(() => {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
 }
 </style>
