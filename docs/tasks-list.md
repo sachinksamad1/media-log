@@ -12,15 +12,16 @@ This task list is derived from the [Execution Upgrade & Improvement Plan](./exec
 
 ### 2. Turborepo Caching Enhancements
 
-- [ ] Define `inputs` for the `build` task in `turbo.json`.
-- [ ] Define `inputs` for `lint`, `check`, and `test` tasks.
-- [ ] Verify cache hits by running tasks twice locally.
+- [x] Define `inputs` for the `build` task in `turbo.json`.
+- [x] Define `inputs` for `lint`, `check`, and `test` tasks.
+- [x] Verify cache hits by running tasks twice locally.
 
 ### 3. Vite Build Stabilisation
 
-- [ ] Research `rolldown-vite@7.2.5` stability and community feedback.
-- [ ] Decouple production build from experimental Vite if stability cannot be guaranteed.
-- [ ] Update `apps/web/package.json` to use stable `vite` if necessary.
+- [x] Research `rolldown-vite@7.2.5` stability and community feedback.
+- [x] Decouple production build from experimental Vite if stability cannot be guaranteed.
+- [x] Update `apps/web/package.json` to use stable `vite` if necessary.
+- [x] Flatten multi-line Vue template bindings to resolve parsing errors in Vite 6/Tailwind 4.
 
 ### 4. CI/CD Pipeline Integration
 

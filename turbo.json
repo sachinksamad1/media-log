@@ -3,16 +3,45 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
+      "inputs": [
+        "src/**",
+        "public/**",
+        "tsconfig*.json",
+        "vite.config.ts",
+        "*.config.js",
+        ".env*"
+      ],
       "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
-    "lint": {},
-    "check": {},
-    "format": {},
-    "test": {},
+    "lint": {
+      "inputs": [
+        "src/**",
+        "tests/**",
+        "scripts/**",
+        "eslint.config.js",
+        ".prettierrc*"
+      ]
+    },
+    "check": {
+      "inputs": ["src/**", "tests/**", "tsconfig*.json", "eslint.config.js"]
+    },
+    "format": {
+      "inputs": ["src/**", "tests/**", "scripts/**", ".prettierrc*"]
+    },
+    "test": {
+      "dependsOn": ["build"],
+      "inputs": [
+        "src/**",
+        "tests/**",
+        "e2e/**",
+        "vitest.config.ts",
+        "playwright.config.ts"
+      ]
+    },
     "clean": {
       "cache": false
     }
